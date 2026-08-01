@@ -47,7 +47,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import LearningSummaryCard from '~/components/common/learning/LearningSummaryCard.vue'
 import type { LearningSummaryData } from '~/types/learning'
 import RenderingPipeline from '~/components/experiments/rendering/RenderingPipeline.vue'

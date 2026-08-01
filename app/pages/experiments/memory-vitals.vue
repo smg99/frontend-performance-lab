@@ -65,7 +65,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import LearningSummaryCard from '~/components/common/learning/LearningSummaryCard.vue'
 import type { LearningSummaryData } from '~/types/learning'
 import GarbageCollectionVisualizer from '~/components/experiments/memory/GarbageCollectionVisualizer.vue'
@@ -74,7 +73,6 @@ import WeakReferences from '~/components/experiments/memory/WeakReferences.vue'
 import LCPVisualizer from '~/components/experiments/web-vitals/LCPVisualizer.vue'
 import CLSVisualizer from '~/components/experiments/web-vitals/CLSVisualizer.vue'
 import INPVisualizer from '~/components/experiments/web-vitals/INPVisualizer.vue'
-const activeTab = ref('memory')
 
 const learningData: LearningSummaryData = {
   title: 'Memory Management & Core Web Vitals',
