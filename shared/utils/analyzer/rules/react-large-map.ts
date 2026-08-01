@@ -17,6 +17,32 @@ export const reactLargeMap: ASTRule = {
   relatedRecipes: ['large-data-table', 'dashboard-rendering'],
   impact: 'High memory usage and main thread blocking during reconciliation.',
   fix: 'Implement a virtual list using react-window or react-virtualized.',
+  browserImpact: {
+    cpu: true,
+    memory: true,
+    rendering: true,
+    network: false,
+    cwv: true
+  },
+  explanation: {
+    whatHappened: 'A large array is being mapped directly to JSX elements without virtualization.',
+    whyBrowserBehavesThisWay:
+      'React will create a Fiber node and a DOM node for every element. Mapping over thousands of items blocks the main thread during reconciliation and overwhelms the browser layout engine.',
+    pipelineInvolved: ['DOM', 'Style', 'Layout', 'Paint', 'Composite']
+  },
+  autoFix: {
+    badCode: 'items.map(item => <HeavyCard key={item.id} data={item} />)',
+    recommendedCode:
+      '<FixedSizeList height={400} itemCount={items.length} itemSize={100}>\n  {({ index, style }) => <div style={style}><HeavyCard data={items[index]} /></div>}\n</FixedSizeList>',
+    whyFaster:
+      'Virtualization drastically reduces the DOM node count to only what is visible, bypassing the massive memory allocation and Layout thrashing associated with large DOM trees.'
+  },
+  confidence: {
+    score: 80,
+    reasoning: 'Detected an Array.map returning JSX inside a component render block.',
+    limitations: 'Cannot statically determine the size of the array.',
+    falsePositiveRisk: 'Medium'
+  },
   visitor: (ast: any, context: AnalyzerContext) => {
     const issues: Omit<
       Issue,
@@ -28,9 +54,14 @@ export const reactLargeMap: ASTRule = {
       | 'category'
       | 'impact'
       | 'fix'
+      | 'browserImpact'
+      | 'explanation'
+      | 'autoFix'
+      | 'confidence'
       | 'relatedExperimentIds'
       | 'browserAPIs'
       | 'relatedRecipes'
+      | 'interviewQuestions'
     >[] = []
     if (!ast) return []
 

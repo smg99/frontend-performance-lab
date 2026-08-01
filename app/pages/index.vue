@@ -1,65 +1,55 @@
-<script setup lang="ts">
-import Container from '../components/layout/Container.vue'
-import Section from '../components/layout/Section.vue'
-import PageHeader from '../components/patterns/PageHeader.vue'
-import StatCard from '../components/patterns/StatCard.vue'
-import Card from '../components/ui/Card.vue'
-import Button from '../components/ui/Button.vue'
-import { BeakerIcon } from 'lucide-vue-next'
-</script>
-
 <template>
-  <Container class="py-8 lg:py-12">
-    <PageHeader
-      title="Performance Dashboard"
-      description="Interactive frontend performance playground. Measure, visualize, and optimize."
-    />
-
-    <!-- Metrics Summary -->
-    <Section class="py-4">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard title="Average FPS" value="60 fps" :trend="{ direction: 'up', value: '1%' }" />
-        <StatCard title="Memory Usage" value="45 MB" :trend="{ direction: 'down', value: '5%' }" />
-        <StatCard title="DOM Nodes" value="1.2k" :trend="{ direction: 'neutral', value: '0%' }" />
-        <StatCard title="Render Time" value="12 ms" :trend="{ direction: 'up', value: '2ms' }" />
-      </div>
-    </Section>
-
-    <!-- Intro Card -->
-    <Section class="py-4">
-      <Card class="p-8 lg:p-12 relative overflow-hidden bg-background-surface">
-        <div class="relative z-10 max-w-2xl">
-          <div
-            class="inline-flex p-3 rounded-xl bg-background-base border border-border-subtle shadow-sm mb-6 text-primary"
-          >
-            <BeakerIcon class="w-8 h-8" />
-          </div>
-          <h2 class="text-3xl font-bold text-foreground-primary mb-4 tracking-tight">
-            Welcome to the Lab
-          </h2>
-          <p class="text-lg text-foreground-muted mb-8 leading-relaxed">
-            This is not a tutorial. Every concept here is measurable, visual, and interactive.
-            Explore the Knowledge Graph to observe the effect of different optimization techniques
-            on Core Web Vitals, FPS, Memory, and more.
-          </p>
-          <div class="flex items-center gap-4">
-            <Button as="NuxtLink" href="/experiments/virtualization" size="lg">
-              Start Exploring
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              as="button"
-              @click="
-                () =>
-                  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))
-              "
-            >
-              Open Command Palette
-            </Button>
-          </div>
-        </div>
-      </Card>
-    </Section>
-  </Container>
+  <div class="min-h-screen bg-background-base flex flex-col">
+    <HeroSection />
+    <TrustedSection />
+    <MiniLiveDemo />
+    <ArchitectureHighlights />
+    <PlatformStats />
+    <FeaturedContent />
+    <CallToAction />
+    <SiteFooter />
+  </div>
 </template>
+
+<script setup lang="ts">
+import { useHead } from '@unhead/vue'
+import HeroSection from '../components/landing/HeroSection.vue'
+import TrustedSection from '../components/landing/TrustedSection.vue'
+import MiniLiveDemo from '../components/landing/MiniLiveDemo.vue'
+import ArchitectureHighlights from '../components/landing/ArchitectureHighlights.vue'
+import PlatformStats from '../components/landing/PlatformStats.vue'
+import FeaturedContent from '../components/landing/FeaturedContent.vue'
+import CallToAction from '../components/landing/CallToAction.vue'
+import SiteFooter from '../components/landing/SiteFooter.vue'
+
+useHead({
+  title: 'Frontend Performance Lab | Master Web Performance',
+  meta: [
+    {
+      name: 'description',
+      content:
+        'Master frontend performance visually. Interactive AST-powered analyzer, native APIs, and real-world optimization recipes.'
+    },
+    {
+      name: 'keywords',
+      content:
+        'frontend, performance, web vitals, optimization, vue, react, javascript, ast, performance testing'
+    },
+    { property: 'og:title', content: 'Frontend Performance Lab' },
+    {
+      property: 'og:description',
+      content:
+        'Master frontend performance visually. Interactive AST-powered analyzer, native APIs, and real-world optimization recipes.'
+    },
+    { property: 'og:type', content: 'website' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'Frontend Performance Lab' },
+    {
+      name: 'twitter:description',
+      content:
+        'Master frontend performance visually. Interactive AST-powered analyzer, native APIs, and real-world optimization recipes.'
+    }
+  ],
+  link: [{ rel: 'canonical', href: 'https://frontend-performance-lab.dev/' }]
+})
+</script>

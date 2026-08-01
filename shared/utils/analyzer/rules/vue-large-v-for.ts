@@ -15,6 +15,33 @@ export const vueLargeVFor: ASTRule = {
   relatedRecipes: ['large-data-table', 'infinite-scroll'],
   impact: 'Freezes the main thread during initial render and updates.',
   fix: 'Use a virtual scroller (e.g. vue-virtual-scroller) to only render visible items.',
+  browserImpact: {
+    cpu: true,
+    memory: true,
+    rendering: true,
+    network: false,
+    cwv: true
+  },
+  explanation: {
+    whatHappened:
+      'A large number of DOM nodes are being generated simultaneously within a single v-for directive.',
+    whyBrowserBehavesThisWay:
+      'Browsers must recalculate styles, layout, and paint for every new DOM node. Thousands of nodes overwhelm the main thread, causing severe Frame Rate drops and memory pressure.',
+    pipelineInvolved: ['DOM', 'Style', 'Layout', 'Paint', 'Composite']
+  },
+  autoFix: {
+    badCode: '<div v-for="item in 10000" :key="item.id">\n  <HeavyCard :data="item" />\n</div>',
+    recommendedCode:
+      '<VirtualScroller :items="items" :item-size="100" v-slot="{ item }">\n  <HeavyCard :data="item" />\n</VirtualScroller>',
+    whyFaster:
+      'Virtualization only renders the ~10 nodes visible in the viewport, completely bypassing style and layout costs for the other 9,990 nodes.'
+  },
+  confidence: {
+    score: 85,
+    reasoning: 'The AST clearly shows a v-for directive without a virtualization wrapper.',
+    limitations: 'Static analysis cannot determine the exact array length at runtime.',
+    falsePositiveRisk: 'Medium'
+  },
   visitor: (ast: any, context: AnalyzerContext) => {
     const issues: Omit<
       Issue,
@@ -26,9 +53,14 @@ export const vueLargeVFor: ASTRule = {
       | 'category'
       | 'impact'
       | 'fix'
+      | 'browserImpact'
+      | 'explanation'
+      | 'autoFix'
+      | 'confidence'
       | 'relatedExperimentIds'
       | 'browserAPIs'
       | 'relatedRecipes'
+      | 'interviewQuestions'
     >[] = []
 
     // Quick heuristic over AST template:

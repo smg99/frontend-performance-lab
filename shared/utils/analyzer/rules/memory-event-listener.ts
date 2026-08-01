@@ -16,6 +16,35 @@ export const memoryEventListener: ASTRule = {
   browserAPIs: ['addEventListener', 'removeEventListener'],
   impact: 'Garbage collector cannot destroy the component, leading to OOM crashes over time.',
   fix: 'Always call removeEventListener in the component unmount/destroy hook.',
+  browserImpact: {
+    cpu: false,
+    memory: true,
+    rendering: false,
+    network: false,
+    cwv: false
+  },
+  explanation: {
+    whatHappened:
+      'An event listener is attached to a global object (window or document) but no corresponding removeEventListener was found in the same file.',
+    whyBrowserBehavesThisWay:
+      'Global objects persist for the lifetime of the page. If a component attaches a listener to `window` and is unmounted, the `window` still holds a reference to the listener function (which often closes over the component scope), preventing Garbage Collection.',
+    pipelineInvolved: []
+  },
+  autoFix: {
+    badCode: 'window.addEventListener("resize", handleResize);',
+    recommendedCode:
+      'onMounted(() => window.addEventListener("resize", handleResize));\nonUnmounted(() => window.removeEventListener("resize", handleResize));',
+    whyFaster:
+      'Explicitly removing listeners breaks the reference cycle, allowing the V8 Garbage Collector to instantly free the memory associated with the destroyed component.'
+  },
+  confidence: {
+    score: 90,
+    reasoning:
+      'Found an addEventListener on window/document without any removeEventListener in the same AST.',
+    limitations:
+      'The removeEventListener might be abstracted away in a custom hook or utility function.',
+    falsePositiveRisk: 'Medium'
+  },
   visitor: (ast: any, context: AnalyzerContext) => {
     const issues: Omit<
       Issue,
@@ -27,8 +56,14 @@ export const memoryEventListener: ASTRule = {
       | 'category'
       | 'impact'
       | 'fix'
+      | 'browserImpact'
+      | 'explanation'
+      | 'autoFix'
+      | 'confidence'
       | 'relatedExperimentIds'
       | 'browserAPIs'
+      | 'relatedRecipes'
+      | 'interviewQuestions'
     >[] = []
     if (!ast) return []
 

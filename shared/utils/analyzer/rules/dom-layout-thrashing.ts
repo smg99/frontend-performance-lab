@@ -16,6 +16,34 @@ export const domLayoutThrashing: ASTRule = {
   relatedRecipes: ['dashboard-rendering'],
   impact: 'Forces synchronous reflows, killing frame rates (jank).',
   fix: 'Batch DOM reads together, and defer DOM writes using requestAnimationFrame.',
+  browserImpact: {
+    cpu: true,
+    memory: false,
+    rendering: true,
+    network: false,
+    cwv: true
+  },
+  explanation: {
+    whatHappened:
+      'A style property is being mutated directly in the DOM, potentially interleaving with a DOM read.',
+    whyBrowserBehavesThisWay:
+      'When you read a layout property (like offsetHeight) after modifying styles, the browser is forced to pause JavaScript execution and recalculate the entire page layout synchronously to give you the correct value. This is called Forced Synchronous Layout.',
+    pipelineInvolved: ['Style', 'Layout', 'Paint']
+  },
+  autoFix: {
+    badCode: 'element.style.width = element.clientWidth + 10 + "px";',
+    recommendedCode:
+      'const width = element.clientWidth;\nrequestAnimationFrame(() => {\n  element.style.width = width + 10 + "px";\n});',
+    whyFaster:
+      "requestAnimationFrame defers the style mutation until right before the browser's next paint cycle, preventing any interleaved reads from triggering synchronous recalculations."
+  },
+  confidence: {
+    score: 65,
+    reasoning:
+      'Detected direct assignment to a .style property outside of a requestAnimationFrame callback.',
+    limitations: 'Static analysis cannot always determine if a layout read is interleaved nearby.',
+    falsePositiveRisk: 'High'
+  },
   visitor: (ast: any, context: AnalyzerContext) => {
     const issues: Omit<
       Issue,
@@ -27,9 +55,14 @@ export const domLayoutThrashing: ASTRule = {
       | 'category'
       | 'impact'
       | 'fix'
+      | 'browserImpact'
+      | 'explanation'
+      | 'autoFix'
+      | 'confidence'
       | 'relatedExperimentIds'
       | 'browserAPIs'
       | 'relatedRecipes'
+      | 'interviewQuestions'
     >[] = []
     if (!ast) return []
 

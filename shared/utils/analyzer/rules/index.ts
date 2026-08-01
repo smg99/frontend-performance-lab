@@ -4,13 +4,14 @@ import { domLayoutThrashing } from './dom-layout-thrashing'
 import { memoryEventListener } from './memory-event-listener'
 import { AnalyzerEngine } from '../engine/index'
 
+export const analyzerRules = [vueLargeVFor, reactLargeMap, domLayoutThrashing, memoryEventListener]
+
 export const getConfiguredEngine = () => {
   const engine = new AnalyzerEngine()
 
-  engine.registerRule(vueLargeVFor)
-  engine.registerRule(reactLargeMap)
-  engine.registerRule(domLayoutThrashing)
-  engine.registerRule(memoryEventListener)
+  for (const rule of analyzerRules) {
+    engine.registerRule(rule)
+  }
 
   return engine
 }

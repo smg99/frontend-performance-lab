@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { getAllExperiments, getExperimentById } from '../shared/registry/index.js'
 import { getAllBrowserAPIs, getBrowserAPI } from '../shared/registry/browser-apis.js'
 import { getAllRecipes, getRecipe } from '../shared/registry/recipes.js'
+import { mcpTools } from '../shared/registry/mcp-tools.js'
 import { searchPlatform } from '../shared/utils/search/index.js'
 import type { ExperimentManifest } from '../shared/schemas/index.js'
 
@@ -419,50 +420,8 @@ server.tool(
     const report = {
       Server,
       Tools: {
-        TotalToolCount: 8,
-        List: [
-          {
-            name: 'list_experiments',
-            description: 'List all available frontend performance experiments.',
-            schema: '{}'
-          },
-          {
-            name: 'get_experiment',
-            description: 'Get full manifest or specific section.',
-            schema: '{ id: string, section?: string }'
-          },
-          {
-            name: 'list_browser_apis',
-            description: 'List all available Browser APIs in the performance registry.',
-            schema: '{}'
-          },
-          {
-            name: 'get_browser_api',
-            description: 'Get the full details of a specific Browser API.',
-            schema: '{ id: string }'
-          },
-          {
-            name: 'list_recipes',
-            description: 'List all available performance recipes.',
-            schema: '{}'
-          },
-          {
-            name: 'get_recipe',
-            description: 'Get the full details of a specific recipe.',
-            schema: '{ id: string }'
-          },
-          {
-            name: 'search',
-            description: 'Search the knowledge base.',
-            schema:
-              '{ query?: string, type?: string, difficulty?: string, tags?: string[], browserAPI?: string, limit?: number }'
-          },
-          {
-            name: 'system_diagnostics',
-            description: 'Generate system health report.',
-            schema: '{}'
-          }
-        ]
+        TotalToolCount: mcpTools.length,
+        List: mcpTools
       },
       Resources: {
         TotalResourceCount: 4,
