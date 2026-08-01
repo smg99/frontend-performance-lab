@@ -1,5 +1,6 @@
 echo "Running Pre-push hooks..."
-npm run test -- --passWithNoTests
+npm run test
+
 npm run validate:analyzer
 npm run validate:mcp
 npm run build
