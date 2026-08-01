@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, resolveComponent } from 'vue'
 import { cn } from '../../utils/cn'
 
 interface Props {
@@ -19,10 +19,18 @@ const props = withDefaults(defineProps<Props>(), {
   as: 'button'
 })
 
-const componentType = computed(() => (props.href ? 'NuxtLink' : props.as))
+const componentType = computed(() => {
+  if (props.href) {
+    if (props.href.startsWith('http') || props.href.startsWith('mailto:')) {
+      return 'a'
+    }
+    return resolveComponent('NuxtLink')
+  }
+  return props.as
+})
 
 const baseClasses =
-  'inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium focus-ring disabled:pointer-events-none disabled:opacity-disabled transition-all duration-200'
+  'inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-disabled transition-all duration-180 ease-out'
 
 const variantClasses = computed(() => {
   switch (props.variant) {

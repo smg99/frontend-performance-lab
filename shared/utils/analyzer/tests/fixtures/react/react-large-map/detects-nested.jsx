@@ -1,0 +1,1 @@
+function List() { return <div>{data.map(d => <ul>{d.items.map(i => <li key={i}>{i}</li>)}</ul>)}</div> }

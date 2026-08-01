@@ -41,29 +41,29 @@
           <h4 class="font-semibold text-foreground-primary mb-4">Resources</h4>
           <ul class="space-y-3 text-sm text-foreground-muted">
             <li>
-              <NuxtLink to="/architecture" class="hover:text-primary transition-colors"
-                >Architecture</NuxtLink
-              >
+              <a href="https://github.com/smg99/frontend-performance-lab#architecture" target="_blank" class="hover:text-primary transition-colors">
+                Architecture
+              </a>
             </li>
             <li>
-              <NuxtLink to="/design-system" class="hover:text-primary transition-colors"
-                >Design System</NuxtLink
-              >
+              <NuxtLink to="/design-system" class="hover:text-primary transition-colors">
+                Design System
+              </NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/roadmap" class="hover:text-primary transition-colors"
-                >Roadmap</NuxtLink
-              >
+              <a href="https://github.com/smg99/frontend-performance-lab#roadmap" target="_blank" class="hover:text-primary transition-colors">
+                Roadmap
+              </a>
             </li>
             <li>
-              <NuxtLink to="/contributing" class="hover:text-primary transition-colors"
-                >Contributing</NuxtLink
-              >
+              <a href="https://github.com/smg99/frontend-performance-lab/blob/main/CONTRIBUTING.md" target="_blank" class="hover:text-primary transition-colors">
+                Contributing
+              </a>
             </li>
             <li>
-              <NuxtLink to="/changelog" class="hover:text-primary transition-colors"
-                >Changelog</NuxtLink
-              >
+              <a href="https://github.com/smg99/frontend-performance-lab/releases" target="_blank" class="hover:text-primary transition-colors">
+                Changelog
+              </a>
             </li>
           </ul>
         </div>

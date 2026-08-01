@@ -19,12 +19,12 @@
               browser API documentation directly to your IDE.
             </p>
             <div class="flex flex-wrap justify-center gap-4">
-              <a
-                href="#installation"
+              <NuxtLink
+                to="/mcp/install"
                 class="inline-flex items-center justify-center h-12 px-6 text-sm font-medium bg-primary text-primary-foreground rounded-lg shadow-md hover:bg-primary-hover hover:shadow-lg transition-all"
               >
-                Start MCP Server
-              </a>
+                Install MCP Server
+              </NuxtLink>
               <a
                 href="https://github.com/smg99/frontend-performance-lab"
                 target="_blank"
@@ -94,7 +94,11 @@
       <!-- IDE Configuration -->
       <section>
         <h2 class="text-2xl font-bold tracking-tight mb-6">IDE Configuration</h2>
-        <Tabs :tabs="ideTabs" />
+        <Tabs :tabs="ideTabs" default-value="cursor">
+          <template v-for="tab in ideTabs" :key="tab.value" #[tab.value]>
+            <CodeSnippet :code="tab.content" />
+          </template>
+        </Tabs>
       </section>
 
       <!-- MCP Inspector -->
@@ -265,22 +269,22 @@ const configJson = (_client?: string) => {
 
 const ideTabs = [
   {
-    id: 'cursor',
+    value: 'cursor',
     label: 'Cursor',
     content: `Add this to your Cursor MCP Configuration:\n\n${configJson('cursor')}`
   },
   {
-    id: 'claude',
+    value: 'claude',
     label: 'Claude Code',
     content: `Run this in your terminal:\n\nclaude mcp add frontend-performance-lab npx -y tsx ${getPath()}/mcp/server.ts`
   },
   {
-    id: 'vscode',
+    value: 'vscode',
     label: 'VS Code',
     content: `Use the Cline or Roo extension and add to your MCP settings:\n\n${configJson('vscode')}`
   },
   {
-    id: 'windsurf',
+    value: 'windsurf',
     label: 'Windsurf',
     content: `Add to your mcp_config.json:\n\n${configJson('windsurf')}`
   }

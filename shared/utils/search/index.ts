@@ -43,6 +43,34 @@ const GLOBAL_ACTIONS: PlatformAction[] = [
     description: 'Learn about the Frontend Performance Lab',
     href: '/about',
     keywords: ['info', 'docs', 'readme']
+  },
+  {
+    id: 'browser-apis',
+    title: 'Browse Browser APIs',
+    description: 'Explore native browser APIs and their performance characteristics',
+    href: '/browser-apis',
+    keywords: ['browser', 'api', 'apis', 'web', 'dom']
+  },
+  {
+    id: 'experiments',
+    title: 'Browse Experiments',
+    description: 'Interactive performance engineering experiments',
+    href: '/#experiments',
+    keywords: ['experiment', 'experiments', 'demo', 'sandbox']
+  },
+  {
+    id: 'recipes',
+    title: 'Browse Recipes',
+    description: 'Production-ready solutions for common performance problems',
+    href: '/recipes',
+    keywords: ['recipe', 'recipes', 'solution', 'pattern']
+  },
+  {
+    id: 'mcp',
+    title: 'MCP Hub',
+    description: 'Configure and install Model Context Protocol',
+    href: '/mcp',
+    keywords: ['mcp', 'ai', 'install', 'setup', 'llm']
   }
 ]
 

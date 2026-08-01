@@ -17,29 +17,29 @@
         <h2
           class="text-4xl lg:text-5xl font-bold tracking-tight text-foreground-primary mb-6 relative z-10"
         >
-          Ready to build faster frontends?
+          Start optimizing today.
         </h2>
         <p class="text-xl text-foreground-muted mb-10 max-w-2xl mx-auto relative z-10">
-          Join the platform and start exploring the knowledge graph today.
+          Paste your code, understand the bottlenecks, and implement proven patterns directly from your IDE.
         </p>
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
           <Button
             size="lg"
-            class="w-full sm:w-auto text-lg px-8 py-6 rounded-full"
+            class="w-full sm:w-auto text-lg px-8 py-6 rounded-full bg-primary hover:bg-primary-hover shadow-lg hover:shadow-primary/25 transition-all"
             as="NuxtLink"
-            href="/experiments/virtualization"
+            href="/tools/performance-review"
           >
-            Start Learning
+            Analyze My Code
           </Button>
           <Button
             variant="outline"
             size="lg"
             class="w-full sm:w-auto text-lg px-8 py-6 rounded-full"
             as="NuxtLink"
-            href="/tools/performance-review"
+            href="/mcp/install"
           >
-            Open Analyzer
+            Install MCP
           </Button>
           <button
             class="group w-full sm:w-auto flex items-center justify-between gap-3 px-6 py-4 bg-background-base border border-border-strong rounded-full shadow-sm hover:border-primary hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-primary"

@@ -96,6 +96,17 @@
           <strong class="text-success block mb-1">Recommendation</strong>
           <span class="text-text-secondary">{{ issue.fix }}</span>
         </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-background-base border border-border-subtle p-3 rounded-lg text-sm flex items-center justify-between">
+            <strong class="text-text-primary">Est. Improvement</strong>
+            <span class="text-success font-medium">{{ issue.estimatedImprovement || 'Variable' }}</span>
+          </div>
+          <div class="bg-background-base border border-border-subtle p-3 rounded-lg text-sm flex items-center justify-between">
+            <strong class="text-text-primary">Time to Fix</strong>
+            <span class="text-info font-medium">{{ issue.timeToFix || '< 5 mins' }}</span>
+          </div>
+        </div>
 
         <!-- Confidence -->
         <details

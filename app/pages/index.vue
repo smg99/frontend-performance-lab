@@ -2,12 +2,6 @@
   <div class="min-h-screen bg-background-base flex flex-col">
     <HeroSection />
     <ExplorePlatform />
-    <QuickActions />
-    <LearningPaths />
-    <TrustedSection />
-    <MiniLiveDemo />
-    <ArchitectureHighlights />
-    <PlatformStats />
     <FeaturedContent />
     <CallToAction />
     <SiteFooter />
@@ -18,12 +12,6 @@
 import { useHead } from '@unhead/vue'
 import HeroSection from '../components/landing/HeroSection.vue'
 import ExplorePlatform from '../components/landing/ExplorePlatform.vue'
-import QuickActions from '../components/landing/QuickActions.vue'
-import LearningPaths from '../components/landing/LearningPaths.vue'
-import TrustedSection from '../components/landing/TrustedSection.vue'
-import MiniLiveDemo from '../components/landing/MiniLiveDemo.vue'
-import ArchitectureHighlights from '../components/landing/ArchitectureHighlights.vue'
-import PlatformStats from '../components/landing/PlatformStats.vue'
 import FeaturedContent from '../components/landing/FeaturedContent.vue'
 import CallToAction from '../components/landing/CallToAction.vue'
 import SiteFooter from '../components/landing/SiteFooter.vue'

@@ -45,6 +45,7 @@ requestAnimationFrame(() => {
         "score": 65,
       },
       "description": "Interleaving DOM reads and writes forces synchronous layout recalculation.",
+      "estimatedImprovement": "Unknown",
       "explanation": {
         "pipelineInvolved": [
           "Style",
@@ -69,6 +70,7 @@ requestAnimationFrame(() => {
       ],
       "ruleId": "dom-layout-thrashing",
       "severity": "Critical",
+      "timeToFix": "~5 mins",
       "title": "Layout Thrashing",
     },
   ],
@@ -129,6 +131,7 @@ onUnmounted(() => window.removeEventListener("resize", handleResize));",
         "score": 90,
       },
       "description": "Adding listeners to global objects (window, document) without removing them causes memory leaks.",
+      "estimatedImprovement": "Unknown",
       "explanation": {
         "pipelineInvolved": [],
         "whatHappened": "An event listener is attached to a global object (window or document) but no corresponding removeEventListener was found in the same file.",
@@ -147,6 +150,7 @@ onUnmounted(() => window.removeEventListener("resize", handleResize));",
       "relatedRecipes": undefined,
       "ruleId": "memory-event-listener",
       "severity": "Critical",
+      "timeToFix": "~5 mins",
       "title": "Global Event Listener Leak",
     },
   ],
@@ -207,6 +211,7 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
         "score": 80,
       },
       "description": "Mapping over large arrays to render JSX elements creates excessive DOM nodes.",
+      "estimatedImprovement": "Unknown",
       "explanation": {
         "pipelineInvolved": [
           "DOM",
@@ -235,6 +240,7 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
       ],
       "ruleId": "react-large-map",
       "severity": "Critical",
+      "timeToFix": "~5 mins",
       "title": "Large .map() without Virtualization",
     },
   ],
@@ -297,6 +303,7 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
         "score": 85,
       },
       "description": "Rendering large lists directly into the DOM can cause severe layout and rendering bottlenecks.",
+      "estimatedImprovement": "Unknown",
       "explanation": {
         "pipelineInvolved": [
           "DOM",
@@ -325,6 +332,7 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
       ],
       "ruleId": "vue-large-v-for",
       "severity": "Critical",
+      "timeToFix": "~5 mins",
       "title": "Large v-for without Virtualization",
     },
   ],

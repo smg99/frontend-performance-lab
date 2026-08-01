@@ -1,0 +1,1 @@
+function mount() { const btn = document.getElementById("btn"); btn.addEventListener("click", onClick); }

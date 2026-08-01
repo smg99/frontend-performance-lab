@@ -1,3 +1,5 @@
+// shared/schemas/analyzer.ts (Updated for Phase 2 compatibility)
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type PerformanceScoreCategory = 'A+' | 'A' | 'B' | 'C' | 'D' | 'F'
 export type Severity = 'Critical' | 'High' | 'Medium' | 'Low' | 'Info'
@@ -41,6 +43,8 @@ export interface Issue {
   lineNumbers?: number[]
   impact: string
   fix: string
+  estimatedImprovement?: string
+  timeToFix?: string
 
   // New V2 Properties
   browserImpact: BrowserImpact
@@ -93,27 +97,20 @@ export interface ReviewReport {
 }
 
 // ---------------------------------------------------------
-// Extension Interfaces (Do not implement logic for these)
+// PHASE 2: Cross-File Analysis Architecture Extensions
+// (These are prepared interfaces but not yet fully implemented)
 // ---------------------------------------------------------
-
-export interface LLMReviewEngineExtension {
-  generateReview(report: ReviewReport): Promise<string>
-  suggestCustomFix(issue: Issue): Promise<string>
+export interface ProjectGraphNode {
+  filename: string
+  exports: string[]
+  imports: { source: string; names: string[] }[]
+  size: number
 }
 
-export interface GitHubPullRequestReviewExtension {
-  postReviewComments(report: ReviewReport, prNumber: number): Promise<void>
-  generatePRSummary(report: ReviewReport): string
+export interface ProjectGraph {
+  nodes: Map<string, ProjectGraphNode>
+  cycles: string[][]
 }
-
-export interface IDEExtension {
-  highlightIssues(issues: Issue[]): void
-  applyAutoFix(issueId: string): void
-}
-
-// ---------------------------------------------------------
-// Engine Types (Internal to Server)
-// ---------------------------------------------------------
 
 export interface AnalyzerContext {
   filename: string
@@ -133,8 +130,9 @@ export interface ASTRule {
 
   impact: string
   fix: string
+  estimatedImprovement?: string
+  timeToFix?: string
 
-  // New V2 Properties
   browserImpact: BrowserImpact
   explanation: BrowserExplanation
   autoFix: AutoFix
@@ -147,7 +145,8 @@ export interface ASTRule {
 
   visitor: (
     ast: any,
-    context: AnalyzerContext
+    context: AnalyzerContext,
+    projectGraph?: ProjectGraph // Phase 2 Extension
   ) => Omit<
     Issue,
     | 'id'
@@ -158,6 +157,10 @@ export interface ASTRule {
     | 'category'
     | 'impact'
     | 'fix'
+    | 'estimatedImprovement'
+    | 'timeToFix'
+    | 'estimatedImprovement'
+    | 'timeToFix'
     | 'browserImpact'
     | 'explanation'
     | 'autoFix'

@@ -62,6 +62,12 @@ export default {
       opacity: {
         disabled: 'var(--opacity-disabled)'
       },
+      transitionDuration: {
+        '180': '180ms',
+        '220': '220ms',
+        '300': '300ms',
+        '400': '400ms',
+      },
       animation: {
         'fade-in': 'fadeIn 0.2s ease-out forwards',
         'fade-out': 'fadeOut 0.2s ease-out forwards',

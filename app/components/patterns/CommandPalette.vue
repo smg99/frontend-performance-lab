@@ -66,7 +66,14 @@ const groupedResults = computed(() => {
       title: 'MCP Hub',
       description: 'Model Context Protocol server documentation and playground',
       href: '/mcp',
-      keywords: ['mcp', 'model context protocol', 'ai', 'cursor']
+      keywords: ['mcp', 'model context protocol', 'ai', 'playground']
+    },
+    {
+      id: 'install-mcp',
+      title: 'Install MCP',
+      description: 'Connect Cursor, Claude Code, Windsurf, or VS Code',
+      href: '/mcp/install',
+      keywords: ['install', 'setup', 'cursor', 'claude', 'windsurf', 'continue', 'gemini', 'mcp']
     },
     {
       id: 'architecture',
@@ -269,10 +276,17 @@ watch(
 
             <div
               v-else-if="query && groupedResults.length === 0"
-              class="p-8 text-center text-foreground-muted"
+              class="p-10 text-center text-foreground-muted bg-background-surface/30 flex flex-col items-center justify-center"
             >
-              <p class="mb-2">No results found for "{{ query }}"</p>
-              <p class="text-sm">Press Enter to view all results on the search page.</p>
+              <SearchIcon class="w-8 h-8 mb-4 opacity-30 text-foreground-primary" />
+              <p class="mb-2 font-semibold text-foreground-primary">No results found for "{{ query }}"</p>
+              <p class="text-sm mb-6">Press <kbd class="px-1.5 py-0.5 rounded border border-border-strong bg-background-base mx-1 font-mono text-[10px]">Enter</kbd> to search the full platform.</p>
+              
+              <div class="flex items-center justify-center gap-3 text-xs">
+                <span class="opacity-60">Try searching for:</span>
+                <span class="px-2 py-1 bg-background-base rounded-md text-foreground-primary cursor-pointer border border-border-subtle hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all" @click="query = 'layout thrashing'; inputRef?.focus()">layout thrashing</span>
+                <span class="px-2 py-1 bg-background-base rounded-md text-foreground-primary cursor-pointer border border-border-subtle hover:border-blue-500/50 hover:bg-blue-500/10 transition-all" @click="query = 'mcp install'; inputRef?.focus()">mcp install</span>
+              </div>
             </div>
 
             <div v-else class="p-2 space-y-4">

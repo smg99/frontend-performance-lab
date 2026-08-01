@@ -44,7 +44,7 @@ const props = defineProps<{
   forceExpand?: boolean
 }>()
 
-const isExpanded = ref(props.forceExpand || false)
+const isExpanded = ref(props.forceExpand ?? true)
 
 watch(() => props.forceExpand, (newVal) => {
   if (newVal !== undefined) {

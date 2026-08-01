@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
     :is="as"
     :class="
       cn(
-        'rounded-xl border border-border-subtle bg-background-base text-foreground-primary shadow-sm overflow-hidden transition-all duration-200',
+        'rounded-2xl border border-border-subtle bg-background-base text-foreground-primary shadow-sm hover:shadow-md hover:-translate-y-[1px] hover:border-border-strong overflow-hidden transition-all duration-220 ease-out',
         props.class
       )
     "

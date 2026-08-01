@@ -4,7 +4,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { SearchIcon, BookOpenIcon, BeakerIcon, LightbulbIcon, ZapIcon } from 'lucide-vue-next'
 import Container from '../components/layout/Container.vue'
 import Card from '../components/ui/Card.vue'
-import EmptyState from '../components/patterns/EmptyState.vue'
 import { searchPlatform, type SearchResultItem } from '@utils/search'
 
 const route = useRoute()
@@ -94,12 +93,37 @@ watch(query, newVal => {
       <p>Type to search experiments, APIs, recipes, and more.</p>
     </div>
 
-    <EmptyState
-      v-else-if="groupedResults.length === 0"
-      title="No results found"
-      :description="`We couldn't find anything matching '${query}'. Try adjusting your search terms.`"
-      :icon="SearchIcon"
-    />
+    <div v-else-if="groupedResults.length === 0" class="flex flex-col items-center justify-center py-16 px-6 text-center rounded-2xl border border-dashed border-border-strong bg-background-surface/50">
+      <div class="mb-4 p-4 rounded-full bg-background-hover text-foreground-muted">
+        <SearchIcon class="w-8 h-8" />
+      </div>
+      <h3 class="text-xl font-bold tracking-tight text-foreground-primary">No exact matches found</h3>
+      <p class="mt-2 text-sm text-foreground-muted max-w-sm mb-10 leading-relaxed">We couldn't find anything matching '{{ query }}'. While you're here, explore some of our most powerful resources.</p>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-3xl text-left">
+        <NuxtLink to="/browser-apis/request-animation-frame" class="p-5 rounded-xl bg-background-base border border-border-subtle hover:border-blue-500/50 hover:bg-blue-500/5 transition-all duration-220 group hover:-translate-y-[1px] shadow-sm hover:shadow-md">
+          <div class="flex items-center gap-2 mb-2">
+            <ZapIcon class="w-4 h-4 text-blue-500" />
+            <span class="text-sm font-semibold text-foreground-primary group-hover:text-blue-500 transition-colors">requestAnimationFrame</span>
+          </div>
+          <p class="text-xs text-foreground-muted leading-relaxed">Learn how to schedule visually smooth updates.</p>
+        </NuxtLink>
+        <NuxtLink to="/recipes/virtual-lists" class="p-5 rounded-xl bg-background-base border border-border-subtle hover:border-orange-500/50 hover:bg-orange-500/5 transition-all duration-220 group hover:-translate-y-[1px] shadow-sm hover:shadow-md">
+          <div class="flex items-center gap-2 mb-2">
+            <LightbulbIcon class="w-4 h-4 text-orange-500" />
+            <span class="text-sm font-semibold text-foreground-primary group-hover:text-orange-500 transition-colors">Virtual Lists</span>
+          </div>
+          <p class="text-xs text-foreground-muted leading-relaxed">Render massive datasets without crashing.</p>
+        </NuxtLink>
+        <NuxtLink to="/tools/performance-review" class="p-5 rounded-xl bg-background-base border border-border-subtle hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all duration-220 group hover:-translate-y-[1px] shadow-sm hover:shadow-md">
+          <div class="flex items-center gap-2 mb-2">
+            <CodeIcon class="w-4 h-4 text-emerald-500" />
+            <span class="text-sm font-semibold text-foreground-primary group-hover:text-emerald-500 transition-colors">Run Analyzer</span>
+          </div>
+          <p class="text-xs text-foreground-muted leading-relaxed">Paste your code to find bottlenecks instantly.</p>
+        </NuxtLink>
+      </div>
+    </div>
 
     <div v-else class="space-y-12">
       <section v-for="[groupName, items] in groupedResults" :key="groupName">

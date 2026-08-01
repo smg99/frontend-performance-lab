@@ -55,6 +55,8 @@ export class AnalyzerEngine {
               explanation: rule.explanation,
               autoFix: rule.autoFix,
               confidence: rule.confidence,
+              estimatedImprovement: rule.estimatedImprovement || 'Unknown',
+              timeToFix: rule.timeToFix || '~5 mins',
               relatedExperimentIds: rule.relatedExperiments,
               browserAPIs: rule.browserAPIs,
               relatedRecipes: rule.relatedRecipes,
