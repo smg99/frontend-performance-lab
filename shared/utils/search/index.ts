@@ -1,13 +1,15 @@
 import type { ExperimentManifest, ExperimentDifficulty } from '@schemas/index'
 import type { BrowserAPI } from '@schemas/browser-api'
+import type { Recipe } from '@schemas/recipe'
 import { getAllExperiments } from '@registry/index'
 import { getAllBrowserAPIs } from '@registry/browser-apis'
+import { getAllRecipes } from '@registry/recipes'
 
 export interface SearchFilters {
   query?: string
   type?: 'experiment' | 'recipe' | 'browser-api' | 'all'
   tags?: string[]
-  difficulty?: ExperimentDifficulty | BrowserAPI['difficulty']
+  difficulty?: ExperimentDifficulty | BrowserAPI['difficulty'] | Recipe['difficulty']
   browserAPI?: string
   limit?: number
 }
@@ -15,6 +17,7 @@ export interface SearchFilters {
 export type SearchResultItem = 
   | { type: 'experiment', item: ExperimentManifest, score: number }
   | { type: 'browser-api', item: BrowserAPI, score: number }
+  | { type: 'recipe', item: Recipe, score: number }
 
 export const searchPlatform = (filters: SearchFilters): SearchResultItem[] => {
   const results: SearchResultItem[] = []
@@ -79,6 +82,38 @@ export const searchPlatform = (filters: SearchFilters): SearchResultItem[] => {
       }
 
       if (isMatch) results.push({ type: 'browser-api', item: api, score })
+    }
+  }
+
+  // 3. Search Recipes
+  if (!filters.type || filters.type === 'all' || filters.type === 'recipe') {
+    const recipes = getAllRecipes()
+    for (const recipe of recipes) {
+      let isMatch = true
+      let score = 0
+
+      if (filters.difficulty && recipe.difficulty !== filters.difficulty) isMatch = false
+      if (filters.browserAPI && !recipe.relatedBrowserAPIs.includes(filters.browserAPI)) isMatch = false
+      
+      if (query) {
+        const titleMatch = recipe.title.toLowerCase().includes(query)
+        const problemMatch = recipe.problem.toLowerCase().includes(query)
+        const keywordsMatch = recipe.searchMetadata.keywords.some(k => k.toLowerCase().includes(query))
+        const synonymsMatch = recipe.searchMetadata.synonyms.some(s => s.toLowerCase().includes(query))
+        const conceptsMatch = recipe.searchMetadata.concepts.some(c => c.toLowerCase().includes(query))
+        
+        if (titleMatch) score += 15
+        if (keywordsMatch) score += 12
+        if (synonymsMatch) score += 10
+        if (conceptsMatch) score += 8
+        if (problemMatch) score += 6
+
+        if (!titleMatch && !problemMatch && !keywordsMatch && !synonymsMatch && !conceptsMatch) {
+          isMatch = false
+        }
+      }
+
+      if (isMatch) results.push({ type: 'recipe', item: recipe, score })
     }
   }
 

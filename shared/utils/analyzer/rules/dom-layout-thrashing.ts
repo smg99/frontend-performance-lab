@@ -12,10 +12,11 @@ export const domLayoutThrashing: ASTRule = {
   supportedLanguages: ['js', 'ts', 'jsx', 'tsx'],
   relatedExperiments: ['rendering'],
   browserAPIs: ['request-animation-frame'],
+  relatedRecipes: ['dashboard-rendering'],
   impact: 'Forces synchronous reflows, killing frame rates (jank).',
   fix: 'Batch DOM reads together, and defer DOM writes using requestAnimationFrame.',
   visitor: (ast: any, context: AnalyzerContext) => {
-    const issues: Omit<Issue, 'id' | 'title' | 'description' | 'ruleId' | 'severity' | 'category' | 'impact' | 'fix' | 'relatedExperimentIds' | 'browserAPIs'>[] = []
+    const issues: Omit<Issue, 'id' | 'title' | 'description' | 'ruleId' | 'severity' | 'category' | 'impact' | 'fix' | 'relatedExperimentIds' | 'browserAPIs' | 'relatedRecipes'>[] = []
     if (!ast) return []
 
     traverse(ast, {

@@ -41,6 +41,7 @@ export class AnalyzerEngine {
               fix: rule.fix,
               relatedExperimentIds: rule.relatedExperiments,
               browserAPIs: rule.browserAPIs,
+              relatedRecipes: rule.relatedRecipes,
               lineNumbers: raw.lineNumbers
             })
           }

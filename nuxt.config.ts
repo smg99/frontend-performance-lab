@@ -19,6 +19,12 @@ export default defineNuxtConfig({
     '@mcp': fileURLToPath(new URL('./mcp', import.meta.url))
   },
 
+  nitro: {
+    alias: {
+      'consolidate': 'unenv/runtime/mock/empty'
+    }
+  },
+
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',

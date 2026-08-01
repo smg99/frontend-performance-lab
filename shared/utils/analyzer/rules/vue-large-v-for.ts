@@ -10,10 +10,11 @@ export const vueLargeVFor: ASTRule = {
   supportedLanguages: ['vue'],
   relatedExperiments: ['virtualization', 'rendering'],
   browserAPIs: ['intersection-observer'],
+  relatedRecipes: ['large-data-table', 'infinite-scroll'],
   impact: 'Freezes the main thread during initial render and updates.',
   fix: 'Use a virtual scroller (e.g. vue-virtual-scroller) to only render visible items.',
   visitor: (ast: any, context: AnalyzerContext) => {
-    const issues: Omit<Issue, 'id' | 'title' | 'description' | 'ruleId' | 'severity' | 'category' | 'impact' | 'fix' | 'relatedExperimentIds' | 'browserAPIs'>[] = []
+    const issues: Omit<Issue, 'id' | 'title' | 'description' | 'ruleId' | 'severity' | 'category' | 'impact' | 'fix' | 'relatedExperimentIds' | 'browserAPIs' | 'relatedRecipes'>[] = []
     
     // Quick heuristic over AST template:
     // @vue/compiler-sfc provides descriptor.template.ast

@@ -5,9 +5,11 @@ import { z } from 'zod'
 // Import from our shared registry
 import { getAllExperiments, getExperimentById } from '../shared/registry/index.js'
 import { getAllBrowserAPIs, getBrowserAPI } from '../shared/registry/browser-apis.js'
+import { getAllRecipes, getRecipe } from '../shared/registry/recipes.js'
 import { searchPlatform } from '../shared/utils/search/index.js'
 import type { ExperimentManifest } from '../shared/schemas/index.js'
 import type { BrowserAPI } from '../shared/schemas/browser-api.js'
+import type { Recipe } from '../shared/schemas/recipe.js'
 
 const STARTUP_TIME = new Date().toISOString()
 const startTimeMs = performance.now()
@@ -77,6 +79,22 @@ server.resource(
       contents: [{
         uri: uri.href,
         text: JSON.stringify(withMetadata(api), null, 2)
+      }]
+    }
+  }
+)
+
+server.resource(
+  "recipe",
+  new ResourceTemplate("performance://recipes/{id}", { list: undefined }),
+  async (uri, { id }) => {
+    const recipe = getRecipe(id)
+    if (!recipe) throw new Error(`Recipe not found: ${id}`)
+    
+    return {
+      contents: [{
+        uri: uri.href,
+        text: JSON.stringify(withMetadata(recipe), null, 2)
       }]
     }
   }
@@ -221,6 +239,41 @@ server.tool(
 )
 
 server.tool(
+  "list_recipes",
+  "List all available performance recipes.",
+  {},
+  async () => {
+    const all = getAllRecipes()
+    const summaries = all.map(recipe => ({
+      id: recipe.id,
+      title: recipe.title,
+      difficulty: recipe.difficulty,
+      impact: recipe.performanceImpact
+    }))
+    return {
+      content: [{ type: "text", text: JSON.stringify(withMetadata(summaries), null, 2) }]
+    }
+  }
+)
+
+server.tool(
+  "get_recipe",
+  "Get the full details of a specific recipe.",
+  {
+    id: z.string().describe("The ID of the recipe (e.g., 'large-data-table')")
+  },
+  async ({ id }) => {
+    const recipe = getRecipe(id)
+    if (!recipe) {
+      return { content: [{ type: "text", text: `Recipe ${id} not found.` }] }
+    }
+    return {
+      content: [{ type: "text", text: JSON.stringify(withMetadata(recipe), null, 2) }]
+    }
+  }
+)
+
+server.tool(
   "search",
   "Search the entire performance knowledge base. Use this to find solutions to specific problems (e.g. 'layout thrashing', 'memory leak') or to lookup browser APIs.",
   {
@@ -329,19 +382,21 @@ server.tool(
     const report = {
       Server,
       Tools: {
-        TotalToolCount: 6,
+        TotalToolCount: 8,
         List: [
           { name: "list_experiments", description: "List all available frontend performance experiments.", schema: "{}" },
           { name: "get_experiment", description: "Get full manifest or specific section.", schema: "{ id: string, section?: string }" },
           { name: "list_browser_apis", description: "List all available Browser APIs in the performance registry.", schema: "{}" },
           { name: "get_browser_api", description: "Get the full details of a specific Browser API.", schema: "{ id: string }" },
+          { name: "list_recipes", description: "List all available performance recipes.", schema: "{}" },
+          { name: "get_recipe", description: "Get the full details of a specific recipe.", schema: "{ id: string }" },
           { name: "search", description: "Search the knowledge base.", schema: "{ query?: string, type?: string, difficulty?: string, tags?: string[], browserAPI?: string, limit?: number }" },
           { name: "system_diagnostics", description: "Generate system health report.", schema: "{}" }
         ]
       },
       Resources: {
-        TotalResourceCount: 3,
-        ResourceURIs: ["performance://experiments/{id}", "performance://browser-apis/{id}", "performance://checklists/{id}"]
+        TotalResourceCount: 4,
+        ResourceURIs: ["performance://experiments/{id}", "performance://browser-apis/{id}", "performance://recipes/{id}", "performance://checklists/{id}"]
       },
       Prompts: {
         TotalPromptCount: 1,
@@ -352,7 +407,10 @@ server.tool(
         Count: getAllBrowserAPIs().length, 
         Names: getAllBrowserAPIs().map(a => a.id) 
       },
-      Recipes: { Count: 0, Names: [] },
+      Recipes: { 
+        Count: getAllRecipes().length, 
+        Names: getAllRecipes().map(r => r.id) 
+      },
       Search,
       Validation,
       Statistics,
@@ -376,7 +434,7 @@ server.tool(
         Warnings: Validation.Issues.filter(i => i.includes('[WARNING]')),
         Recommendations: [
           ...(getAllBrowserAPIs().length === 0 ? ["Implement Browser API registry"] : []),
-          "Implement Recipes registry",
+          ...(getAllRecipes().length === 0 ? ["Implement Recipes registry"] : []),
           "Add semantic search capabilities"
         ]
       }

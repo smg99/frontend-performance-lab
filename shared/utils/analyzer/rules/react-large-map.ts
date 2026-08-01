@@ -13,10 +13,11 @@ export const reactLargeMap: ASTRule = {
   supportedLanguages: ['jsx', 'tsx'],
   relatedExperiments: ['virtualization', 'rendering'],
   browserAPIs: ['intersection-observer'],
+  relatedRecipes: ['large-data-table', 'dashboard-rendering'],
   impact: 'High memory usage and main thread blocking during reconciliation.',
   fix: 'Implement a virtual list using react-window or react-virtualized.',
   visitor: (ast: any, context: AnalyzerContext) => {
-    const issues: Omit<Issue, 'id' | 'title' | 'description' | 'ruleId' | 'severity' | 'category' | 'impact' | 'fix' | 'relatedExperimentIds' | 'browserAPIs'>[] = []
+    const issues: Omit<Issue, 'id' | 'title' | 'description' | 'ruleId' | 'severity' | 'category' | 'impact' | 'fix' | 'relatedExperimentIds' | 'browserAPIs' | 'relatedRecipes'>[] = []
     if (!ast) return []
 
     traverse(ast, {

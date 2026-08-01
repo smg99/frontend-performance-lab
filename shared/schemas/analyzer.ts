@@ -14,6 +14,7 @@ export interface Issue {
   fix: string
   relatedExperimentIds?: string[]
   browserAPIs?: string[]
+  relatedRecipes?: string[]
 }
 
 export interface OptimizationChecklist {
@@ -64,8 +65,9 @@ export interface ASTRule {
   supportedLanguages: string[]
   relatedExperiments: string[]
   browserAPIs: string[]
+  relatedRecipes: string[]
   impact: string
   fix: string
   // The specific parser type will depend on the language, so we use any for the raw AST
-  visitor: (ast: any, context: AnalyzerContext) => Omit<Issue, 'id' | 'title' | 'description' | 'ruleId' | 'severity' | 'category' | 'impact' | 'fix' | 'relatedExperimentIds' | 'browserAPIs'>[]
+  visitor: (ast: any, context: AnalyzerContext) => Omit<Issue, 'id' | 'title' | 'description' | 'ruleId' | 'severity' | 'category' | 'impact' | 'fix' | 'relatedExperimentIds' | 'browserAPIs' | 'relatedRecipes'>[]
 }
