@@ -60,6 +60,68 @@ const groupedResults = computed(() => {
     if (item.type === 'browser-api') groups['Browser APIs'].push(item)
   })
 
+  const staticRoutes = [
+    {
+      id: 'mcp-hub',
+      title: 'MCP Hub',
+      description: 'Model Context Protocol server documentation and playground',
+      href: '/mcp',
+      keywords: ['mcp', 'model context protocol', 'ai', 'cursor']
+    },
+    {
+      id: 'architecture',
+      title: 'Architecture',
+      description: 'Platform architecture and system design',
+      href: '/architecture',
+      keywords: ['architecture', 'design', 'system']
+    },
+    {
+      id: 'design-system',
+      title: 'Design System',
+      description: 'UI components and design tokens',
+      href: '/design-system',
+      keywords: ['design system', 'ui', 'components']
+    },
+    {
+      id: 'roadmap',
+      title: 'Roadmap',
+      description: 'Future plans and upcoming features',
+      href: '/roadmap',
+      keywords: ['roadmap', 'future', 'plans']
+    },
+    {
+      id: 'contributing',
+      title: 'Contributing',
+      description: 'How to contribute to the project',
+      href: '/contributing',
+      keywords: ['contributing', 'github', 'open source']
+    },
+    {
+      id: 'changelog',
+      title: 'Changelog',
+      description: 'Recent updates and releases',
+      href: '/changelog',
+      keywords: ['changelog', 'releases', 'updates']
+    },
+    {
+      id: 'analyzer',
+      title: 'Analyze Code',
+      description: 'Run performance analyzer on your code',
+      href: '/tools/performance-review',
+      keywords: ['analyzer', 'analyze', 'performance review', 'ast']
+    }
+  ]
+
+  const q = debouncedQuery.value.toLowerCase()
+  staticRoutes.forEach(route => {
+    if (route.title.toLowerCase().includes(q) || route.keywords.some(k => k.includes(q))) {
+      groups['Actions'].push({
+        type: 'action',
+        item: route as Record<string, unknown>
+      } as SearchResultItem)
+    }
+  })
+
   // Remove empty groups
   return Object.entries(groups).filter(([_, items]) => items.length > 0)
 })

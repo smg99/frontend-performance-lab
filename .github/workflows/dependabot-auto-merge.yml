@@ -1,0 +1,46 @@
+name: Dependabot Auto-Merge
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  dependabot:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]' && github.event.pull_request.draft == false
+    steps:
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
+
+      - name: Enable auto-merge for patch updates (non-protected)
+        if: steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          DEPENDENCIES: ${{ steps.metadata.outputs.dependency-names }}
+        run: |
+          PROTECTED="nuxt vue vite typescript @modelcontextprotocol/sdk @vue/compiler-sfc radix-vue"
+
+          # Check if any protected package is in the update list (which could be a comma-separated list of dependencies)
+          # Also check for `@babel/*` wildcards.
+          for pkg in $(echo $DEPENDENCIES | tr "," "\n"); do
+            for protected in $PROTECTED; do
+              if [ "$pkg" = "$protected" ]; then
+                echo "Protected package $pkg detected. Auto-merge disabled."
+                exit 0
+              fi
+            done
+            if [[ "$pkg" == @babel/* ]]; then
+              echo "Protected babel package $pkg detected. Auto-merge disabled."
+              exit 0
+            fi
+          done
+
+          echo "No protected packages found. Enabling auto-merge for patch update."
+          gh pr merge --auto --squash "$PR_URL"

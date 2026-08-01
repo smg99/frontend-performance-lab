@@ -7,6 +7,46 @@
           Interactive Labs
         </h2>
       </div>
+
+      <!-- MCP Hub Highlight -->
+      <NuxtLink
+        to="/mcp"
+        class="block mb-8 focus:outline-none focus:ring-2 focus:ring-primary rounded-xl group"
+      >
+        <div
+          class="bg-foreground-primary text-background-base rounded-xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl transition-transform duration-300 group-hover:-translate-y-1"
+        >
+          <div>
+            <Badge
+              variant="secondary"
+              class="mb-3 bg-background-base text-foreground-primary border-none"
+              >New</Badge
+            >
+            <h3 class="text-2xl font-bold mb-2">Model Context Protocol (MCP) Hub</h3>
+            <p class="text-background-surface max-w-2xl">
+              Connect your AI coding assistant (Cursor, Claude, VS Code) directly to our performance
+              knowledge graph with the official MCP server.
+            </p>
+          </div>
+          <div class="shrink-0 flex items-center gap-2 font-medium">
+            Explore MCP
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </div>
+        </div>
+      </NuxtLink>
+
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <NuxtLink
           v-for="exp in experiments"

@@ -1,14 +1,146 @@
 <template>
-  <footer class="py-12 border-t border-border-subtle bg-background-surface">
-    <div
-      class="max-w-7xl mx-auto px-4 flex flex-col items-center justify-between gap-8 sm:flex-row"
-    >
-      <div class="flex flex-col items-center sm:items-start gap-4">
+  <footer class="py-16 border-t border-border-subtle bg-background-surface">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+        <!-- Platform -->
+        <div>
+          <h4 class="font-semibold text-foreground-primary mb-4">Platform</h4>
+          <ul class="space-y-3 text-sm text-foreground-muted">
+            <li>
+              <NuxtLink to="/tools/performance-review" class="hover:text-primary transition-colors"
+                >Analyzer</NuxtLink
+              >
+            </li>
+            <li>
+              <NuxtLink
+                to="/experiments/virtualization"
+                class="hover:text-primary transition-colors"
+                >Experiments</NuxtLink
+              >
+            </li>
+            <li>
+              <NuxtLink to="/recipes/large-data-table" class="hover:text-primary transition-colors"
+                >Recipes</NuxtLink
+              >
+            </li>
+            <li>
+              <NuxtLink
+                to="/browser-apis/request-animation-frame"
+                class="hover:text-primary transition-colors"
+                >Browser APIs</NuxtLink
+              >
+            </li>
+            <li>
+              <NuxtLink to="/mcp" class="hover:text-primary transition-colors">MCP Hub</NuxtLink>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Resources -->
+        <div>
+          <h4 class="font-semibold text-foreground-primary mb-4">Resources</h4>
+          <ul class="space-y-3 text-sm text-foreground-muted">
+            <li>
+              <NuxtLink to="/architecture" class="hover:text-primary transition-colors"
+                >Architecture</NuxtLink
+              >
+            </li>
+            <li>
+              <NuxtLink to="/design-system" class="hover:text-primary transition-colors"
+                >Design System</NuxtLink
+              >
+            </li>
+            <li>
+              <NuxtLink to="/roadmap" class="hover:text-primary transition-colors"
+                >Roadmap</NuxtLink
+              >
+            </li>
+            <li>
+              <NuxtLink to="/contributing" class="hover:text-primary transition-colors"
+                >Contributing</NuxtLink
+              >
+            </li>
+            <li>
+              <NuxtLink to="/changelog" class="hover:text-primary transition-colors"
+                >Changelog</NuxtLink
+              >
+            </li>
+          </ul>
+        </div>
+
+        <!-- Community -->
+        <div>
+          <h4 class="font-semibold text-foreground-primary mb-4">Community</h4>
+          <ul class="space-y-3 text-sm text-foreground-muted">
+            <li>
+              <a
+                href="https://github.com/smg99/frontend-performance-lab"
+                target="_blank"
+                class="hover:text-primary transition-colors"
+                >GitHub</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://github.com/smg99/frontend-performance-lab/issues"
+                target="_blank"
+                class="hover:text-primary transition-colors"
+                >Issues</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://github.com/smg99/frontend-performance-lab/discussions"
+                target="_blank"
+                class="hover:text-primary transition-colors"
+                >Discussions</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://github.com/smg99/frontend-performance-lab/releases"
+                target="_blank"
+                class="hover:text-primary transition-colors"
+                >Releases</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <!-- Developer -->
+        <div>
+          <h4 class="font-semibold text-foreground-primary mb-4">Developer</h4>
+          <ul class="space-y-3 text-sm text-foreground-muted">
+            <li><span class="text-foreground-primary">Built by Sumit G</span></li>
+            <li>
+              <a
+                href="https://linkedin.com/in/sumitgajjar"
+                target="_blank"
+                class="hover:text-primary transition-colors"
+                >LinkedIn</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://github.com/smg99"
+                target="_blank"
+                class="hover:text-primary transition-colors"
+                >GitHub Profile</a
+              >
+            </li>
+            <li><span class="opacity-70">MIT License</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div
+        class="pt-8 border-t border-border-subtle flex flex-col items-center sm:items-start gap-4"
+      >
         <p class="text-sm font-medium text-foreground-primary">Frontend Performance Lab</p>
         <p
           class="text-xs text-foreground-muted flex flex-wrap items-center justify-center sm:justify-start gap-2"
         >
-          <span>Built with:</span>
+          <span>Powered by:</span>
           <span class="px-2 py-0.5 rounded bg-background-base border border-border-subtle"
             >Nuxt</span
           >
@@ -24,29 +156,7 @@
           <span class="px-2 py-0.5 rounded bg-background-base border border-border-subtle"
             >MCP</span
           >
-          <span class="px-2 py-0.5 rounded bg-background-base border border-border-subtle"
-            >Vitest</span
-          >
         </p>
-      </div>
-
-      <div class="flex items-center gap-6">
-        <a
-          href="https://github.com/smg99"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-sm text-foreground-muted hover:text-foreground-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded p-1"
-        >
-          Open Source on GitHub
-        </a>
-        <a
-          href="https://linkedin.com/in/sumitgajjar"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-sm text-foreground-muted hover:text-foreground-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded p-1"
-        >
-          LinkedIn
-        </a>
       </div>
     </div>
   </footer>

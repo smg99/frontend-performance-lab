@@ -1,6 +1,9 @@
 <template>
   <div class="min-h-screen bg-background-base flex flex-col">
     <HeroSection />
+    <ExplorePlatform />
+    <QuickActions />
+    <LearningPaths />
     <TrustedSection />
     <MiniLiveDemo />
     <ArchitectureHighlights />
@@ -14,6 +17,9 @@
 <script setup lang="ts">
 import { useHead } from '@unhead/vue'
 import HeroSection from '../components/landing/HeroSection.vue'
+import ExplorePlatform from '../components/landing/ExplorePlatform.vue'
+import QuickActions from '../components/landing/QuickActions.vue'
+import LearningPaths from '../components/landing/LearningPaths.vue'
 import TrustedSection from '../components/landing/TrustedSection.vue'
 import MiniLiveDemo from '../components/landing/MiniLiveDemo.vue'
 import ArchitectureHighlights from '../components/landing/ArchitectureHighlights.vue'
