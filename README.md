@@ -16,65 +16,48 @@
 
 ## 📖 Project Overview
 
-### Why Frontend Performance Lab Exists
 Modern frontend development is abstracted behind layers of frameworks. Developers often don't realize when they trigger forced synchronous layouts, memory leaks, or main-thread blocking operations until their Lighthouse score crashes. 
 
 **Frontend Performance Lab** exists to demystify the browser rendering pipeline. It provides a visual, interactive sandbox paired with a professional-grade AST analyzer to catch performance bugs *before* they hit production.
 
-### Who It Is For
+**Who It Is For:**
 - **Frontend Beginners:** Looking to visually understand foundational concepts (e.g., layout thrashing vs. paint flashing).
 - **Mid/Senior Engineers:** Needing a sandbox to experiment with virtualized lists, web workers, and AST-based performance reviews.
 - **AI Coding Assistants:** Leveraging the **Model Context Protocol (MCP)** to bring deep diagnostic knowledge directly into the IDE.
 
-## 🌟 Try Online vs. Local Features
-
-> **[Try Online (GitHub Pages) - Coming Soon](#)**  
-> Note: The hosted version is purely documentation and interactive UI experiments. Due to security, the AST Analyzer and MCP server *must* be run locally.
-
-### Feature Comparison
-
-| Feature | Hosted (Web) | Local Clone | AI / MCP Server |
-|---------|--------------|-------------|-----------------|
-| Knowledge Graph & Recipes | ✅ Yes | ✅ Yes | ✅ Yes |
-| Interactive UI Experiments | ✅ Yes | ✅ Yes | ❌ No |
-| Cross-file AST Analysis | ❌ No | ✅ Yes | ✅ Yes |
-| IDE Context & Fixes | ❌ No | ❌ No | ✅ Yes |
-
 ---
 
-## 📸 Screenshots & Demos
+## 🗺️ Product Tour
 
-*(Placeholders for production launch)*
+Take a look at what you can do with the Frontend Performance Lab. 
 
-> **![Screenshot Placeholder: Analyzer Workspace]()**  
-> *The professional Monaco-powered AST Analyzer Workspace.*
+### 1. The Homepage
+A premium SaaS-grade dashboard providing immediate access to the analyzer, recipes, and learning paths.
+> ![Homepage Demo](docs/assets/homepage.gif)
 
-> **![GIF Placeholder: Animated Pipeline]()**  
-> *Watch the CSS pipeline animate as the Analyzer processes your Vue and React components.*
+### 2. AST Analyzer
+Drag, drop, and analyze. A professional Monaco-powered workspace that scans your React and Vue code for layout thrashing, massive re-renders, and memory leaks.
+> ![Analyzer Demo](docs/assets/analyzer.gif)
 
-> **![Screenshot Placeholder: MCP Hub]()**  
-> *Discover all available AI tools and prompts natively in the MCP Hub.*
+### 3. MCP Hub
+Discover all available AI tools and prompts natively. The Hub bridges the gap between local tooling and your favorite AI IDEs.
+> ![MCP Hub Demo](docs/assets/mcp-hub.gif)
 
----
+### 4. MCP Install
+Step-by-step guidance on connecting the AST Analyzer directly to Cursor, Claude Code, and Windsurf securely via local stdio.
+> ![MCP Install Demo](docs/assets/mcp-install.gif)
 
-## 🏗️ Architecture
+### 5. Browser APIs
+Educational breakdowns of modern, critical APIs like `requestAnimationFrame` and `IntersectionObserver`.
+> ![Browser APIs Demo](docs/assets/browser-apis.gif)
 
-```mermaid
-graph TD
-    A[Browser / Developer] --> B(Nuxt 3 Frontend)
-    C[AI Assistant / IDE] --> D(MCP Server - stdio)
-    
-    B --> E{Shared Core}
-    D --> E
-    
-    E --> F[AST Analyzer Engine]
-    E --> G[Knowledge Graph]
-    E --> H[Browser API Registry]
-    
-    F --> I[(Local File System)]
-```
+### 6. Recipes
+Structured tutorials for specific optimizations, directly combating the issues caught by our AST Analyzer.
+> ![Recipes Demo](docs/assets/recipes.gif)
 
-*The core logic is completely shared between the Nuxt UI and the MCP Server, meaning your AI sees exactly what the web dashboard sees.*
+### 7. Interactive Experiments
+Live, interactive Vue components demonstrating performance bottlenecks in real-time.
+> ![Experiments Demo](docs/assets/experiments.gif)
 
 ---
 
@@ -104,7 +87,7 @@ npm run dev
 ```
 Open `http://localhost:3000` in your browser.
 
-### 3. Analyze Your First Component in 2 Minutes
+### 3. Analyze Your First Component
 
 1. Navigate to **Quick Actions -> Analyze Code** in the web dashboard.
 2. Drag and drop any `.vue`, `.jsx`, or `.js` file into the editor.
@@ -139,26 +122,37 @@ The MCP server runs locally to ensure it has secure, instantaneous access to you
 
 ---
 
+## 🏗️ Architecture
+
+```mermaid
+graph TD
+    A[Browser / Developer] --> B(Nuxt 3 Frontend)
+    C[AI Assistant / IDE] --> D(MCP Server - stdio)
+    
+    B --> E{Shared Core}
+    D --> E
+    
+    E --> F[AST Analyzer Engine]
+    E --> G[Knowledge Graph]
+    E --> H[Browser API Registry]
+    
+    F --> I[(Local File System)]
+```
+
+*The core logic is completely shared between the Nuxt UI and the MCP Server, meaning your AI sees exactly what the web dashboard sees.*
+
+---
+
 ## 📜 Commands Reference
 
 | Command | Description |
 |---------|-------------|
 | `npm run dev` | Starts the Nuxt 3 frontend development server. |
 | `npm run mcp:start` | Runs the MCP server in `stdio` mode for IDEs. |
-| `npm run validate:analyzer` | Runs the Vitest regression suite and updates `ANALYZER_COVERAGE.md`. |
+| `npm run validate:analyzer` | Runs the Vitest regression suite and updates coverage. |
 | `npm run test` | Runs the standard unit tests. |
 | `npm run build` | Builds the Nuxt application for production. |
 | `npm run lint` | Runs ESLint and Prettier formatting. |
-
----
-
-## 📂 Repository Structure
-
-- `/app` - Nuxt 3 pages, UI components, and the glassmorphic Design System.
-- `/shared` - The framework-agnostic core logic, AST Analyzer (`shared/utils/analyzer`), and schemas.
-- `/mcp` - The Model Context Protocol server exposing the shared core to AI.
-- `/docs` - Extensive documentation and troubleshooting.
-- `/scripts` - Validation and coverage automation.
 
 ---
 
@@ -174,30 +168,17 @@ This is treated as a commercial-grade SaaS product, not just a demo.
 ## 🗺️ Roadmap
 
 - **Phase 1 (Complete):** UI Design System, Core AST MVP, and MCP Hub.
-- **Phase 2 (In Progress):** Cross-file ProjectGraph AST analysis (allowing variable tracing across imports).
+- **Phase 2 (In Progress):** Cross-file ProjectGraph AST analysis.
 - **Phase 3 (Coming Soon):** Visual Dependency Graphs and Performance Budget Gauges.
 - **Hosted MCP (Future):** Support for `SSE` (Server-Sent Events) for remote AI clients.
 
-## ❓ FAQ
-
-**Q: Why does the analyzer flag my `.map()` in React as an issue?**  
-A: By default, the `react-large-map` rule flags arrays mapped directly to JSX without virtualization. Use `react-window` for large lists to protect DOM layout times.
-
-**Q: Why do I need to run this locally?**  
-A: The AST Analyzer requires read-access to your local files to scan for bugs. Browser security prevents a hosted web-app from accessing your local directory structure effortlessly.
-
-**Q: I have an issue connecting my IDE to the MCP server.**  
-A: Please check our [Troubleshooting Guide](./docs/troubleshooting.md).
-
 ---
 
-## 🤝 Contributing
+## 🤝 Contributing & Licensing
 
 We welcome contributions! Please follow our testing policy:
 - No commits without matching regression tests.
 - Verify `npm run validate:analyzer` passes.
 - Adhere to the glassmorphic Tailwind design system.
 
-## 📜 License & Credits
-
-MIT License. Created to push the boundaries of AI-assisted frontend engineering.
+**License**: MIT License. Created to push the boundaries of AI-assisted frontend engineering.

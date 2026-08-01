@@ -5,10 +5,9 @@
     <FeaturedContent />
     <CallToAction />
     <SiteFooter />
-  </div>
 </template>
 
-
+<script setup lang="ts">
 import HeroSection from '../components/landing/HeroSection.vue'
 import ExplorePlatform from '../components/landing/ExplorePlatform.vue'
 import FeaturedContent from '../components/landing/FeaturedContent.vue'

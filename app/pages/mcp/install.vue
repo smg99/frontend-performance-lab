@@ -102,7 +102,7 @@
   </div>
 </template>
 
-
+<script setup lang="ts">
 import { CodeIcon } from 'lucide-vue-next'
 import PageHeader from '../../components/patterns/PageHeader.vue'
 import Card from '../../components/ui/Card.vue'
