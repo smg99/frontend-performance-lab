@@ -8,8 +8,8 @@ export const vueLargeVFor: ASTRule = {
   category: 'Rendering',
   frameworks: ['vue', 'nuxt'],
   supportedLanguages: ['vue'],
-  relatedExperiments: ['virtualization'],
-  browserAPIs: ['IntersectionObserver'],
+  relatedExperiments: ['virtualization', 'rendering'],
+  browserAPIs: ['intersection-observer'],
   impact: 'Freezes the main thread during initial render and updates.',
   fix: 'Use a virtual scroller (e.g. vue-virtual-scroller) to only render visible items.',
   visitor: (ast: any, context: AnalyzerContext) => {

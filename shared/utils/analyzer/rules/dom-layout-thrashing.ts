@@ -11,7 +11,7 @@ export const domLayoutThrashing: ASTRule = {
   frameworks: ['vanilla', 'vue', 'react', 'nuxt'],
   supportedLanguages: ['js', 'ts', 'jsx', 'tsx'],
   relatedExperiments: ['rendering'],
-  browserAPIs: ['requestAnimationFrame'],
+  browserAPIs: ['request-animation-frame'],
   impact: 'Forces synchronous reflows, killing frame rates (jank).',
   fix: 'Batch DOM reads together, and defer DOM writes using requestAnimationFrame.',
   visitor: (ast: any, context: AnalyzerContext) => {

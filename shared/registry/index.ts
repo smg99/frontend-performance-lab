@@ -6,6 +6,8 @@ import concurrency from '@content/experiments/concurrency/manifest'
 import rendering from '@content/experiments/rendering/manifest'
 import memoryVitals from '@content/experiments/memory-vitals/manifest'
 
+export * from './browser-apis'
+
 // The single source of truth for all experiments in the platform.
 export const experimentsRegistry: Record<string, ExperimentManifest> = {
   [virtualization.id]: virtualization,

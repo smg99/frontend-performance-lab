@@ -11,8 +11,8 @@ export const reactLargeMap: ASTRule = {
   category: 'Rendering',
   frameworks: ['react'],
   supportedLanguages: ['jsx', 'tsx'],
-  relatedExperiments: ['virtualization'],
-  browserAPIs: [],
+  relatedExperiments: ['virtualization', 'rendering'],
+  browserAPIs: ['intersection-observer'],
   impact: 'High memory usage and main thread blocking during reconciliation.',
   fix: 'Implement a virtual list using react-window or react-virtualized.',
   visitor: (ast: any, context: AnalyzerContext) => {

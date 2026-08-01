@@ -3,17 +3,34 @@ import type { ReferenceLink } from './experiment'
 export interface BrowserAPI {
   id: string
   name: string
-  category: string
   description: string
-  browserSupport: string // e.g. "95% global" or "Chrome 80+, Safari 14+"
+  category: 'Rendering' | 'Memory' | 'Network' | 'Concurrency' | 'Storage' | 'Observers'
+  browserSupport: string
+  baseline: 'Newly available' | 'Widely available' | 'Limited'
+  difficulty: 'Beginner' | 'Intermediate' | 'Advanced'
+  searchMetadata: {
+    keywords: string[]
+    synonyms: string[]
+    concepts: string[]
+  }
+  whenToUse: string[]
+  whenNotToUse: string[]
+  advantages: string[]
+  limitations: string[]
   performanceImpact: 'Low' | 'Medium' | 'High'
-  bestPractices: string[]
   commonMistakes: string[]
+  bestPractices: string[]
   examples: {
     title: string
     code: string
     explanation: string
   }[]
-  references: ReferenceLink[]
   relatedExperiments: string[]
+  relatedRecipes: string[]
+  relatedBrowserAPIs: string[]
+  interviewQuestions: {
+    question: string
+    answer: string
+  }[]
+  references: ReferenceLink[]
 }
