@@ -275,7 +275,7 @@ const loadSample = (type: 'react' | 'vue') => {
     files.value = [{
       filename: 'DataGrid.vue',
       language: 'vue',
-      code: "<script setup>\nimport { ref, watch, onMounted } from 'vue'\n\nconst items = ref([])\nconst total = ref(0)\n\n// BAD: Deep watcher on a massive array\nwatch(items, (newVal) => {\n  total.value = newVal.reduce((acc, item) => acc + item.value, 0)\n}, { deep: true })\n\nonMounted(async () => {\n  // Fetching 10,000 items and making them fully reactive\n  const res = await fetch('/api/data')\n  items.value = await res.json()\n})\n</script>\n\n<template>\n  <div v-for=\"item in items\" :key=\"item.id\">\n    {{ item.name }}\n  </div>\n</template>"
+      code: "<" + "script setup>\nimport { ref, watch, onMounted } from 'vue'\n\nconst items = ref([])\nconst total = ref(0)\n\n// BAD: Deep watcher on a massive array\nwatch(items, (newVal) => {\n  total.value = newVal.reduce((acc, item) => acc + item.value, 0)\n}, { deep: true })\n\nonMounted(async () => {\n  // Fetching 10,000 items and making them fully reactive\n  const res = await fetch('/api/data')\n  items.value = await res.json()\n})\n<" + "/script>\n\n<" + "template>\n  <div v-for=\"item in items\" :key=\"item.id\">\n    {{ item.name }}\n  </div>\n<" + "/template>"
     }]
   }
   activeIndex.value = 0

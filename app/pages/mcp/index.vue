@@ -211,7 +211,7 @@
 </template>
 
 <script setup lang="ts">
-import { useHead } from '@unhead/vue'
+import { CodeIcon, BlocksIcon, FileSearchIcon, BoxesIcon, ZapIcon, PuzzleIcon, GithubIcon, ArrowRightIcon } from 'lucide-vue-next'
 import { mcpTools } from '@registry/mcp-tools'
 
 import PageHeader from '../../components/patterns/PageHeader.vue'
