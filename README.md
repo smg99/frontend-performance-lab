@@ -1,184 +1,148 @@
 <div align="center">
-  <h1>🔬 Frontend Performance Lab</h1>
-  <p><strong>The Definitive Interactive Engineering Playground for Browser Internals & AI Assistance</strong></p>
 
-  <p>
-    <a href="https://github.com/smg99/frontend-performance-lab/actions"><img src="https://img.shields.io/github/actions/workflow/status/smg99/frontend-performance-lab/ci.yml?branch=main&label=Build&style=for-the-badge" alt="Build Status" /></a>
-    <a href="#"><img src="https://img.shields.io/badge/Coverage->94%25-brightgreen.svg?style=for-the-badge" alt="Coverage" /></a>
-    <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="License" /></a>
-    <a href="#"><img src="https://img.shields.io/badge/Node->=18.0.0-43853D?style=for-the-badge&logo=node.js&logoColor=white" alt="Node Version" /></a>
-    <a href="https://nuxt.com/"><img src="https://img.shields.io/badge/Nuxt-4.x-00DC82?style=for-the-badge&logo=nuxt.js&logoColor=white" alt="Nuxt Version" /></a>
-    <a href="./mcp"><img src="https://img.shields.io/badge/MCP-Ready-8A2BE2?style=for-the-badge&logo=ai&logoColor=white" alt="MCP Ready" /></a>
-  </p>
+# Frontend Performance Lab
+
+**Write faster Vue & React. Stop shipping slow code.**
+
+A live playground, AST analyzer, and AI knowledge base that catches  
+layout thrashing, memory leaks, and render explosions — before they reach production.
+
+<br/>
+
+[![CI](https://img.shields.io/github/actions/workflow/status/smg99/frontend-performance-lab/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/smg99/frontend-performance-lab/actions)
+[![Coverage](https://img.shields.io/badge/Coverage->94%25-22c55e?style=flat-square)](./ANALYZER_COVERAGE.md)
+[![Nuxt](https://img.shields.io/badge/Nuxt-4.x-00DC82?style=flat-square&logo=nuxt.js&logoColor=white)](https://nuxt.com)
+[![Vue](https://img.shields.io/badge/Vue-3.x-42b883?style=flat-square&logo=vue.js&logoColor=white)](https://vuejs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![MCP](https://img.shields.io/badge/MCP-stdio-8b5cf6?style=flat-square)](./mcp)
+[![License](https://img.shields.io/badge/License-MIT-64748b?style=flat-square)](./LICENSE)
+[![GitHub Pages](https://img.shields.io/badge/Deployed-GitHub%20Pages-0f172a?style=flat-square&logo=github)](https://smg99.github.io/frontend-performance-lab)
+
 </div>
 
 ---
 
-## 📖 Project Overview
+## Why This Exists
 
-Modern frontend development is abstracted behind layers of frameworks. Developers often don't realize when they trigger forced synchronous layouts, memory leaks, or main-thread blocking operations until their Lighthouse score crashes. 
+Modern frameworks are fast by default — until they aren't.
 
-**Frontend Performance Lab** exists to demystify the browser rendering pipeline. It provides a visual, interactive sandbox paired with a professional-grade AST analyzer to catch performance bugs *before* they hit production.
+Layout thrashing. Massive re-render loops. Memory leaks from forgotten event listeners. These bugs are invisible until a Lighthouse score crashes or a user complains.
 
-**Who It Is For:**
-- **Frontend Beginners:** Looking to visually understand foundational concepts (e.g., layout thrashing vs. paint flashing).
-- **Mid/Senior Engineers:** Needing a sandbox to experiment with virtualized lists, web workers, and AST-based performance reviews.
-- **AI Coding Assistants:** Leveraging the **Model Context Protocol (MCP)** to bring deep diagnostic knowledge directly into the IDE.
+**Frontend Performance Lab** puts performance patterns front-and-center: interactive experiments you can break, an AST analyzer that reads your actual code, and an MCP server that brings the whole knowledge base into your AI coding assistant.
 
----
+**Built for:**
 
-## 🗺️ Product Tour
-
-Take a look at what you can do with the Frontend Performance Lab. 
-
-### 1. The Homepage
-A premium SaaS-grade dashboard providing immediate access to the analyzer, recipes, and learning paths.
-> ![Homepage Demo](docs/assets/homepage.gif)
-
-### 2. AST Analyzer
-Drag, drop, and analyze. A professional Monaco-powered workspace that scans your React and Vue code for layout thrashing, massive re-renders, and memory leaks.
-> ![Analyzer Demo](docs/assets/analyzer.gif)
-
-### 3. MCP Hub
-Discover all available AI tools and prompts natively. The Hub bridges the gap between local tooling and your favorite AI IDEs.
-> ![MCP Hub Demo](docs/assets/mcp-hub.gif)
-
-### 4. MCP Install
-Step-by-step guidance on connecting the AST Analyzer directly to Cursor, Claude Code, and Windsurf securely via local stdio.
-> ![MCP Install Demo](docs/assets/mcp-install.gif)
-
-### 5. Browser APIs
-Educational breakdowns of modern, critical APIs like `requestAnimationFrame` and `IntersectionObserver`.
-> ![Browser APIs Demo](docs/assets/browser-apis.gif)
-
-### 6. Recipes
-Structured tutorials for specific optimizations, directly combating the issues caught by our AST Analyzer.
-> ![Recipes Demo](docs/assets/recipes.gif)
-
-### 7. Interactive Experiments
-Live, interactive Vue components demonstrating performance bottlenecks in real-time.
-> ![Experiments Demo](docs/assets/experiments.gif)
+- **Engineers learning the browser** — visualize the render pipeline, not just read about it
+- **Mid/senior developers** — experiment with virtualization, Web Workers, and reactivity edge cases in a safe sandbox
+- **AI coding assistants** — query the knowledge base via MCP, directly inside Cursor, Claude Code, or VS Code
 
 ---
 
-## ⚡ 5-Minute Quick Start
+## What's Inside
 
-### 1. Installation
+### ⚡ AST Performance Analyzer
 
-You will need Node `18.x` or higher.
+Drop in any `.vue`, `.jsx`, or `.js` file. Get instant, line-level feedback on layout thrashing, event listener leaks, and large render trees — powered by Babel AST traversal.
+
+### 🧪 Interactive Experiments
+
+Live Vue components you can tweak in real time. See what happens to frame rate when you skip virtualization on a 10,000-row list, or trigger a forced synchronous layout.
+
+### 🤖 MCP Integration
+
+The full knowledge base — experiments, recipes, browser APIs — exposed as MCP tools and resources. Your AI assistant sees exactly what the dashboard sees.
+
+### 📖 Recipes & Browser APIs
+
+Structured tutorials mapped directly to the analyzer's findings. Fix what the analyzer catches with step-by-step implementation guides.
+
+---
+
+## Get Started
 
 ```bash
-# Clone the repository
 git clone https://github.com/smg99/frontend-performance-lab.git
-
-# Enter the directory
 cd frontend-performance-lab
-
-# Install dependencies
 npm install
-```
-
-### 2. Start the Development Server
-
-To explore the UI, experiments, and the visual Analyzer:
-
-```bash
 npm run dev
 ```
-Open `http://localhost:3000` in your browser.
 
-### 3. Analyze Your First Component
-
-1. Navigate to **Quick Actions -> Analyze Code** in the web dashboard.
-2. Drag and drop any `.vue`, `.jsx`, or `.js` file into the editor.
-3. Press `Cmd + Enter` to run the analysis.
-4. Watch the pipeline timeline flag layout thrashing, massive DOM rendering, or memory leaks!
+Open [`http://localhost:3000`](http://localhost:3000) → go to **Analyze Code** → drop in a file.
 
 ---
 
-## 🤖 Install MCP (AI Assistant Integration)
+## Connect to Your AI Assistant
 
-Bring the power of the Frontend Performance Lab directly into **Cursor, Claude Code, Windsurf, or VS Code**.
+Run the MCP server locally and bring the knowledge base into your IDE.
 
-**[Read the Full MCP Setup Guide](./docs/mcp/getting-started.md)**
+```bash
+npm run mcp:start
+```
 
-### Local MCP Setup (Quick)
+Add to your IDE config (example: **Cursor**):
 
-The MCP server runs locally to ensure it has secure, instantaneous access to your AST and filesystem.
+```json
+{
+  "mcpServers": {
+    "frontend-performance-lab": {
+      "command": "npx",
+      "args": ["tsx", "/absolute/path/to/frontend-performance-lab/mcp/server.ts"]
+    }
+  }
+}
+```
 
-1. Ensure you have cloned the repo and run `npm install`.
-2. Grab the absolute path to your cloned repository.
-3. Configure your IDE. For example, in **Cursor**, add a new MCP Server:
-   - **Type:** `command`
-   - **Command:** `npx tsx /absolute/path/to/frontend-performance-lab/mcp/server.ts`
+**[Full Setup Guide →](./docs/mcp/getting-started.md)**
 
-### Supported IDEs
-- **Cursor**
-- **Claude Code CLI**
-- **VS Code (via Cline/Roo)**
-- **Windsurf**
-- **Continue.dev**
-- **Gemini CLI**
+Supported: **Cursor · Claude Code · VS Code (Cline/Roo) · Windsurf · Continue.dev · Gemini CLI**
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```mermaid
 graph TD
-    A[Browser / Developer] --> B(Nuxt 3 Frontend)
-    C[AI Assistant / IDE] --> D(MCP Server - stdio)
-    
+    A[Browser / Developer] --> B(Nuxt 4 Frontend)
+    C[AI Assistant / IDE] --> D(MCP Server — stdio)
+
     B --> E{Shared Core}
     D --> E
-    
+
     E --> F[AST Analyzer Engine]
     E --> G[Knowledge Graph]
     E --> H[Browser API Registry]
-    
+
     F --> I[(Local File System)]
 ```
 
-*The core logic is completely shared between the Nuxt UI and the MCP Server, meaning your AI sees exactly what the web dashboard sees.*
+_The analyzer engine is fully shared between the UI and the MCP server — your AI sees exactly what the dashboard sees._
 
 ---
 
-## 📜 Commands Reference
+## Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Starts the Nuxt 3 frontend development server. |
-| `npm run mcp:start` | Runs the MCP server in `stdio` mode for IDEs. |
-| `npm run validate:analyzer` | Runs the Vitest regression suite and updates coverage. |
-| `npm run test` | Runs the standard unit tests. |
-| `npm run build` | Builds the Nuxt application for production. |
-| `npm run lint` | Runs ESLint and Prettier formatting. |
-
----
-
-## 🚀 Release Philosophy & Performance Goals
-
-This is treated as a commercial-grade SaaS product, not just a demo.
-- **Maintainability over speed:** Clean architecture and zero-duplication between MCP and UI.
-- **Strict TDD:** Every bug fix in the AST analyzer must first be a regression test.
-- **Performance SLA:** The analyzer guarantees execution in < 500ms for files up to 5,000 LOC.
+| Command                     | Description                  |
+| --------------------------- | ---------------------------- |
+| `npm run dev`               | Start the Nuxt 4 dev server  |
+| `npm run mcp:start`         | Run the MCP server (stdio)   |
+| `npm run validate:analyzer` | Run the AST regression suite |
+| `npm run test`              | Run unit tests               |
+| `npm run build`             | Build for production         |
+| `npm run lint`              | Lint & format                |
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
-- **Phase 1 (Complete):** UI Design System, Core AST MVP, and MCP Hub.
-- **Phase 2 (In Progress):** Cross-file ProjectGraph AST analysis.
-- **Phase 3 (Coming Soon):** Visual Dependency Graphs and Performance Budget Gauges.
-- **Hosted MCP (Future):** Support for `SSE` (Server-Sent Events) for remote AI clients.
+- ✅ **Phase 1** — Design system, core AST engine, MCP Hub
+- 🔄 **Phase 2** — Cross-file ProjectGraph analysis _(in progress)_
+- 📋 **Phase 3** — Visual dependency graphs, performance budget gauges
+- 🌐 **Future** — Hosted MCP via SSE for remote AI clients
 
 ---
 
-## 🤝 Contributing & Licensing
+## Contributing
 
-We welcome contributions! Please follow our testing policy:
-- No commits without matching regression tests.
-- Verify `npm run validate:analyzer` passes.
-- Adhere to the glassmorphic Tailwind design system.
+No commit without a regression test. Run `npm run validate:analyzer` before opening a PR.
 
-**License**: MIT License. Created to push the boundaries of AI-assisted frontend engineering.
+**[Contributing Guide →](./CONTRIBUTING.md)** · **[MIT License](./LICENSE)**
