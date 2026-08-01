@@ -1,8 +1,8 @@
 <template>
   <div class="bg-surface border border-border rounded-lg overflow-hidden transition-all duration-300">
     <button 
-      @click="isExpanded = !isExpanded"
       class="w-full px-4 py-3 flex items-center justify-between hover:bg-background transition-colors text-left"
+      @click="isExpanded = !isExpanded"
     >
       <div class="flex items-center gap-3">
         <span 

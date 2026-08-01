@@ -12,6 +12,11 @@
               Dashboard
             </NuxtLink>
           </li>
+          <li>
+            <NuxtLink to="/about" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-border/50 text-text-secondary hover:text-text-primary" active-class="bg-border text-text-primary">
+              About
+            </NuxtLink>
+          </li>
           <li class="pt-4 pb-2 px-3">
             <span class="text-xs font-semibold uppercase tracking-wider text-text-secondary">Experiments</span>
           </li>

@@ -79,6 +79,9 @@
 
     <!-- Floating Reactive Inspector (DevTools style) -->
     <ReactiveInspector />
+
+    <!-- Educational Framework Integration -->
+    <LearningSummaryCard :data="learningData" class="mx-auto mt-12" />
   </div>
 </template>
 

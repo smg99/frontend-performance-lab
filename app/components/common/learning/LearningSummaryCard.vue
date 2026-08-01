@@ -8,7 +8,7 @@
         <p class="text-sm text-text-secondary mt-1">Comprehensive architectural breakdown and production recommendations.</p>
       </div>
       <div class="flex gap-2">
-        <button @click="expandAll = !expandAll" class="text-xs px-3 py-1.5 bg-surface border border-border rounded hover:bg-border/50 transition-colors">
+        <button class="text-xs px-3 py-1.5 bg-surface border border-border rounded hover:bg-border/50 transition-colors" @click="expandAll = !expandAll">
           {{ expandAll ? 'Collapse All' : 'Expand All' }}
         </button>
       </div>

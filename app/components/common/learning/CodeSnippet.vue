@@ -3,9 +3,9 @@
     
     <!-- Collapsible Header -->
     <button 
-      @click="isExpanded = !isExpanded" 
-      class="w-full flex items-center justify-between px-4 py-2 bg-background hover:bg-background/80 transition-colors text-xs font-mono text-text-secondary border-b border-border"
+      class="w-full flex items-center justify-between px-4 py-2 bg-background hover:bg-background/80 transition-colors text-xs font-mono text-text-secondary border-b border-border" 
       :class="{ 'border-b-0': !isExpanded }"
+      @click="isExpanded = !isExpanded"
     >
       <span class="flex items-center gap-2">
         <span class="text-[10px] transition-transform" :class="{ 'rotate-90': isExpanded }">▶</span>
@@ -18,14 +18,14 @@
     <div v-show="isExpanded" class="relative">
       <div class="absolute top-0 right-0 p-2 z-10">
         <button 
-          @click="copyCode" 
-          class="p-1.5 rounded-md bg-surface/80 border border-border text-text-secondary hover:text-text-primary hover:bg-surface transition-all shadow-sm opacity-0 group-hover:opacity-100 focus:opacity-100"
+          class="p-1.5 rounded-md bg-surface/80 border border-border text-text-secondary hover:text-text-primary hover:bg-surface transition-all shadow-sm opacity-0 group-hover:opacity-100 focus:opacity-100" 
           :title="copied ? 'Copied!' : 'Copy to clipboard'"
+          @click="copyCode"
         >
           <span v-if="copied" class="text-success text-xs font-bold px-1">✓ Copied</span>
           <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
           </svg>
         </button>
       </div>
