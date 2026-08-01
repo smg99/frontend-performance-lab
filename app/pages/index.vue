@@ -5,6 +5,7 @@
     <FeaturedContent />
     <CallToAction />
     <SiteFooter />
+  </div>
 </template>
 
 <script setup lang="ts">
