@@ -2,15 +2,28 @@
   <div class="recipes-page">
     <header class="page-header">
       <h1>Performance Recipes</h1>
-      <p>Real-world frontend problems, diagnosed and solved. Architectural guidance for large-scale applications.</p>
+      <p>
+        Real-world frontend problems, diagnosed and solved. Architectural guidance for large-scale
+        applications.
+      </p>
     </header>
 
     <div class="filters">
-      <input type="text" v-model="searchQuery" placeholder="Search Recipes (e.g., 'slow table', 'infinite scroll')..." class="search-box" />
+      <input
+        v-model="searchQuery"
+        type="text"
+        placeholder="Search Recipes (e.g., 'slow table', 'infinite scroll')..."
+        class="search-box"
+      />
     </div>
 
     <div class="recipe-grid">
-      <NuxtLink v-for="recipe in filteredRecipes" :key="recipe.id" :to="`/recipes/${recipe.id}`" class="recipe-card">
+      <NuxtLink
+        v-for="recipe in filteredRecipes"
+        :key="recipe.id"
+        :to="`/recipes/${recipe.id}`"
+        class="recipe-card"
+      >
         <div class="recipe-header">
           <h2>{{ recipe.title }}</h2>
         </div>
@@ -22,7 +35,9 @@
           </ul>
         </div>
         <div class="meta">
-          <span class="difficulty" :class="recipe.difficulty.toLowerCase()">{{ recipe.difficulty }}</span>
+          <span class="difficulty" :class="recipe.difficulty.toLowerCase()">{{
+            recipe.difficulty
+          }}</span>
           <span class="time-estimate">⏱ {{ recipe.estimatedImplementationTime }}</span>
         </div>
       </NuxtLink>
@@ -46,7 +61,7 @@ const filteredRecipes = computed(() => {
     query: searchQuery.value,
     type: 'recipe'
   })
-  
+
   return results.map(r => r.item)
 })
 </script>
@@ -85,11 +100,13 @@ const filteredRecipes = computed(() => {
   padding: 1.5rem;
   text-decoration: none;
   color: inherit;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 .recipe-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   border-color: var(--primary-color, #646cff);
 }
 .recipe-header {
@@ -105,7 +122,7 @@ const filteredRecipes = computed(() => {
   margin-bottom: 1rem;
 }
 .symptoms {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
@@ -127,11 +144,17 @@ const filteredRecipes = computed(() => {
   font-weight: 600;
   padding: 0.2rem 0.6rem;
   border-radius: 4px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
-.difficulty.beginner { color: #4ade80; }
-.difficulty.intermediate { color: #facc15; }
-.difficulty.advanced { color: #f87171; }
+.difficulty.beginner {
+  color: #4ade80;
+}
+.difficulty.intermediate {
+  color: #facc15;
+}
+.difficulty.advanced {
+  color: #f87171;
+}
 .time-estimate {
   color: #9ca3af;
 }

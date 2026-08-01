@@ -9,9 +9,9 @@
         {{ issue.severity }}
       </span>
     </div>
-    
+
     <p class="text-sm text-text-secondary mb-4">{{ issue.description }}</p>
-    
+
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
       <div class="bg-card border border-border p-3 rounded text-sm">
         <span class="block font-bold text-danger mb-1">Impact</span>
@@ -24,10 +24,13 @@
     </div>
 
     <!-- Tie back to knowledge base -->
-    <div v-if="issue.relatedExperimentIds?.length" class="mt-4 pt-4 border-t border-border flex items-center gap-3">
+    <div
+      v-if="issue.relatedExperimentIds?.length"
+      class="mt-4 pt-4 border-t border-border flex items-center gap-3"
+    >
       <span class="text-xs text-text-secondary">Learn more:</span>
-      <NuxtLink 
-        v-for="expId in issue.relatedExperimentIds" 
+      <NuxtLink
+        v-for="expId in issue.relatedExperimentIds"
         :key="expId"
         :to="`/experiments/${expId}`"
         class="text-xs text-primary hover:underline bg-primary/10 px-2 py-1 rounded"
@@ -40,7 +43,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { Issue } from '~/../shared/schemas/analyzer'
+import type { Issue } from '@schemas/analyzer'
 
 const props = defineProps<{ issue: Issue }>()
 

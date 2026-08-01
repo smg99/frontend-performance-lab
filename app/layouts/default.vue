@@ -1,88 +1,202 @@
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { useMagicKeys } from '@vueuse/core'
+import {
+  GithubIcon,
+  MoonIcon,
+  SunIcon,
+  SearchIcon,
+  BeakerIcon,
+  ZapIcon,
+  LightbulbIcon,
+  HomeIcon
+} from 'lucide-vue-next'
+import CommandPalette from '../components/patterns/CommandPalette.vue'
+
+const route = useRoute()
+const isDark = ref(false)
+const cmdkOpen = ref(false)
+
+const toggleTheme = () => {
+  if (import.meta.client) {
+    isDark.value = !document.documentElement.classList.contains('dark')
+    document.documentElement.classList.toggle('dark', isDark.value)
+  }
+}
+
+// Open Command Palette on Cmd+K
+const { meta, k } = useMagicKeys()
+watch([meta, k], ([m, k]) => {
+  if (m && k) {
+    cmdkOpen.value = true
+  }
+})
+
+// Generate Breadcrumbs based on route
+const breadcrumbs = computed(() => {
+  const path = route.path
+  if (path === '/') return []
+
+  const segments = path.split('/').filter(Boolean)
+  return segments.map((segment, index) => {
+    return {
+      label: segment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+      href: '/' + segments.slice(0, index + 1).join('/')
+    }
+  })
+})
+</script>
+
 <template>
-  <div class="min-h-screen flex w-full bg-background">
+  <div
+    class="min-h-screen flex w-full bg-background-base text-foreground-primary selection:bg-primary selection:text-primary-foreground"
+  >
     <!-- Sidebar -->
-    <aside class="w-64 flex-shrink-0 border-r border-border bg-surface flex flex-col hidden md:flex">
-      <div class="h-16 flex items-center px-6 border-b border-border">
-        <h1 class="font-bold text-lg text-primary tracking-tight">Performance Lab</h1>
+    <aside
+      class="w-64 lg:w-72 flex-shrink-0 border-r border-border-subtle bg-background-surface flex-col hidden md:flex sticky top-0 h-screen overflow-y-auto"
+    >
+      <div class="h-16 flex items-center px-6 border-b border-border-subtle shrink-0">
+        <h1 class="font-bold text-lg tracking-tight">Performance Lab</h1>
       </div>
-      <nav class="flex-1 overflow-y-auto py-4">
-        <ul class="space-y-1 px-3">
-          <li>
-            <NuxtLink to="/" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-border/50 text-text-secondary hover:text-text-primary" active-class="bg-border text-text-primary">
-              Dashboard
-            </NuxtLink>
-          </li>
-          <li>
-            <NuxtLink to="/about" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-border/50 text-text-secondary hover:text-text-primary" active-class="bg-border text-text-primary">
-              About
-            </NuxtLink>
-          </li>
-          <li class="pt-4 pb-2 px-3">
-            <span class="text-xs font-semibold uppercase tracking-wider text-text-secondary">Experiments</span>
-          </li>
-          <li>
-            <NuxtLink to="/experiments/virtualization" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-border/50 text-text-secondary hover:text-text-primary" active-class="bg-border text-text-primary">
-              Rendering Virtualization
-            </NuxtLink>
-          </li>
-          <li>
-            <NuxtLink to="/experiments/reactivity" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-border/50 text-text-secondary hover:text-text-primary" active-class="bg-border text-text-primary">
-              Reactivity Visualizer
-            </NuxtLink>
-          </li>
-          <li>
-            <NuxtLink to="/experiments/concurrency" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-border/50 text-text-secondary hover:text-text-primary" active-class="bg-border text-text-primary">
-              Event Loop & Concurrency
-            </NuxtLink>
-          </li>
-          <li>
-            <NuxtLink to="/experiments/rendering" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-border/50 text-text-secondary hover:text-text-primary" active-class="bg-border text-text-primary">
-              Rendering & Layout Thrashing
-            </NuxtLink>
-          </li>
-          <li>
-            <NuxtLink to="/experiments/memory-vitals" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-border/50 text-text-secondary hover:text-text-primary" active-class="bg-border text-text-primary">
-              Memory & Core Web Vitals
-            </NuxtLink>
-          </li>
-          <!-- More experiments will go here -->
-        </ul>
+
+      <nav class="flex-1 py-6 px-4 space-y-8">
+        <div>
+          <ul class="space-y-1">
+            <li>
+              <NuxtLink
+                to="/"
+                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-foreground-muted hover:text-foreground-primary hover:bg-background-hover"
+                active-class="bg-background-hover text-foreground-primary font-semibold"
+              >
+                <HomeIcon class="w-4 h-4" />
+                Dashboard
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/search"
+                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-foreground-muted hover:text-foreground-primary hover:bg-background-hover"
+                active-class="bg-background-hover text-foreground-primary font-semibold"
+              >
+                <SearchIcon class="w-4 h-4" />
+                Search
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h3
+            class="px-3 text-xs font-semibold text-foreground-muted uppercase tracking-wider mb-2"
+          >
+            Knowledge Graph
+          </h3>
+          <ul class="space-y-1">
+            <li>
+              <NuxtLink
+                to="/experiments/virtualization"
+                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-foreground-muted hover:text-foreground-primary hover:bg-background-hover"
+                active-class="bg-background-hover text-foreground-primary font-semibold"
+              >
+                <BeakerIcon class="w-4 h-4" />
+                Experiments
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/browser-apis/request-animation-frame"
+                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-foreground-muted hover:text-foreground-primary hover:bg-background-hover"
+                active-class="bg-background-hover text-foreground-primary font-semibold"
+              >
+                <ZapIcon class="w-4 h-4" />
+                Browser APIs
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
+                to="/recipes/large-data-table"
+                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-foreground-muted hover:text-foreground-primary hover:bg-background-hover"
+                active-class="bg-background-hover text-foreground-primary font-semibold"
+              >
+                <LightbulbIcon class="w-4 h-4" />
+                Recipes
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
       </nav>
-      <div class="p-4 border-t border-border">
-        <button class="w-full flex items-center justify-center px-4 py-2 border border-border rounded-lg shadow-subtle hover:bg-border/50 transition-colors text-sm font-medium" @click="toggleTheme">
-          Toggle Theme
+
+      <!-- Sidebar Footer -->
+      <div class="p-4 border-t border-border-subtle shrink-0">
+        <button
+          class="w-full flex items-center justify-between px-3 py-2 rounded-lg border border-border-strong bg-background-base text-sm text-foreground-muted hover:text-foreground-primary transition-colors shadow-sm focus-ring"
+          @click="cmdkOpen = true"
+        >
+          <span class="flex items-center gap-2"><SearchIcon class="w-4 h-4" /> Search</span>
+          <kbd
+            class="px-1.5 py-0.5 rounded border border-border-subtle text-[10px] font-mono bg-background-surface shrink-0"
+            >⌘K</kbd
+          >
         </button>
       </div>
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
-      <!-- Header for mobile / extra tools -->
-      <header class="h-16 border-b border-border bg-surface/80 backdrop-blur-md flex items-center px-6 md:px-8 shrink-0">
-        <div class="flex-1"/>
-        <div class="flex items-center space-x-4">
-          <a href="https://github.com" target="_blank" class="text-text-secondary hover:text-text-primary transition-colors">
-            GitHub
+    <main class="flex-1 flex flex-col min-w-0 min-h-screen">
+      <!-- Top Bar -->
+      <header
+        class="h-16 border-b border-border-subtle bg-background-surface/80 backdrop-blur-md flex items-center justify-between px-4 sm:px-6 lg:px-8 shrink-0 sticky top-0 z-30"
+      >
+        <!-- Breadcrumbs -->
+        <div class="flex items-center gap-2 text-sm text-foreground-muted">
+          <NuxtLink to="/" class="hover:text-foreground-primary transition-colors">Home</NuxtLink>
+          <template v-for="(crumb, index) in breadcrumbs" :key="crumb.href">
+            <span class="text-border-strong">/</span>
+            <NuxtLink
+              :to="crumb.href"
+              :class="[
+                'hover:text-foreground-primary transition-colors truncate max-w-[150px] sm:max-w-xs',
+                index === breadcrumbs.length - 1 ? 'text-foreground-primary font-medium' : ''
+              ]"
+            >
+              {{ crumb.label }}
+            </NuxtLink>
+          </template>
+        </div>
+
+        <div class="flex items-center gap-3 sm:gap-4">
+          <NuxtLink
+            to="/tools/performance-review"
+            class="hidden sm:inline-flex items-center justify-center h-8 px-3 text-xs font-medium bg-primary text-primary-foreground rounded-md shadow-sm hover:bg-primary-hover transition-colors"
+          >
+            Quick Analyze
+          </NuxtLink>
+
+          <button
+            class="p-2 text-foreground-muted hover:text-foreground-primary hover:bg-background-hover rounded-full transition-colors focus-ring"
+            @click="toggleTheme"
+          >
+            <MoonIcon v-if="!isDark" class="w-5 h-5" />
+            <SunIcon v-else class="w-5 h-5" />
+          </button>
+
+          <a
+            href="https://github.com/smg99/frontend-performance-lab"
+            target="_blank"
+            class="p-2 text-foreground-muted hover:text-foreground-primary hover:bg-background-hover rounded-full transition-colors focus-ring"
+          >
+            <GithubIcon class="w-5 h-5" />
           </a>
         </div>
       </header>
-      
+
       <!-- Page Content -->
-      <div class="flex-1 overflow-y-auto p-6 md:p-8">
-        <div class="max-w-6xl mx-auto">
-          <slot />
-        </div>
+      <div class="flex-1 w-full max-w-7xl mx-auto">
+        <slot />
       </div>
     </main>
+
+    <CommandPalette v-model:open="cmdkOpen" />
   </div>
 </template>
-
-<script setup lang="ts">
-// Theme logic relies on root class toggling
-
-const toggleTheme = () => {
-  if (import.meta.client) {
-    document.documentElement.classList.toggle('dark')
-  }
-}
-</script>

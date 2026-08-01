@@ -1,14 +1,21 @@
 <template>
-  <div class="max-w-4xl mx-auto pb-12">
-    <div class="bg-card border border-border rounded-xl shadow-subtle overflow-hidden">
-      <div class="p-8 md:p-12 markdown-body" v-html="htmlContent"></div>
-    </div>
-  </div>
+  <Container class="py-8 max-w-4xl">
+    <PageHeader
+      title="About"
+      description="The architecture and philosophy behind the Frontend Performance Lab."
+    />
+    <Card class="overflow-hidden">
+      <div class="p-8 md:p-12 markdown-body bg-background-base" v-html="htmlContent" />
+    </Card>
+  </Container>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { marked } from 'marked'
+import Container from '../components/layout/Container.vue'
+import PageHeader from '../components/patterns/PageHeader.vue'
+import Card from '../components/ui/Card.vue'
 import rawReadme from '~/../README.md?raw'
 
 useHead({
@@ -27,22 +34,44 @@ const htmlContent = computed(() => {
   color: var(--color-text-secondary);
   line-height: 1.6;
 }
-.markdown-body h1, 
-.markdown-body h2, 
+.markdown-body h1,
+.markdown-body h2,
 .markdown-body h3 {
   color: var(--color-text-primary);
   font-weight: 700;
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
-.markdown-body h1 { font-size: 2.25rem; text-align: center; }
-.markdown-body h2 { font-size: 1.5rem; padding-bottom: 0.3rem; border-bottom: 1px solid var(--color-border); }
-.markdown-body h3 { font-size: 1.25rem; }
-.markdown-body p { margin-bottom: 1rem; }
-.markdown-body a { color: var(--color-primary); text-decoration: none; }
-.markdown-body a:hover { text-decoration: underline; }
-.markdown-body ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
-.markdown-body li { margin-bottom: 0.5rem; }
+.markdown-body h1 {
+  font-size: 2.25rem;
+  text-align: center;
+}
+.markdown-body h2 {
+  font-size: 1.5rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--color-border);
+}
+.markdown-body h3 {
+  font-size: 1.25rem;
+}
+.markdown-body p {
+  margin-bottom: 1rem;
+}
+.markdown-body a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+.markdown-body a:hover {
+  text-decoration: underline;
+}
+.markdown-body ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.markdown-body li {
+  margin-bottom: 0.5rem;
+}
 .markdown-body blockquote {
   border-left: 4px solid var(--color-primary);
   padding-left: 1rem;

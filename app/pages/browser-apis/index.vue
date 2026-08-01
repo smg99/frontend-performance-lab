@@ -2,15 +2,28 @@
   <div class="browser-apis-page">
     <header class="page-header">
       <h1>Browser API Knowledge Graph</h1>
-      <p>Master the platform. Understand the deeply integrated native APIs that power high-performance web applications.</p>
+      <p>
+        Master the platform. Understand the deeply integrated native APIs that power
+        high-performance web applications.
+      </p>
     </header>
 
     <div class="filters">
-      <input type="text" v-model="searchQuery" placeholder="Search Browser APIs (e.g., 'virtual scrolling', 'layout thrashing')..." class="search-box" />
+      <input
+        v-model="searchQuery"
+        type="text"
+        placeholder="Search Browser APIs (e.g., 'virtual scrolling', 'layout thrashing')..."
+        class="search-box"
+      />
     </div>
 
     <div class="api-grid">
-      <NuxtLink v-for="api in filteredApis" :key="api.id" :to="`/browser-apis/${api.id}`" class="api-card">
+      <NuxtLink
+        v-for="api in filteredApis"
+        :key="api.id"
+        :to="`/browser-apis/${api.id}`"
+        class="api-card"
+      >
         <div class="api-header">
           <h2>{{ api.name }}</h2>
           <span class="category-badge">{{ api.category }}</span>
@@ -18,7 +31,9 @@
         <p class="description">{{ api.description }}</p>
         <div class="meta">
           <span class="difficulty" :class="api.difficulty.toLowerCase()">{{ api.difficulty }}</span>
-          <span class="performance-impact" :class="api.performanceImpact.toLowerCase()">Impact: {{ api.performanceImpact }}</span>
+          <span class="performance-impact" :class="api.performanceImpact.toLowerCase()"
+            >Impact: {{ api.performanceImpact }}</span
+          >
         </div>
       </NuxtLink>
     </div>
@@ -41,7 +56,7 @@ const filteredApis = computed(() => {
     query: searchQuery.value,
     type: 'browser-api'
   })
-  
+
   return results.map(r => r.item)
 })
 </script>
@@ -80,11 +95,13 @@ const filteredApis = computed(() => {
   padding: 1.5rem;
   text-decoration: none;
   color: inherit;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 .api-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   border-color: var(--primary-color, #646cff);
 }
 .api-header {
@@ -118,7 +135,13 @@ const filteredApis = computed(() => {
 .difficulty {
   font-weight: 600;
 }
-.difficulty.beginner { color: #4ade80; }
-.difficulty.intermediate { color: #facc15; }
-.difficulty.advanced { color: #f87171; }
+.difficulty.beginner {
+  color: #4ade80;
+}
+.difficulty.intermediate {
+  color: #facc15;
+}
+.difficulty.advanced {
+  color: #f87171;
+}
 </style>

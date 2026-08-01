@@ -1,0 +1,3 @@
+echo "Running Pre-commit hooks..."
+npx lint-staged
+npm run typecheck

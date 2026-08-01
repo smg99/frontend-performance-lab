@@ -1,257 +1,224 @@
-<template>
-  <div class="recipe-detail-page" v-if="recipe">
-    <header class="header">
-      <div class="breadcrumb">
-        <NuxtLink to="/recipes">← Back to Recipes</NuxtLink>
-      </div>
-      <h1>{{ recipe.title }}</h1>
-      <p class="summary">{{ recipe.summary }}</p>
-      
-      <div class="metadata-tags">
-        <span class="tag difficulty" :class="recipe.difficulty.toLowerCase()">{{ recipe.difficulty }}</span>
-        <span class="tag time">⏱ {{ recipe.estimatedImplementationTime }}</span>
-        <span class="tag impact" :class="recipe.performanceImpact.toLowerCase()">Impact: {{ recipe.performanceImpact }}</span>
-      </div>
-    </header>
-
-    <div class="content-grid">
-      <div class="main-content">
-        <!-- Problem Space -->
-        <section class="card">
-          <h2>The Problem</h2>
-          <p>{{ recipe.problem }}</p>
-          
-          <h3>Common Symptoms</h3>
-          <ul>
-            <li v-for="symptom in recipe.symptoms" :key="symptom">{{ symptom }}</li>
-          </ul>
-
-          <h3>Root Causes</h3>
-          <ul>
-            <li v-for="cause in recipe.rootCauses" :key="cause">{{ cause }}</li>
-          </ul>
-        </section>
-        
-        <!-- Decision Matrix -->
-        <section class="card">
-          <h2>Decision Matrix</h2>
-          <p class="subtitle">Architectural decision guidance for different scenarios.</p>
-          <div v-for="(matrix, i) in recipe.decisionMatrix" :key="i" class="matrix-block">
-            <h4>Scenario: {{ matrix.scenario }}</h4>
-            <div class="matrix-details">
-              <div><strong>Recommended:</strong> <span class="highlight">{{ matrix.recommendedApproach }}</span></div>
-              <div><strong>Alternatives:</strong> {{ matrix.alternatives.join(', ') }}</div>
-              <p><strong>Trade-offs:</strong> {{ matrix.tradeoffs }}</p>
-              <p><strong>Why:</strong> {{ matrix.why }}</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- When NOT to Use -->
-        <section class="card danger-card" v-if="recipe.whenNotToUse && recipe.whenNotToUse.length">
-          <h2>When NOT To Use</h2>
-          <ul class="cross-list">
-            <li v-for="item in recipe.whenNotToUse" :key="item">{{ item }}</li>
-          </ul>
-        </section>
-
-        <!-- Approaches -->
-        <section class="card">
-          <h2>Approaches</h2>
-          <div class="split-view">
-            <div>
-              <h3>Recommended</h3>
-              <ul class="check-list">
-                <li v-for="app in recipe.recommendedApproaches" :key="app">{{ app }}</li>
-              </ul>
-            </div>
-            <div>
-              <h3>Avoid</h3>
-              <ul class="cross-list">
-                <li v-for="app in recipe.approachesToAvoid" :key="app">{{ app }}</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <!-- Before/After -->
-        <section class="card" v-if="recipe.beforeAfterComparison">
-          <h2>Code Comparison</h2>
-          <p>{{ recipe.beforeAfterComparison.explanation }}</p>
-          <div class="split-view code-split">
-            <div>
-              <h3>Before (Bad)</h3>
-              <pre><code>{{ recipe.beforeAfterComparison.beforeCode }}</code></pre>
-            </div>
-            <div>
-              <h3>After (Good)</h3>
-              <pre><code>{{ recipe.beforeAfterComparison.afterCode }}</code></pre>
-            </div>
-          </div>
-        </section>
-
-      </div>
-
-      <aside class="sidebar">
-        <!-- Prerequisites -->
-        <div class="sidebar-card">
-          <h3>Prerequisites</h3>
-          
-          <div v-if="recipe.prerequisites.concepts.length" class="prereq-group">
-            <strong>Concepts</strong>
-            <ul><li v-for="c in recipe.prerequisites.concepts" :key="c">{{ c }}</li></ul>
-          </div>
-          
-          <div v-if="recipe.prerequisites.browserAPIs.length" class="prereq-group">
-            <strong>Browser APIs</strong>
-            <ul>
-              <li v-for="api in recipe.prerequisites.browserAPIs" :key="api">
-                <NuxtLink :to="`/browser-apis/${api}`">{{ api }}</NuxtLink>
-              </li>
-            </ul>
-          </div>
-          
-          <div v-if="recipe.prerequisites.experiments.length" class="prereq-group">
-            <strong>Lab Experiments</strong>
-            <ul>
-              <li v-for="exp in recipe.prerequisites.experiments" :key="exp">
-                <NuxtLink :to="`/experiments/${exp}`">{{ exp }}</NuxtLink>
-              </li>
-            </ul>
-          </div>
-        </div>
-        
-        <!-- Checklist -->
-        <div class="sidebar-card highlight-card">
-          <h3>Production Checklist</h3>
-          <ul class="check-list">
-            <li v-for="item in recipe.productionChecklist" :key="item">{{ item }}</li>
-          </ul>
-        </div>
-        
-        <!-- Mistakes -->
-        <div class="sidebar-card danger-card">
-          <h3>Common Mistakes</h3>
-          <ul class="cross-list">
-            <li v-for="mistake in recipe.commonMistakes" :key="mistake">{{ mistake }}</li>
-          </ul>
-        </div>
-
-        <div class="sidebar-card" v-if="recipe.references.length">
-          <h3>References</h3>
-          <ul class="link-list">
-            <li v-for="ref in recipe.references" :key="ref.url">
-              <a :href="ref.url" target="_blank" rel="noopener">{{ ref.title }}</a>
-            </li>
-          </ul>
-        </div>
-      </aside>
-    </div>
-  </div>
-  <div v-else>
-    <h1>Recipe Not Found</h1>
-    <NuxtLink to="/recipes">Return to Recipes Library</NuxtLink>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { getRecipe } from '@shared/registry/recipes'
+import { getRecipe } from '@registry/recipes'
+import Container from '../../components/layout/Container.vue'
+import SplitView from '../../components/layout/SplitView.vue'
+import PageHeader from '../../components/patterns/PageHeader.vue'
+import Card from '../../components/ui/Card.vue'
+import Badge from '../../components/ui/Badge.vue'
+import Callout from '../../components/patterns/Callout.vue'
+import RelatedKnowledge from '../../components/patterns/RelatedKnowledge.vue'
+import { CheckIcon, XIcon, ClockIcon } from 'lucide-vue-next'
 
 const route = useRoute()
 const id = route.params.id as string
 const recipe = getRecipe(id)
 </script>
 
-<style scoped>
-.recipe-detail-page {
-  padding: 2rem;
-  max-width: 1500px;
-  margin: 0 auto;
-}
-.header { margin-bottom: 2rem; }
-.breadcrumb { margin-bottom: 1rem; }
-.breadcrumb a { color: var(--primary-color, #646cff); text-decoration: none; }
-.summary { font-size: 1.2rem; color: var(--text-secondary, #aaa); }
+<template>
+  <Container v-if="recipe" class="py-8">
+    <PageHeader :title="recipe.title" :description="recipe.summary">
+      <template #actions>
+        <Badge
+          :variant="
+            recipe.difficulty === 'Beginner'
+              ? 'success'
+              : recipe.difficulty === 'Intermediate'
+                ? 'warning'
+                : 'danger'
+          "
+        >
+          {{ recipe.difficulty }}
+        </Badge>
+        <Badge variant="outline" class="flex items-center gap-1">
+          <ClockIcon class="w-3 h-3" /> {{ recipe.estimatedImplementationTime }}
+        </Badge>
+        <Badge variant="default">Impact: {{ recipe.performanceImpact }}</Badge>
+      </template>
+    </PageHeader>
 
-.metadata-tags {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-  flex-wrap: wrap;
-}
-.tag {
-  padding: 0.3rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  background: var(--bg-surface, #1e1e1e);
-  border: 1px solid var(--border-color, #333);
-}
-.tag.difficulty.beginner { color: #4ade80; border-color: #4ade80; }
-.tag.difficulty.intermediate { color: #facc15; border-color: #facc15; }
-.tag.difficulty.advanced { color: #f87171; border-color: #f87171; }
-.tag.impact { color: #a5b4fc; border-color: #646cff; }
+    <SplitView sidebar-position="right" sidebar-width="md">
+      <template #default>
+        <div class="space-y-8">
+          <Card class="p-6 md:p-8">
+            <h2 class="text-xl font-bold mb-4">The Problem</h2>
+            <p class="text-foreground-muted mb-6 leading-relaxed">{{ recipe.problem }}</p>
 
-.content-grid {
-  display: grid;
-  grid-template-columns: 2.5fr 1fr;
-  gap: 2rem;
-}
-@media (max-width: 1000px) {
-  .content-grid { grid-template-columns: 1fr; }
-}
+            <div class="grid sm:grid-cols-2 gap-6">
+              <div>
+                <h3 class="font-semibold mb-3">Common Symptoms</h3>
+                <ul class="space-y-2">
+                  <li
+                    v-for="symptom in recipe.symptoms"
+                    :key="symptom"
+                    class="flex items-start gap-2 text-sm text-foreground-muted"
+                  >
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
+                    {{ symptom }}
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="font-semibold mb-3">Root Causes</h3>
+                <ul class="space-y-2">
+                  <li
+                    v-for="cause in recipe.rootCauses"
+                    :key="cause"
+                    class="flex items-start gap-2 text-sm text-foreground-muted"
+                  >
+                    <span class="w-1.5 h-1.5 rounded-full bg-danger mt-1.5 shrink-0" />
+                    {{ cause }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </Card>
 
-.card, .sidebar-card {
-  background: var(--bg-surface, #1e1e1e);
-  border: 1px solid var(--border-color, #333);
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-.danger-card { border-color: #7f1d1d; background: rgba(127, 29, 29, 0.05); }
-.highlight-card { border-color: #3b82f6; background: rgba(59, 130, 246, 0.05); }
+          <Card class="p-6 md:p-8">
+            <h2 class="text-xl font-bold mb-2">Decision Matrix</h2>
+            <p class="text-foreground-muted text-sm mb-6">
+              Architectural decision guidance for different scenarios.
+            </p>
 
-.subtitle { color: var(--text-secondary, #aaa); font-style: italic; }
+            <div class="space-y-6">
+              <div
+                v-for="(matrix, i) in recipe.decisionMatrix"
+                :key="i"
+                class="p-5 rounded-xl border border-primary/20 bg-primary/5"
+              >
+                <h4 class="font-semibold text-lg mb-4 text-foreground-primary">
+                  Scenario: {{ matrix.scenario }}
+                </h4>
+                <div class="space-y-3 text-sm">
+                  <div class="flex gap-2">
+                    <strong class="shrink-0">Recommended:</strong>
+                    <span class="text-success font-medium">{{ matrix.recommendedApproach }}</span>
+                  </div>
+                  <div class="flex gap-2">
+                    <strong class="shrink-0 text-foreground-muted">Alternatives:</strong>
+                    <span class="text-foreground-muted">{{ matrix.alternatives.join(', ') }}</span>
+                  </div>
+                  <p class="text-foreground-muted mt-2">
+                    <strong class="text-foreground-primary">Trade-offs:</strong>
+                    {{ matrix.tradeoffs }}
+                  </p>
+                  <p class="text-foreground-muted">
+                    <strong class="text-foreground-primary">Why:</strong> {{ matrix.why }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Card>
 
-.matrix-block {
-  background: rgba(255,255,255,0.03);
-  border-left: 4px solid var(--primary-color, #646cff);
-  padding: 1.5rem;
-  border-radius: 0 8px 8px 0;
-  margin-bottom: 1.5rem;
-}
-.matrix-block h4 { margin-top: 0; font-size: 1.1rem; }
-.highlight { color: #4ade80; font-weight: bold; }
+          <Callout
+            v-if="recipe.whenNotToUse && recipe.whenNotToUse.length"
+            variant="danger"
+            title="When NOT To Use"
+          >
+            <ul class="mt-2 space-y-2">
+              <li
+                v-for="item in recipe.whenNotToUse"
+                :key="item"
+                class="flex items-start gap-2 text-sm"
+              >
+                <XIcon class="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{{ item }}</span>
+              </li>
+            </ul>
+          </Callout>
 
-.split-view {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-}
-.code-split { gap: 1rem; }
+          <Card class="p-6 md:p-8">
+            <h2 class="text-xl font-bold mb-6">Approaches</h2>
+            <div class="grid sm:grid-cols-2 gap-8">
+              <div>
+                <h3 class="font-semibold mb-4 text-success flex items-center gap-2">
+                  <CheckIcon class="w-5 h-5" /> Recommended
+                </h3>
+                <ul class="space-y-3">
+                  <li
+                    v-for="app in recipe.recommendedApproaches"
+                    :key="app"
+                    class="text-sm text-foreground-muted leading-relaxed"
+                  >
+                    {{ app }}
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="font-semibold mb-4 text-danger flex items-center gap-2">
+                  <XIcon class="w-5 h-5" /> Avoid
+                </h3>
+                <ul class="space-y-3">
+                  <li
+                    v-for="app in recipe.approachesToAvoid"
+                    :key="app"
+                    class="text-sm text-foreground-muted leading-relaxed"
+                  >
+                    {{ app }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </template>
 
-ul.check-list li, ul.cross-list li {
-  list-style: none;
-  position: relative;
-  padding-left: 1.5rem;
-  margin-bottom: 0.75rem;
-}
-ul.check-list li::before { content: '✓'; position: absolute; left: 0; color: #4ade80; }
-ul.cross-list li::before { content: '✗'; position: absolute; left: 0; color: #f87171; }
+      <template #sidebar>
+        <div class="space-y-6">
+          <Card class="p-5">
+            <h3 class="font-bold mb-4">Production Checklist</h3>
+            <ul class="space-y-3">
+              <li
+                v-for="item in recipe.productionChecklist"
+                :key="item"
+                class="flex items-start gap-2 text-sm text-foreground-muted"
+              >
+                <CheckIcon class="w-4 h-4 text-success shrink-0 mt-0.5" />
+                {{ item }}
+              </li>
+            </ul>
+          </Card>
 
-pre {
-  background: #000;
-  padding: 1rem;
-  border-radius: 8px;
-  overflow-x: auto;
-  font-size: 0.85rem;
-  border: 1px solid #333;
-}
+          <Card class="p-5 border-danger-border bg-danger-bg/30">
+            <h3 class="font-bold mb-4 text-danger">Common Mistakes</h3>
+            <ul class="space-y-3">
+              <li
+                v-for="mistake in recipe.commonMistakes"
+                :key="mistake"
+                class="flex items-start gap-2 text-sm text-foreground-muted"
+              >
+                <XIcon class="w-4 h-4 text-danger shrink-0 mt-0.5" />
+                {{ mistake }}
+              </li>
+            </ul>
+          </Card>
 
-.prereq-group { margin-bottom: 1.25rem; }
-.prereq-group ul { padding-left: 1.2rem; margin-top: 0.5rem; font-size: 0.9rem; }
-.prereq-group a { color: var(--primary-color, #646cff); text-decoration: none; }
-.link-list li { margin-bottom: 0.75rem; }
-.link-list a { color: var(--primary-color, #646cff); text-decoration: none; }
-</style>
+          <Card v-if="recipe.references.length" class="p-5">
+            <h3 class="font-bold mb-3">References</h3>
+            <ul class="space-y-2">
+              <li v-for="ref in recipe.references" :key="ref.url">
+                <a
+                  :href="ref.url"
+                  target="_blank"
+                  rel="noopener"
+                  class="text-sm text-primary hover:underline"
+                >
+                  {{ ref.title }}
+                </a>
+              </li>
+            </ul>
+          </Card>
+        </div>
+      </template>
+    </SplitView>
+
+    <RelatedKnowledge :entity-id="id" entity-type="recipe" />
+  </Container>
+
+  <Container v-else class="py-24 text-center">
+    <h1 class="text-2xl font-bold mb-4">Recipe Not Found</h1>
+    <NuxtLink to="/recipes" class="text-primary hover:underline"
+      >Return to Recipes Library</NuxtLink
+    >
+  </Container>
+</template>

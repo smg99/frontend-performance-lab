@@ -17,16 +17,26 @@
     "test:e2e:ui": "playwright test --ui",
     "lint": "eslint .",
     "typecheck": "vue-tsc --noEmit",
-    "mcp:start": "tsx mcp/server.ts"
+    "mcp:start": "tsx mcp/server.ts",
+    "validate:mcp": "tsx scripts/validate-mcp.ts",
+    "validate:analyzer": "tsx scripts/validate-analyzer.ts",
+    "prepare": "husky"
   },
   "dependencies": {
     "@babel/parser": "^7.29.8",
     "@babel/traverse": "^7.29.8",
+    "@fontsource/geist-mono": "^5.3.0",
+    "@fontsource/geist-sans": "^5.3.0",
+    "@lucide/vue": "^1.28.0",
     "@modelcontextprotocol/sdk": "^1.30.0",
     "@types/babel__traverse": "^7.28.0",
     "@vue/compiler-sfc": "^3.5.40",
+    "clsx": "^2.1.1",
+    "lucide-vue-next": "^1.0.0",
     "marked": "^18.0.7",
     "nuxt": "^4.5.1",
+    "radix-vue": "^1.9.17",
+    "tailwind-merge": "^3.6.0",
     "vue": "^3.5.40",
     "vue-router": "^5.2.0",
     "zod": "^4.4.3"
@@ -45,15 +55,28 @@
     "@vueuse/nuxt": "^14.4.0",
     "autoprefixer": "^10.5.4",
     "chart.js": "^4.5.1",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "pinia": "^4.0.2",
     "playwright": "^1.62.1",
     "playwright-core": "^1.62.1",
     "postcss": "^8.5.25",
+    "prettier": "^3.9.6",
     "tailwindcss": "^3.4.19",
     "tsx": "^4.23.1",
     "typescript": "^6.0.3",
     "vitest": "^4.1.10",
     "vue-chartjs": "^5.3.4",
     "vue-tsc": "^3.3.9"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,css}": [
+      "prettier --write"
+    ]
   }
 }

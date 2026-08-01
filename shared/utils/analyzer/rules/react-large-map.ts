@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 import type { ASTRule, AnalyzerContext, Issue } from '../../../schemas/analyzer'
 import _traverse from '@babel/traverse'
 // Babel traverse needs to be accessed carefully depending on module format
@@ -17,7 +18,20 @@ export const reactLargeMap: ASTRule = {
   impact: 'High memory usage and main thread blocking during reconciliation.',
   fix: 'Implement a virtual list using react-window or react-virtualized.',
   visitor: (ast: any, context: AnalyzerContext) => {
-    const issues: Omit<Issue, 'id' | 'title' | 'description' | 'ruleId' | 'severity' | 'category' | 'impact' | 'fix' | 'relatedExperimentIds' | 'browserAPIs' | 'relatedRecipes'>[] = []
+    const issues: Omit<
+      Issue,
+      | 'id'
+      | 'title'
+      | 'description'
+      | 'ruleId'
+      | 'severity'
+      | 'category'
+      | 'impact'
+      | 'fix'
+      | 'relatedExperimentIds'
+      | 'browserAPIs'
+      | 'relatedRecipes'
+    >[] = []
     if (!ast) return []
 
     traverse(ast, {
@@ -29,9 +43,18 @@ export const reactLargeMap: ASTRule = {
         ) {
           // Check if it returns JSX
           const arg = path.node.arguments[0]
-          if (arg && (arg.type === 'ArrowFunctionExpression' || arg.type === 'FunctionExpression')) {
+          if (
+            arg &&
+            (arg.type === 'ArrowFunctionExpression' || arg.type === 'FunctionExpression')
+          ) {
             const body = arg.body
-            if (body.type === 'JSXElement' || (body.type === 'BlockStatement' && body.body.some((s:any) => s.type === 'ReturnStatement' && s.argument?.type === 'JSXElement'))) {
+            if (
+              body.type === 'JSXElement' ||
+              (body.type === 'BlockStatement' &&
+                body.body.some(
+                  (s: any) => s.type === 'ReturnStatement' && s.argument?.type === 'JSXElement'
+                ))
+            ) {
               issues.push({
                 lineNumbers: [path.node.loc.start.line]
               })

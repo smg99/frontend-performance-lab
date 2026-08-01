@@ -13,7 +13,7 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
   "issues": [
     {
       "browserAPIs": [
-        "requestAnimationFrame",
+        "request-animation-frame",
       ],
       "category": "Rendering",
       "description": "Interleaving DOM reads and writes forces synchronous layout recalculation.",
@@ -25,6 +25,9 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
       ],
       "relatedExperimentIds": [
         "rendering",
+      ],
+      "relatedRecipes": [
+        "dashboard-rendering",
       ],
       "ruleId": "dom-layout-thrashing",
       "severity": "Critical",
@@ -69,6 +72,7 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
       "relatedExperimentIds": [
         "memory-vitals",
       ],
+      "relatedRecipes": undefined,
       "ruleId": "memory-event-listener",
       "severity": "Critical",
       "title": "Global Event Listener Leak",
@@ -97,7 +101,9 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
   ],
   "issues": [
     {
-      "browserAPIs": [],
+      "browserAPIs": [
+        "intersection-observer",
+      ],
       "category": "Rendering",
       "description": "Mapping over large arrays to render JSX elements creates excessive DOM nodes.",
       "fix": "Implement a virtual list using react-window or react-virtualized.",
@@ -108,6 +114,11 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
       ],
       "relatedExperimentIds": [
         "virtualization",
+        "rendering",
+      ],
+      "relatedRecipes": [
+        "large-data-table",
+        "dashboard-rendering",
       ],
       "ruleId": "react-large-map",
       "severity": "Critical",
@@ -138,7 +149,7 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
   "issues": [
     {
       "browserAPIs": [
-        "IntersectionObserver",
+        "intersection-observer",
       ],
       "category": "Rendering",
       "description": "Rendering large lists directly into the DOM can cause severe layout and rendering bottlenecks.",
@@ -150,6 +161,11 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
       ],
       "relatedExperimentIds": [
         "virtualization",
+        "rendering",
+      ],
+      "relatedRecipes": [
+        "large-data-table",
+        "infinite-scroll",
       ],
       "ruleId": "vue-large-v-for",
       "severity": "Critical",

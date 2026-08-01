@@ -1,7 +1,11 @@
 <template>
-  <div class="bg-card border border-border rounded-xl p-6 shadow-subtle flex items-center justify-between">
+  <div
+    class="bg-card border border-border rounded-xl p-6 shadow-subtle flex items-center justify-between"
+  >
     <div>
-      <h3 class="text-sm text-text-secondary uppercase tracking-wider font-bold mb-1">Performance Score</h3>
+      <h3 class="text-sm text-text-secondary uppercase tracking-wider font-bold mb-1">
+        Performance Score
+      </h3>
       <div class="text-5xl font-black" :class="gradeColor">
         {{ score }}
       </div>
@@ -10,7 +14,7 @@
       <div v-for="(val, key) in metrics" :key="key" class="flex flex-col">
         <span class="text-text-secondary">{{ key }}</span>
         <div class="w-full bg-border rounded-full h-2 mt-1 overflow-hidden">
-          <div class="h-full bg-primary" :style="{ width: val + '%' }"></div>
+          <div class="h-full bg-primary" :style="{ width: val + '%' }" />
         </div>
       </div>
     </div>
@@ -19,7 +23,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { PerformanceScoreCategory, PerformanceMetrics } from '~/../shared/schemas/analyzer'
+import type { PerformanceScoreCategory, PerformanceMetrics } from '@schemas/analyzer'
 
 const props = defineProps<{
   score: PerformanceScoreCategory

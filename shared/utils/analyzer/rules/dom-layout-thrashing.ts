@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 import type { ASTRule, AnalyzerContext, Issue } from '../../../schemas/analyzer'
 import _traverse from '@babel/traverse'
 const traverse = typeof _traverse === 'function' ? _traverse : (_traverse as any).default
@@ -16,30 +17,46 @@ export const domLayoutThrashing: ASTRule = {
   impact: 'Forces synchronous reflows, killing frame rates (jank).',
   fix: 'Batch DOM reads together, and defer DOM writes using requestAnimationFrame.',
   visitor: (ast: any, context: AnalyzerContext) => {
-    const issues: Omit<Issue, 'id' | 'title' | 'description' | 'ruleId' | 'severity' | 'category' | 'impact' | 'fix' | 'relatedExperimentIds' | 'browserAPIs' | 'relatedRecipes'>[] = []
+    const issues: Omit<
+      Issue,
+      | 'id'
+      | 'title'
+      | 'description'
+      | 'ruleId'
+      | 'severity'
+      | 'category'
+      | 'impact'
+      | 'fix'
+      | 'relatedExperimentIds'
+      | 'browserAPIs'
+      | 'relatedRecipes'
+    >[] = []
     if (!ast) return []
 
     traverse(ast, {
       AssignmentExpression(path: any) {
-        let isStyle = false;
-        let c = path.node.left;
+        let isStyle = false
+        let c = path.node.left
         while (c && c.type === 'MemberExpression') {
           if (c.property && c.property.name === 'style') {
-            isStyle = true;
-            break;
+            isStyle = true
+            break
           }
-          c = c.object;
+          c = c.object
         }
         if (isStyle) {
           // Flag style assignments unless they are inside requestAnimationFrame
-          let inRaf = false;
-          let curr = path;
+          let inRaf = false
+          let curr = path
           while (curr) {
-            if (curr.node.type === 'CallExpression' && curr.node.callee.name === 'requestAnimationFrame') {
-              inRaf = true;
-              break;
+            if (
+              curr.node.type === 'CallExpression' &&
+              curr.node.callee.name === 'requestAnimationFrame'
+            ) {
+              inRaf = true
+              break
             }
-            curr = curr.parentPath;
+            curr = curr.parentPath
           }
           if (!inRaf) {
             issues.push({

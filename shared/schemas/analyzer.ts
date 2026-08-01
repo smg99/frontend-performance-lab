@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type PerformanceScoreCategory = 'A+' | 'A' | 'B' | 'C' | 'D' | 'F'
 export type Severity = 'Critical' | 'Warning' | 'Suggestion'
 export type RuleCategory = 'Rendering' | 'Memory' | 'CPU' | 'Network' | 'CWV'
@@ -69,5 +70,21 @@ export interface ASTRule {
   impact: string
   fix: string
   // The specific parser type will depend on the language, so we use any for the raw AST
-  visitor: (ast: any, context: AnalyzerContext) => Omit<Issue, 'id' | 'title' | 'description' | 'ruleId' | 'severity' | 'category' | 'impact' | 'fix' | 'relatedExperimentIds' | 'browserAPIs' | 'relatedRecipes'>[]
+  visitor: (
+    ast: any,
+    context: AnalyzerContext
+  ) => Omit<
+    Issue,
+    | 'id'
+    | 'title'
+    | 'description'
+    | 'ruleId'
+    | 'severity'
+    | 'category'
+    | 'impact'
+    | 'fix'
+    | 'relatedExperimentIds'
+    | 'browserAPIs'
+    | 'relatedRecipes'
+  >[]
 }

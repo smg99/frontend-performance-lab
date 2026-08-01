@@ -1,5 +1,5 @@
 import type { ExperimentManifest } from '@schemas/index'
-import { examples } from './examples'
+// import { examples } from './examples'
 import { references } from './references'
 import { benchmarks } from './benchmarks'
 

@@ -1,16 +1,19 @@
-import type { ExperimentManifest, Section, ExampleSectionContent, RecommendationSectionContent } from '@schemas/index'
+import type {
+  ExperimentManifest,
+  ExampleSectionContent,
+  RecommendationSectionContent
+} from '@schemas/index'
 import type { LearningSummaryData, CommonMistake } from '~/types/learning'
 
 /**
- * Temporary adapter to map the new framework-agnostic ExperimentManifest 
+ * Temporary adapter to map the new framework-agnostic ExperimentManifest
  * into the legacy LearningSummaryData format expected by the Vue UI components.
- * 
+ *
  * Future milestone: Refactor LearningSummaryCard.vue to natively iterate over `sections`.
  */
 export const mapManifestToLegacyData = (manifest: ExperimentManifest): LearningSummaryData => {
-  
   const getSectionContent = (id: string) => {
-    return manifest.sections.find(s => s.id === id)?.content as string || ''
+    return (manifest.sections.find(s => s.id === id)?.content as string) || ''
   }
 
   const getRecommendation = () => {
@@ -40,9 +43,7 @@ export const mapManifestToLegacyData = (manifest: ExperimentManifest): LearningS
   }
 
   const getInterviews = (): string[] => {
-    return manifest.sections
-      .filter(s => s.type === 'interview')
-      .map(s => s.content as string)
+    return manifest.sections.filter(s => s.type === 'interview').map(s => s.content as string)
   }
 
   const getTips = (): string[] => {

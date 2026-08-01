@@ -7,7 +7,7 @@ export default defineNuxtConfig({
 
   // Enable Nuxt 4 features
   future: {
-    compatibilityVersion: 4,
+    compatibilityVersion: 4
   },
 
   alias: {
@@ -21,8 +21,13 @@ export default defineNuxtConfig({
 
   nitro: {
     alias: {
-      'consolidate': 'unenv/runtime/mock/empty'
+      consolidate: 'unenv/runtime/mock/empty'
     }
+  },
+
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
+    layoutTransition: { name: 'layout', mode: 'out-in' }
   },
 
   modules: [
@@ -37,8 +42,8 @@ export default defineNuxtConfig({
     cssPath: ['~/assets/css/tailwind.css', { injectPosition: 'first' }],
     configPath: 'tailwind.config',
     exposeConfig: true,
-    viewer: true,
+    viewer: true
   },
 
-  css: ['~/assets/css/tailwind.css'],
+  css: ['~/assets/css/tailwind.css']
 })
