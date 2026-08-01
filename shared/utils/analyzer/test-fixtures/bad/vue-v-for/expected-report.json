@@ -1,0 +1,11 @@
+{
+  "context": {
+    "filename": "list.vue",
+    "language": "vue",
+    "framework": "vue"
+  },
+  "expectedIssueCount": 1,
+  "expectedRuleIds": [
+    "vue-large-v-for"
+  ]
+}

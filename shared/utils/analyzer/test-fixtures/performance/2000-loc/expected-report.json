@@ -1,0 +1,9 @@
+{
+  "context": {
+    "filename": "heavy.js",
+    "language": "js",
+    "framework": "vanilla"
+  },
+  "expectedIssueCount": 0,
+  "expectedRuleIds": []
+}

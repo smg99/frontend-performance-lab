@@ -1,0 +1,9 @@
+{
+  "context": {
+    "filename": "app.jsx",
+    "language": "jsx",
+    "framework": "react"
+  },
+  "expectedIssueCount": 0,
+  "expectedRuleIds": []
+}

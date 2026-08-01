@@ -1,0 +1,11 @@
+{
+  "context": {
+    "filename": "list.jsx",
+    "language": "jsx",
+    "framework": "react"
+  },
+  "expectedIssueCount": 1,
+  "expectedRuleIds": [
+    "react-large-map"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "context": {
+    "filename": "list.jsx",
+    "language": "jsx",
+    "framework": "react"
+  },
+  "expectedIssueCount": 0,
+  "expectedRuleIds": []
+}

@@ -1,0 +1,11 @@
+{
+  "context": {
+    "filename": "app.jsx",
+    "language": "jsx",
+    "framework": "react"
+  },
+  "expectedIssueCount": 1,
+  "expectedRuleIds": [
+    "memory-event-listener"
+  ]
+}

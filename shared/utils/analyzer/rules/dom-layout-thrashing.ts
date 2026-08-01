@@ -19,16 +19,32 @@ export const domLayoutThrashing: ASTRule = {
     if (!ast) return []
 
     traverse(ast, {
-      MemberExpression(path: any) {
-        if (
-          path.node.property.type === 'Identifier' &&
-          ['offsetWidth', 'offsetHeight', 'clientWidth', 'clientHeight', 'getClientRects', 'getBoundingClientRect'].includes(path.node.property.name)
-        ) {
-          // If this read happens in the same block as a style write, flag it.
-          // For MVP, we flag just the expensive reads as warnings.
-          issues.push({
-            lineNumbers: [path.node.loc?.start.line || 1]
-          })
+      AssignmentExpression(path: any) {
+        let isStyle = false;
+        let c = path.node.left;
+        while (c && c.type === 'MemberExpression') {
+          if (c.property && c.property.name === 'style') {
+            isStyle = true;
+            break;
+          }
+          c = c.object;
+        }
+        if (isStyle) {
+          // Flag style assignments unless they are inside requestAnimationFrame
+          let inRaf = false;
+          let curr = path;
+          while (curr) {
+            if (curr.node.type === 'CallExpression' && curr.node.callee.name === 'requestAnimationFrame') {
+              inRaf = true;
+              break;
+            }
+            curr = curr.parentPath;
+          }
+          if (!inRaf) {
+            issues.push({
+              lineNumbers: [path.node.loc?.start.line || 1]
+            })
+          }
         }
       }
     })

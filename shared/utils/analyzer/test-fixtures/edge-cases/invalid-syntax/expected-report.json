@@ -1,0 +1,9 @@
+{
+  "context": {
+    "filename": "app.js",
+    "language": "js",
+    "framework": "vanilla"
+  },
+  "expectedIssueCount": 0,
+  "expectedRuleIds": []
+}

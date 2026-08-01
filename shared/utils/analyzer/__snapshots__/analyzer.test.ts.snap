@@ -1,0 +1,168 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] flags correct issues in layout-thrashing 1`] = `
+{
+  "analyzedFiles": 1,
+  "checklist": [
+    {
+      "completed": false,
+      "id": "mock-id",
+      "title": "Batch DOM reads together, and defer DOM writes using requestAnimationFrame.",
+    },
+  ],
+  "issues": [
+    {
+      "browserAPIs": [
+        "requestAnimationFrame",
+      ],
+      "category": "Rendering",
+      "description": "Interleaving DOM reads and writes forces synchronous layout recalculation.",
+      "fix": "Batch DOM reads together, and defer DOM writes using requestAnimationFrame.",
+      "id": "mock-id",
+      "impact": "Forces synchronous reflows, killing frame rates (jank).",
+      "lineNumbers": [
+        3,
+      ],
+      "relatedExperimentIds": [
+        "rendering",
+      ],
+      "ruleId": "dom-layout-thrashing",
+      "severity": "Critical",
+      "title": "Layout Thrashing",
+    },
+  ],
+  "metrics": {
+    "CPU": 100,
+    "CWV": 100,
+    "Memory": 100,
+    "Rendering": 80,
+  },
+  "overallScore": "B",
+  "suggestions": [],
+}
+`;
+
+exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] flags correct issues in memory-leak 1`] = `
+{
+  "analyzedFiles": 1,
+  "checklist": [
+    {
+      "completed": false,
+      "id": "mock-id",
+      "title": "Always call removeEventListener in the component unmount/destroy hook.",
+    },
+  ],
+  "issues": [
+    {
+      "browserAPIs": [
+        "addEventListener",
+        "removeEventListener",
+      ],
+      "category": "Memory",
+      "description": "Adding listeners to global objects (window, document) without removing them causes memory leaks.",
+      "fix": "Always call removeEventListener in the component unmount/destroy hook.",
+      "id": "mock-id",
+      "impact": "Garbage collector cannot destroy the component, leading to OOM crashes over time.",
+      "lineNumbers": [
+        2,
+      ],
+      "relatedExperimentIds": [
+        "memory-vitals",
+      ],
+      "ruleId": "memory-event-listener",
+      "severity": "Critical",
+      "title": "Global Event Listener Leak",
+    },
+  ],
+  "metrics": {
+    "CPU": 100,
+    "CWV": 100,
+    "Memory": 80,
+    "Rendering": 100,
+  },
+  "overallScore": "B",
+  "suggestions": [],
+}
+`;
+
+exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] flags correct issues in react-map 1`] = `
+{
+  "analyzedFiles": 1,
+  "checklist": [
+    {
+      "completed": false,
+      "id": "mock-id",
+      "title": "Implement a virtual list using react-window or react-virtualized.",
+    },
+  ],
+  "issues": [
+    {
+      "browserAPIs": [],
+      "category": "Rendering",
+      "description": "Mapping over large arrays to render JSX elements creates excessive DOM nodes.",
+      "fix": "Implement a virtual list using react-window or react-virtualized.",
+      "id": "mock-id",
+      "impact": "High memory usage and main thread blocking during reconciliation.",
+      "lineNumbers": [
+        4,
+      ],
+      "relatedExperimentIds": [
+        "virtualization",
+      ],
+      "ruleId": "react-large-map",
+      "severity": "Critical",
+      "title": "Large .map() without Virtualization",
+    },
+  ],
+  "metrics": {
+    "CPU": 100,
+    "CWV": 100,
+    "Memory": 100,
+    "Rendering": 80,
+  },
+  "overallScore": "B",
+  "suggestions": [],
+}
+`;
+
+exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] flags correct issues in vue-v-for 1`] = `
+{
+  "analyzedFiles": 1,
+  "checklist": [
+    {
+      "completed": false,
+      "id": "mock-id",
+      "title": "Use a virtual scroller (e.g. vue-virtual-scroller) to only render visible items.",
+    },
+  ],
+  "issues": [
+    {
+      "browserAPIs": [
+        "IntersectionObserver",
+      ],
+      "category": "Rendering",
+      "description": "Rendering large lists directly into the DOM can cause severe layout and rendering bottlenecks.",
+      "fix": "Use a virtual scroller (e.g. vue-virtual-scroller) to only render visible items.",
+      "id": "mock-id",
+      "impact": "Freezes the main thread during initial render and updates.",
+      "lineNumbers": [
+        2,
+      ],
+      "relatedExperimentIds": [
+        "virtualization",
+      ],
+      "ruleId": "vue-large-v-for",
+      "severity": "Critical",
+      "title": "Large v-for without Virtualization",
+    },
+  ],
+  "metrics": {
+    "CPU": 100,
+    "CWV": 100,
+    "Memory": 100,
+    "Rendering": 80,
+  },
+  "overallScore": "B",
+  "suggestions": [],
+}
+`;
