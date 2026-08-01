@@ -1,5 +1,16 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["./shared/*"],
+      "@content/*": ["./shared/content/*"],
+      "@schemas/*": ["./shared/schemas/*"],
+      "@registry/*": ["./shared/registry/*"],
+      "@utils/*": ["./shared/utils/*"],
+      "@mcp/*": ["./mcp/*"]
+    }
+  },
   "files": [],
   "references": [
     {
