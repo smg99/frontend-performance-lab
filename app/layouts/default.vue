@@ -57,7 +57,20 @@ const breadcrumbs = computed(() => {
       class="w-64 lg:w-72 flex-shrink-0 border-r border-border-subtle bg-background-surface flex-col hidden md:flex sticky top-0 h-screen overflow-y-auto"
     >
       <div class="h-16 flex items-center px-6 border-b border-border-subtle shrink-0">
-        <h1 class="font-bold text-lg tracking-tight">Performance Lab</h1>
+        <NuxtLink to="/" class="flex items-center">
+          <img
+            v-if="isDark"
+            src="/branding/logo-dark.svg"
+            alt="Frontend Performance Lab"
+            class="h-8 w-auto"
+          />
+          <img
+            v-else
+            src="/branding/logo-light.svg"
+            alt="Frontend Performance Lab"
+            class="h-8 w-auto"
+          />
+        </NuxtLink>
       </div>
 
       <nav class="flex-1 py-6 px-4 space-y-8">

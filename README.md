@@ -1,4 +1,11 @@
 <div align="center">
+<br/>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./public/branding/logo-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="./public/branding/logo-light.svg">
+  <img alt="Frontend Performance Lab Logo" src="./public/branding/logo.svg" width="420">
+</picture>
+<br/><br/>
 
 # Frontend Performance Lab
 
@@ -60,39 +67,45 @@ Structured tutorials mapped directly to the analyzer's findings. Fix what the an
 
 ## Get Started
 
+## Get Started
+
+The easiest way to get started is by using the official CLI.
+
 ```bash
-git clone https://github.com/smg99/frontend-performance-lab.git
-cd frontend-performance-lab
-npm install
-npm run dev
+npx @frontend-performance-lab/cli setup
 ```
 
-Open [`http://localhost:3000`](http://localhost:3000) → go to **Analyze Code** → drop in a file.
+This will run the onboarding wizard, check your environment, and configure your IDE automatically.
+
+Alternatively, install it globally:
+
+```bash
+npm install -g @frontend-performance-lab/cli
+fpl setup
+fpl doctor
+```
 
 ---
 
 ## Connect to Your AI Assistant
 
-Run the MCP server locally and bring the knowledge base into your IDE.
+The CLI comes with an embedded MCP server that exposes the entire knowledge graph to your IDE.
+If you ran `fpl setup`, this might already be configured for you!
 
-```bash
-npm run mcp:start
-```
-
-Add to your IDE config (example: **Cursor**):
+If you prefer manual setup, add this to your IDE config (example: **Cursor**):
 
 ```json
 {
   "mcpServers": {
     "frontend-performance-lab": {
       "command": "npx",
-      "args": ["tsx", "/absolute/path/to/frontend-performance-lab/mcp/server.ts"]
+      "args": ["-y", "@frontend-performance-lab/cli", "mcp"]
     }
   }
 }
 ```
 
-**[Full Setup Guide →](./docs/mcp/getting-started.md)**
+**[Migration Guide for older versions →](./docs/MIGRATION.md)**
 
 Supported: **Cursor · Claude Code · VS Code (Cline/Roo) · Windsurf · Continue.dev · Gemini CLI**
 

@@ -37,6 +37,26 @@ export default defineNuxtConfig({
   },
 
   app: {
+    head: {
+      titleTemplate: '%s - Frontend Performance Lab',
+      title: 'Frontend Performance Lab',
+      meta: [
+        {
+          name: 'description',
+          content: 'AI-Powered Frontend Engineering Platform. Analyze, Understand, and Optimize.'
+        },
+        { name: 'theme-color', content: '#2563EB' },
+        { property: 'og:image', content: '/branding/og-image.png' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image', content: '/branding/twitter-card.png' }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/svg+xml', href: '/branding/favicon.svg' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+        { rel: 'manifest', href: '/site.webmanifest' }
+      ]
+    },
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' }
   },

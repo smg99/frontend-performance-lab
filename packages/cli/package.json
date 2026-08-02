@@ -1,0 +1,66 @@
+{
+  "name": "@frontend-performance-lab/cli",
+  "version": "1.0.0",
+  "description": "Frontend Performance Lab CLI & MCP Server",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "fpl": "./dist/cli.mjs"
+  },
+  "keywords": [
+    "performance",
+    "frontend",
+    "mcp",
+    "ast",
+    "analyzer",
+    "vue",
+    "react",
+    "cli"
+  ],
+  "homepage": "https://github.com/smg99/frontend-performance-lab#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smg99/frontend-performance-lab.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/smg99/frontend-performance-lab/issues"
+  },
+  "scripts": {
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "lint": "eslint .",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.7.0",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "citty": "^0.1.6",
+    "consola": "^3.2.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.1",
+    "typescript": "^5.5.4",
+    "unbuild": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18.x"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT"
+}
