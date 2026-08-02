@@ -114,7 +114,7 @@ If any step fails, the message will point you to the missing prerequisite.
 - 📚 **GitHub Repository** – <https://github.com/smg99/frontend-performance-lab>
 - 🐞 **Issues** – <https://github.com/smg99/frontend-performance-lab/issues>
 - 💬 **Discussions** – <https://github.com/smg99/frontend-performance-lab/discussions>
-- 🌐 **Website / Docs** – <https://frontend-performance-lab.dev>
+- 🌐 **Website / Docs** – <https://smg99.github.io/frontend-performance-lab>
 
 ---
 

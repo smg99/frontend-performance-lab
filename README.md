@@ -1,6 +1,6 @@
 <div align="center">
   <br/>
-  <a href="https://frontend-performance-lab.dev" target="_blank">
+  <a href="https://smg99.github.io/frontend-performance-lab" target="_blank">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./public/branding/logo-dark.svg">
       <source media="(prefers-color-scheme: light)" srcset="./public/branding/logo-light.svg">
