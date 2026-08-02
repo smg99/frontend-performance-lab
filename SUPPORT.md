@@ -9,4 +9,4 @@ If you need help with the Frontend Performance Lab, you can reach out through th
 
 ## Supported Versions
 
-Please refer to `SECURITY.md` for information on supported versions. We require Node.js >= 22.0.0 and modern browsers (Chrome, Firefox, Safari, Edge) for the web interface.
+Please refer to `SECURITY.md` for information on supported versions. We require Node.js >= 18.x and modern browsers (Chrome, Firefox, Safari, Edge) for the web interface.

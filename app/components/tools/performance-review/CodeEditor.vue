@@ -1,6 +1,8 @@
 <template>
   <div class="h-full flex flex-col bg-background-surface border-r border-border-subtle relative">
-    <div class="p-2 border-b border-border-subtle flex justify-between items-center bg-background-base text-sm">
+    <div
+      class="p-2 border-b border-border-subtle flex justify-between items-center bg-background-base text-sm"
+    >
       <div class="flex items-center gap-2">
         <select
           v-model="localLang"
@@ -30,13 +32,22 @@
       </button>
     </div>
     <div class="flex-1 relative w-full h-full" @keydown="handleKeydown">
-      <VueMonacoEditor
-        v-model:value="localCode"
-        :language="monacoLang"
-        :theme="monacoTheme"
-        :options="editorOptions"
-        @mount="handleMount"
-      />
+      <ClientOnly>
+        <VueMonacoEditor
+          v-model:value="localCode"
+          :language="monacoLang"
+          :theme="monacoTheme"
+          :options="editorOptions"
+          @mount="handleMount"
+        />
+        <template #fallback>
+          <div
+            class="w-full h-full flex items-center justify-center text-foreground-muted bg-background-surface"
+          >
+            Loading editor...
+          </div>
+        </template>
+      </ClientOnly>
     </div>
   </div>
 </template>
@@ -55,14 +66,22 @@ const monacoTheme = ref('vs-dark') // Will be updated if a light theme exists
 
 const monacoLang = computed(() => {
   switch (localLang.value) {
-    case 'vue': return 'html'
-    case 'js': return 'javascript'
-    case 'ts': return 'typescript'
-    case 'jsx': return 'javascript'
-    case 'tsx': return 'typescript'
-    case 'html': return 'html'
-    case 'css': return 'css'
-    default: return 'javascript'
+    case 'vue':
+      return 'html'
+    case 'js':
+      return 'javascript'
+    case 'ts':
+      return 'typescript'
+    case 'jsx':
+      return 'javascript'
+    case 'tsx':
+      return 'typescript'
+    case 'html':
+      return 'html'
+    case 'css':
+      return 'css'
+    default:
+      return 'javascript'
   }
 })
 
@@ -80,8 +99,18 @@ const editorOptions = computed(() => ({
 
 watch(localCode, v => emit('update:modelValue', v))
 watch(localLang, v => emit('update:language', v))
-watch(() => props.modelValue, v => { if (v !== localCode.value) localCode.value = v })
-watch(() => props.language, v => { if (v !== localLang.value) localLang.value = v })
+watch(
+  () => props.modelValue,
+  v => {
+    if (v !== localCode.value) localCode.value = v
+  }
+)
+watch(
+  () => props.language,
+  v => {
+    if (v !== localLang.value) localLang.value = v
+  }
+)
 
 const toggleMinimap = () => {
   showMinimap.value = !showMinimap.value
@@ -97,9 +126,11 @@ const handleKeydown = (e: KeyboardEvent) => {
 const handleMount = () => {
   // Setup theme tracking here if the app uses color-scheme
   if (typeof window !== 'undefined') {
-    const isDark = document.documentElement.classList.contains('dark') || window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isDark =
+      document.documentElement.classList.contains('dark') ||
+      window.matchMedia('(prefers-color-scheme: dark)').matches
     monacoTheme.value = isDark ? 'vs-dark' : 'vs'
-    
+
     // Listen for theme changes
     const observer = new MutationObserver(() => {
       monacoTheme.value = document.documentElement.classList.contains('dark') ? 'vs-dark' : 'vs'

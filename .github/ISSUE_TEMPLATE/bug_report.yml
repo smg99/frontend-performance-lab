@@ -1,0 +1,82 @@
+name: Bug Report
+description: Report a bug in the Frontend Performance Lab
+title: '[Bug]: '
+labels: ['bug', 'triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Please fill in as much detail as possible.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which part of the project is affected?
+      options:
+        - Analyzer (AST engine)
+        - MCP Server / AI integration
+        - UI / Web app
+        - Experiments
+        - Recipes / Browser APIs
+        - CI/CD / Build
+        - Documentation
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear and concise description of the bug.
+      placeholder: Describe the bug...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce the issue?
+      value: |
+        1. 
+        2. 
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js version
+      description: Run `node -v`
+      placeholder: 'e.g. v22.13.1'
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser (for UI bugs)
+      placeholder: 'e.g. Chrome 127, Safari 17'
+
+  - type: input
+    id: ide
+    attributes:
+      label: IDE / AI client (for MCP bugs)
+      placeholder: 'e.g. Cursor 0.44, Claude Code 1.0'
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs or error output
+      description: Paste any terminal output, console errors, or stack traces.
+      render: shell

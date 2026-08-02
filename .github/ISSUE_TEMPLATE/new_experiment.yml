@@ -1,0 +1,61 @@
+name: New Experiment Request
+description: Request or propose a new interactive performance experiment
+title: '[Experiment]: '
+labels: ['content', 'experiment']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        New experiments must follow the `shared/schemas/experiment.ts` schema and include interactive components. See `CONTRIBUTING.md` for the full process.
+
+  - type: input
+    id: title
+    attributes:
+      label: Experiment title
+      placeholder: 'e.g. CSS Containment & Rendering Isolation'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Rendering
+        - Memory
+        - Concurrency
+        - Network
+        - Reactivity
+    validations:
+      required: true
+
+  - type: dropdown
+    id: difficulty
+    attributes:
+      label: Difficulty
+      options:
+        - Beginner
+        - Intermediate
+        - Advanced
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What performance problem does this demonstrate?
+      description: What anti-pattern or bottleneck would users learn about?
+    validations:
+      required: true
+
+  - type: textarea
+    id: interactive
+    attributes:
+      label: Interactive element idea
+      description: How would users interact with the experiment? (slider, toggle, live editor...)
+
+  - type: textarea
+    id: analyzer-rule
+    attributes:
+      label: Related analyzer rule (if any)
+      description: Should the AST analyzer be extended to detect this pattern?

@@ -81,5 +81,8 @@
     "*.{json,md,yml,css}": [
       "prettier --write"
     ]
+  },
+  "engines": {
+    "node": ">=18.x"
   }
 }

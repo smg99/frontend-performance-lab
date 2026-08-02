@@ -20,6 +20,17 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    prerender: {
+      ignore: [
+        '/experiments',
+        '/LICENSE',
+        '/tools',
+        '/frontend-performance-lab/experiments',
+        '/frontend-performance-lab/LICENSE',
+        '/frontend-performance-lab/tools'
+      ],
+      failOnError: false
+    },
     alias: {
       consolidate: 'unenv/runtime/mock/empty'
     }

@@ -30,7 +30,7 @@ const EXPERIMENT_SECTIONS = z.enum(['summary', 'examples', 'interview', 'referen
 server.resource(
   'experiment',
   new ResourceTemplate('performance://experiments/{id}', { list: undefined }),
-  async (uri, { id: _id }) => {
+  async (uri, { id }) => {
     const exp = getExperimentById(id)
     if (!exp) throw new Error(`Experiment not found: ${id}`)
 

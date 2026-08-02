@@ -1,65 +1,47 @@
-# Frontend Performance Lab MCP Server
+# MCP Server
 
 This directory contains the Model Context Protocol (MCP) server for the Frontend Performance Lab.
-It allows AI coding assistants (like Cursor, Claude Code, and VS Code MCP clients) to directly query our highly-curated frontend performance guidelines, architectural patterns, and code examples.
 
-## Installation
+## Setup
 
-Ensure you have installed the root project dependencies:
-```bash
-npm install
-```
-
-## Configuration
-
-To add this server to an MCP-compatible IDE (e.g., Cursor or Claude Desktop), add the following configuration:
-
-```json
-{
-  "mcpServers": {
-    "frontend-performance-lab": {
-      "command": "npm",
-      "args": ["run", "mcp:start"]
-    }
-  }
-}
-```
+See the **[Full MCP Setup Guide →](../docs/mcp/getting-started.md)** for complete installation instructions for all supported IDEs (Cursor, Claude Code, VS Code, Windsurf, Continue.dev, Gemini CLI).
 
 ## Available Tools
 
-AI agents can execute these tools to lookup information:
-
-- **`search`**: Search the knowledge base.
-  - *Example Args*: `{ "query": "layout thrashing", "limit": 3 }`
-- **`list_experiments`**: Discover what topics are available.
-- **`get_experiment`**: Fetch a specific topic. Supports partial retrieval to save token context.
-  - *Example Args*: `{ "id": "reactivity", "section": "examples" }`
+| Tool                 | Description                                  |
+| -------------------- | -------------------------------------------- |
+| `list_experiments`   | List all available performance experiments   |
+| `get_experiment`     | Fetch a specific experiment or section       |
+| `list_browser_apis`  | List all browser APIs in the registry        |
+| `get_browser_api`    | Fetch a specific browser API                 |
+| `list_recipes`       | List all performance recipes                 |
+| `get_recipe`         | Fetch a specific recipe                      |
+| `search`             | Full-text search across the knowledge base   |
+| `system_diagnostics` | Health report of the MCP server and registry |
 
 ## Available Resources
 
-Static URIs that can be directly read by agents or users:
-
-- `performance://experiments/virtualization`
-- `performance://experiments/reactivity`
-- `performance://checklists/vue`
+| URI                               | Description              |
+| --------------------------------- | ------------------------ |
+| `performance://experiments/{id}`  | Full experiment manifest |
+| `performance://browser-apis/{id}` | Browser API details      |
+| `performance://recipes/{id}`      | Recipe details           |
+| `performance://checklists/{id}`   | Performance checklists   |
 
 ## Available Prompts
 
-Built-in developer workflows:
+| Prompt               | Description                                           |
+| -------------------- | ----------------------------------------------------- |
+| `review_performance` | Ask the AI to review your code against lab guidelines |
 
-- **`review_performance`**: Triggers the AI to review your current open files against the lab's performance guidelines.
+## Quick Test
 
-## Example Response Format
+```bash
+npm run mcp:start
+```
 
-All tool responses include standard metadata:
+If the server starts without errors, it is ready. Test connectivity with the [MCP Inspector](https://github.com/modelcontextprotocol/inspector):
 
-```json
-{
-  "_metadata": {
-    "source": "Frontend Performance Lab",
-    "version": "1.0.0",
-    "lastUpdated": "2024-03-01T12:00:00Z"
-  },
-  "data": { ... }
-}
+```bash
+npx @modelcontextprotocol/inspector npx tsx /absolute/path/to/mcp/server.ts
 ```
