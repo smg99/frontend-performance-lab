@@ -54,9 +54,9 @@ const breadcrumbs = computed(() => {
   >
     <!-- Sidebar -->
     <aside
-      class="w-64 lg:w-72 flex-shrink-0 border-r border-border-subtle bg-background-surface flex-col hidden md:flex sticky top-0 h-screen overflow-y-auto"
+      class="w-64 lg:w-72 flex-shrink-0 border-r border-border-subtle-subtle bg-background-surface flex-col hidden md:flex sticky top-0 h-screen overflow-y-auto"
     >
-      <div class="h-16 flex items-center px-6 border-b border-border-subtle shrink-0">
+      <div class="h-16 flex items-center px-6 border-b border-border-subtle-subtle shrink-0">
         <NuxtLink to="/" class="flex items-center">
           <img
             v-if="isDark"
@@ -168,14 +168,14 @@ const breadcrumbs = computed(() => {
       </nav>
 
       <!-- Sidebar Footer -->
-      <div class="p-4 border-t border-border-subtle shrink-0">
+      <div class="p-4 border-t border-border-subtle-subtle shrink-0">
         <button
-          class="w-full flex items-center justify-between px-3 py-2 rounded-lg border border-border-strong bg-background-base text-sm text-foreground-muted hover:text-foreground-primary transition-colors shadow-sm focus-ring"
+          class="w-full flex items-center justify-between px-3 py-2 rounded-lg border border-border-subtle-strong bg-background-base text-sm text-foreground-muted hover:text-foreground-primary transition-colors shadow-sm focus-ring"
           @click="cmdkOpen = true"
         >
           <span class="flex items-center gap-2"><SearchIcon class="w-4 h-4" /> Search</span>
           <kbd
-            class="px-1.5 py-0.5 rounded border border-border-subtle text-[10px] font-mono bg-background-surface shrink-0"
+            class="px-1.5 py-0.5 rounded border border-border-subtle-subtle text-[10px] font-mono bg-background-surface shrink-0"
             >⌘K</kbd
           >
         </button>
@@ -186,7 +186,7 @@ const breadcrumbs = computed(() => {
     <main class="flex-1 flex flex-col min-w-0 min-h-screen">
       <!-- Top Bar -->
       <header
-        class="h-16 border-b border-border-subtle bg-background-surface/80 backdrop-blur-md flex items-center justify-between px-4 sm:px-6 lg:px-8 shrink-0 sticky top-0 z-30"
+        class="h-16 border-b border-border-subtle-subtle bg-background-surface/80 backdrop-blur-md flex items-center justify-between px-4 sm:px-6 lg:px-8 shrink-0 sticky top-0 z-30"
       >
         <!-- Breadcrumbs -->
         <div class="flex items-center gap-2 text-sm text-foreground-muted">

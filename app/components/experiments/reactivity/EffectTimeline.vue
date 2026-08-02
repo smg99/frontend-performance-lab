@@ -1,13 +1,21 @@
 <template>
-  <div class="bg-card border border-border p-6 rounded-xl shadow-subtle flex flex-col gap-6">
-    <div class="flex items-center gap-4 bg-surface p-4 rounded-lg border border-border">
+  <div
+    class="bg-background-base border border-border-subtle p-6 rounded-xl shadow-subtle flex flex-col gap-6"
+  >
+    <div
+      class="flex items-center gap-4 bg-background-surface p-4 rounded-lg border border-border-subtle"
+    >
       <div class="flex-1">
-        <h4 class="text-sm font-semibold text-text-primary mb-1">Reactivity Lifecycle Timeline</h4>
-        <p class="text-xs text-text-secondary">Simulates the micro-task queue and render pipeline for a single reactive update.</p>
+        <h4 class="text-sm font-semibold text-foreground-primary mb-1">
+          Reactivity Lifecycle Timeline
+        </h4>
+        <p class="text-xs text-foreground-muted">
+          Simulates the micro-task queue and render pipeline for a single reactive update.
+        </p>
       </div>
-      <button 
-        :disabled="isRunning" 
-        class="px-4 py-2 bg-primary text-white rounded-lg font-medium transition-colors shadow-subtle text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+      <button
+        :disabled="isRunning"
+        class="px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium transition-colors shadow-subtle text-sm disabled:opacity-50 disabled:cursor-not-allowed"
         @click="runSimulation"
       >
         {{ isRunning ? 'Simulating...' : 'Simulate Update' }}
@@ -15,35 +23,33 @@
     </div>
 
     <!-- Timeline View -->
-    <div class="relative pl-6 border-l-2 border-border py-4 font-mono text-sm space-y-4">
+    <div class="relative pl-6 border-l-2 border-border-subtle py-4 font-mono text-sm space-y-4">
       <transition-group name="timeline" tag="div" class="space-y-4">
-        <div 
-          v-for="event in events" 
-          :key="event.id" 
-          class="relative flex items-center gap-4"
-        >
+        <div v-for="event in events" :key="event.id" class="relative flex items-center gap-4">
           <!-- Timeline Dot -->
-          <div 
+          <div
             class="absolute -left-[31px] w-3 h-3 rounded-full border-2 border-surface"
             :class="getEventColor(event.type)"
           />
-          
+
           <!-- Time -->
           <div class="w-16 text-right font-bold" :class="getEventTextColor(event.type)">
             {{ event.time.toFixed(1) }} ms
           </div>
-          
+
           <!-- Arrow -->
-          <div class="text-text-secondary text-xs">→</div>
-          
+          <div class="text-foreground-muted text-xs">→</div>
+
           <!-- Label -->
-          <div class="flex-1 bg-surface border border-border px-4 py-2 rounded-lg text-text-primary">
+          <div
+            class="flex-1 bg-background-surface border border-border-subtle px-4 py-2 rounded-lg text-foreground-primary"
+          >
             {{ event.label }}
           </div>
         </div>
       </transition-group>
-      
-      <div v-if="events.length === 0" class="text-text-secondary text-xs italic">
+
+      <div v-if="events.length === 0" class="text-foreground-muted text-xs italic">
         Waiting for simulation to start...
       </div>
     </div>
@@ -80,62 +86,78 @@ const SIMULATION_STEPS: Omit<TimelineEvent, 'id' | 'time'>[] = [
 
 const getEventColor = (type: EventType) => {
   switch (type) {
-    case 'mutate': return 'bg-primary'
-    case 'track': return 'bg-[#3B82F6]'
-    case 'invalidate': return 'bg-warning'
-    case 'effect': return 'bg-[#8B5CF6]'
-    case 'render': return 'bg-danger'
-    case 'patch': return 'bg-success'
-    case 'paint': return 'bg-border'
-    default: return 'bg-border'
+    case 'mutate':
+      return 'bg-primary'
+    case 'track':
+      return 'bg-[#3B82F6]'
+    case 'invalidate':
+      return 'bg-warning'
+    case 'effect':
+      return 'bg-[#8B5CF6]'
+    case 'render':
+      return 'bg-danger'
+    case 'patch':
+      return 'bg-success'
+    case 'paint':
+      return 'bg-border'
+    default:
+      return 'bg-border'
   }
 }
 
 const getEventTextColor = (type: EventType) => {
   switch (type) {
-    case 'mutate': return 'text-primary'
-    case 'track': return 'text-[#3B82F6]'
-    case 'invalidate': return 'text-warning'
-    case 'effect': return 'text-[#8B5CF6]'
-    case 'render': return 'text-danger'
-    case 'patch': return 'text-success'
-    case 'paint': return 'text-text-secondary'
-    default: return 'text-text-secondary'
+    case 'mutate':
+      return 'text-primary'
+    case 'track':
+      return 'text-[#3B82F6]'
+    case 'invalidate':
+      return 'text-warning'
+    case 'effect':
+      return 'text-[#8B5CF6]'
+    case 'render':
+      return 'text-danger'
+    case 'patch':
+      return 'text-success'
+    case 'paint':
+      return 'text-foreground-muted'
+    default:
+      return 'text-foreground-muted'
   }
 }
 
 const runSimulation = () => {
   if (isRunning.value) return
-  
+
   isRunning.value = true
   events.value = []
-  
+
   const startTime = performance.now()
   let stepIndex = 0
-  
+
   const processNext = () => {
     if (stepIndex >= SIMULATION_STEPS.length) {
       isRunning.value = false
       return
     }
-    
+
     const step = SIMULATION_STEPS[stepIndex]
     const currentTime = performance.now()
-    
+
     events.value.push({
       id: eventIdCounter++,
       time: currentTime - startTime,
       type: step.type,
       label: step.label
     })
-    
+
     stepIndex++
-    
+
     // Random delay between 50ms and 200ms to simulate work, except paint which takes longer
     const delay = step.type === 'patch' ? 300 : Math.random() * 150 + 50
     setTimeout(processNext, delay)
   }
-  
+
   processNext()
 }
 </script>

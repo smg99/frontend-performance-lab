@@ -1,5 +1,5 @@
 <template>
-  <section class="py-16 max-w-7xl mx-auto px-4 border-b border-border-subtle">
+  <section class="py-16 max-w-7xl mx-auto px-4 border-b border-border-subtle-subtle">
     <div class="mb-10 text-center sm:text-left">
       <h2 class="text-3xl font-bold tracking-tight text-foreground-primary mb-2">
         Explore the Platform
@@ -9,7 +9,7 @@
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
       <NuxtLink
         v-for="card in exploreCards"
         :key="card.id"

@@ -23,7 +23,7 @@ defineProps<Props>()
       <div class="flex items-center gap-3">
         <div
           v-if="icon"
-          class="p-2.5 bg-background-base rounded-lg text-primary shadow-sm border border-border-subtle group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300"
+          class="p-2.5 bg-background-base rounded-lg text-primary shadow-sm border border-border-subtle-subtle group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300"
         >
           <component
             :is="icon"

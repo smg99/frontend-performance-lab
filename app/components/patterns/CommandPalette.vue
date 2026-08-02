@@ -25,6 +25,11 @@ const selectedIndex = ref(0)
 const inputRef = ref<HTMLInputElement | null>(null)
 const recentSearches = useLocalStorage<string[]>('perf-lab-recent-searches', [])
 
+const setQuery = (q: string) => {
+  query.value = q
+  inputRef.value?.focus()
+}
+
 const { current } = useMagicKeys()
 const keys = current
 
@@ -69,10 +74,10 @@ const groupedResults = computed(() => {
       keywords: ['mcp', 'model context protocol', 'ai', 'playground']
     },
     {
-      id: 'install-mcp',
-      title: 'Install MCP',
-      description: 'Connect Cursor, Claude Code, Windsurf, or VS Code',
-      href: '/mcp/install',
+      id: 'install',
+      title: 'Setup / Install',
+      description: 'Install the CLI and connect your IDE',
+      href: '/install',
       keywords: ['install', 'setup', 'cursor', 'claude', 'windsurf', 'continue', 'gemini', 'mcp']
     },
     {
@@ -228,7 +233,7 @@ watch(
         class="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh] sm:pt-[20vh] px-4 pointer-events-none"
       >
         <DialogContent
-          class="w-full max-w-2xl rounded-2xl border border-border-strong bg-background-base shadow-dialog overflow-hidden animate-zoom-in focus:outline-none flex flex-col max-h-[70vh] pointer-events-auto"
+          class="w-full max-w-2xl rounded-2xl border border-border-subtle-strong bg-background-base shadow-dialog overflow-hidden animate-zoom-in focus:outline-none flex flex-col max-h-[70vh] pointer-events-auto"
         >
           <DialogTitle class="sr-only">Command Palette</DialogTitle>
           <DialogDescription class="sr-only"
@@ -237,7 +242,7 @@ watch(
 
           <!-- Search Input -->
           <div
-            class="flex items-center px-4 border-b border-border-subtle bg-background-base shrink-0 h-14"
+            class="flex items-center px-4 border-b border-border-subtle-subtle bg-background-base shrink-0 h-14"
           >
             <SearchIcon class="w-5 h-5 text-foreground-muted mr-3" />
             <input
@@ -249,7 +254,7 @@ watch(
             />
             <div class="flex items-center gap-2">
               <kbd
-                class="hidden sm:inline-flex px-1.5 py-0.5 text-xs font-mono rounded border border-border-strong bg-background-surface text-foreground-muted"
+                class="hidden sm:inline-flex px-1.5 py-0.5 text-xs font-mono rounded border border-border-subtle-strong bg-background-surface text-foreground-muted"
                 >ESC</kbd
               >
             </div>
@@ -279,13 +284,30 @@ watch(
               class="p-10 text-center text-foreground-muted bg-background-surface/30 flex flex-col items-center justify-center"
             >
               <SearchIcon class="w-8 h-8 mb-4 opacity-30 text-foreground-primary" />
-              <p class="mb-2 font-semibold text-foreground-primary">No results found for "{{ query }}"</p>
-              <p class="text-sm mb-6">Press <kbd class="px-1.5 py-0.5 rounded border border-border-strong bg-background-base mx-1 font-mono text-[10px]">Enter</kbd> to search the full platform.</p>
-              
+              <p class="mb-2 font-semibold text-foreground-primary">
+                No results found for "{{ query }}"
+              </p>
+              <p class="text-sm mb-6">
+                Press
+                <kbd
+                  class="px-1.5 py-0.5 rounded border border-border-subtle-strong bg-background-base mx-1 font-mono text-[10px]"
+                  >Enter</kbd
+                >
+                to search the full platform.
+              </p>
+
               <div class="flex items-center justify-center gap-3 text-xs">
                 <span class="opacity-60">Try searching for:</span>
-                <span class="px-2 py-1 bg-background-base rounded-md text-foreground-primary cursor-pointer border border-border-subtle hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all" @click="query = 'layout thrashing'; inputRef?.focus()">layout thrashing</span>
-                <span class="px-2 py-1 bg-background-base rounded-md text-foreground-primary cursor-pointer border border-border-subtle hover:border-blue-500/50 hover:bg-blue-500/10 transition-all" @click="query = 'mcp install'; inputRef?.focus()">mcp install</span>
+                <span
+                  class="px-2 py-1 bg-background-base rounded-md text-foreground-primary cursor-pointer border border-border-subtle-subtle hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all"
+                  @click="setQuery('layout thrashing')"
+                  >layout thrashing</span
+                >
+                <span
+                  class="px-2 py-1 bg-background-base rounded-md text-foreground-primary cursor-pointer border border-border-subtle-subtle hover:border-blue-500/50 hover:bg-blue-500/10 transition-all"
+                  @click="setQuery('setup')"
+                  >setup</span
+                >
               </div>
             </div>
 
@@ -328,19 +350,22 @@ watch(
 
           <!-- Footer -->
           <div
-            class="flex items-center justify-between px-4 py-3 bg-background-surface border-t border-border-subtle shrink-0 text-xs text-foreground-muted"
+            class="flex items-center justify-between px-4 py-3 bg-background-surface border-t border-border-subtle-subtle shrink-0 text-xs text-foreground-muted"
           >
             <div class="flex items-center gap-4">
               <span class="flex items-center gap-1"
-                ><kbd class="px-1.5 py-0.5 rounded border border-border-strong bg-background-base"
+                ><kbd
+                  class="px-1.5 py-0.5 rounded border border-border-subtle-strong bg-background-base"
                   >↑</kbd
-                ><kbd class="px-1.5 py-0.5 rounded border border-border-strong bg-background-base"
+                ><kbd
+                  class="px-1.5 py-0.5 rounded border border-border-subtle-strong bg-background-base"
                   >↓</kbd
                 >
                 to navigate</span
               >
               <span class="flex items-center gap-1"
-                ><kbd class="px-1.5 py-0.5 rounded border border-border-strong bg-background-base"
+                ><kbd
+                  class="px-1.5 py-0.5 rounded border border-border-subtle-strong bg-background-base"
                   >↵</kbd
                 >
                 to select</span

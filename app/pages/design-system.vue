@@ -58,7 +58,7 @@ watchEffect(() => {
   <Container class="pb-24">
     <!-- Configuration Panel -->
     <div
-      class="sticky top-0 z-40 -mx-4 px-4 py-4 mb-8 bg-background-base/80 backdrop-blur-lg border-b border-border-subtle flex flex-wrap items-center justify-between gap-4"
+      class="sticky top-0 z-40 -mx-4 px-4 py-4 mb-8 bg-background-base/80 backdrop-blur-lg border-b border-border-subtle-subtle flex flex-wrap items-center justify-between gap-4"
     >
       <div class="flex items-center gap-2">
         <h1 class="font-semibold text-lg">Design System Preview</h1>
@@ -68,7 +68,7 @@ watchEffect(() => {
           <span class="text-foreground-muted flex items-center gap-1"
             ><SunIcon class="w-4 h-4" /> Theme</span
           >
-          <div class="flex bg-background-surface rounded-lg p-1 border border-border-subtle">
+          <div class="flex bg-background-surface rounded-lg p-1 border border-border-subtle-subtle">
             <button
               :class="[
                 'px-3 py-1 rounded-md transition-colors',
@@ -98,7 +98,7 @@ watchEffect(() => {
           <span class="text-foreground-muted flex items-center gap-1"
             ><LayoutTemplateIcon class="w-4 h-4" /> Density</span
           >
-          <div class="flex bg-background-surface rounded-lg p-1 border border-border-subtle">
+          <div class="flex bg-background-surface rounded-lg p-1 border border-border-subtle-subtle">
             <button
               :class="[
                 'px-3 py-1 rounded-md transition-colors',
@@ -130,7 +130,7 @@ watchEffect(() => {
           <input
             v-model="reduceMotion"
             type="checkbox"
-            class="rounded border-border-strong text-primary focus:ring-primary"
+            class="rounded border-border-subtle-strong text-primary focus:ring-primary"
           />
           <ActivityIcon class="w-4 h-4" />
           Reduce Motion
@@ -155,7 +155,7 @@ watchEffect(() => {
       <Card class="p-6 md:p-8 overflow-x-auto">
         <table class="w-full text-left border-collapse min-w-[600px]">
           <thead>
-            <tr class="text-xs text-foreground-muted border-b border-border-subtle">
+            <tr class="text-xs text-foreground-muted border-b border-border-subtle-subtle">
               <th class="pb-3 font-medium">Variant</th>
               <th class="pb-3 font-medium">Default</th>
               <th class="pb-3 font-medium">Hover / Focus</th>
@@ -257,7 +257,7 @@ watchEffect(() => {
           >
             <template #vue>
               <div
-                class="p-4 bg-background-surface rounded-lg text-sm font-mono border border-border-subtle text-foreground-muted"
+                class="p-4 bg-background-surface rounded-lg text-sm font-mono border border-border-subtle-subtle text-foreground-muted"
               >
                 &lt;template&gt;<br />
                 &lt;div&gt;Vue Performance&lt;/div&gt;<br />&lt;/template&gt;
@@ -265,14 +265,14 @@ watchEffect(() => {
             </template>
             <template #react>
               <div
-                class="p-4 bg-background-surface rounded-lg text-sm font-mono border border-border-subtle text-foreground-muted"
+                class="p-4 bg-background-surface rounded-lg text-sm font-mono border border-border-subtle-subtle text-foreground-muted"
               >
                 export const ReactPerf = () =&gt; &lt;div&gt;React Performance&lt;/div&gt;
               </div>
             </template>
             <template #vanilla>
               <div
-                class="p-4 bg-background-surface rounded-lg text-sm font-mono border border-border-subtle text-foreground-muted"
+                class="p-4 bg-background-surface rounded-lg text-sm font-mono border border-border-subtle-subtle text-foreground-muted"
               >
                 document.createElement('div')
               </div>

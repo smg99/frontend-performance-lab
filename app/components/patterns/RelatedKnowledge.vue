@@ -82,7 +82,7 @@ const hasRelated = computed(
 </script>
 
 <template>
-  <div v-if="hasRelated" class="mt-16 pt-12 border-t border-border-subtle">
+  <div v-if="hasRelated" class="mt-16 pt-12 border-t border-border-subtle-subtle">
     <h2 class="text-2xl font-bold mb-8">Related Knowledge</h2>
 
     <div class="space-y-12">

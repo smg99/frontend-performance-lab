@@ -30,7 +30,7 @@ const icon = computed(() => {
 const variantClasses = computed(() => {
   switch (props.variant) {
     case 'info':
-      return 'bg-background-surface border-border-strong text-foreground-primary'
+      return 'bg-background-surface border-border-subtle-strong text-foreground-primary'
     case 'warning':
       return 'bg-warning-bg border-warning-border text-warning'
     case 'success':

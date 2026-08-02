@@ -13,7 +13,7 @@ defineProps<Props>()
 
 <template>
   <TabsRoot :default-value="defaultValue" :class="cn('flex flex-col w-full', $props.class)">
-    <TabsList class="flex border-b border-border-subtle">
+    <TabsList class="flex border-b border-border-subtle-subtle">
       <TabsTrigger
         v-for="tab in tabs"
         :key="tab.value"

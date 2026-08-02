@@ -43,7 +43,7 @@ const ARTIFACTS_DIR = '/Users/sumitg/.gemini/antigravity-ide/brain/88291a52-a991
   await page.screenshot({ path: path.join(ARTIFACTS_DIR, 'mobile_homepage.png'), fullPage: true });
 
   console.log('Navigating to MCP Install page...');
-  await page.goto('http://localhost:3000/mcp/install', { waitUntil: 'networkidle' });
+  await page.goto('http://localhost:3000/install', { waitUntil: 'networkidle' });
   await page.screenshot({ path: path.join(ARTIFACTS_DIR, 'mcp_install.png'), fullPage: true });
 
   console.log('Closing browser to save video...');

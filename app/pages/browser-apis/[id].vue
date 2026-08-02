@@ -108,7 +108,7 @@ const api = getBrowserAPI(id)
                 <h3 class="font-semibold text-lg mb-2">{{ ex.title }}</h3>
                 <p class="text-foreground-muted text-sm mb-4">{{ ex.explanation }}</p>
                 <div
-                  class="p-4 bg-black rounded-lg border border-border-strong overflow-x-auto text-sm font-mono text-gray-300"
+                  class="p-4 bg-black rounded-lg border border-border-subtle-strong overflow-x-auto text-sm font-mono text-gray-300"
                 >
                   <pre><code>{{ ex.code }}</code></pre>
                 </div>
@@ -124,7 +124,7 @@ const api = getBrowserAPI(id)
               <div
                 v-for="(q, i) in api.interviewQuestions"
                 :key="i"
-                class="p-5 bg-background-base rounded-xl border border-border-subtle"
+                class="p-5 bg-background-base rounded-xl border border-border-subtle-subtle"
               >
                 <p class="font-semibold text-foreground-primary mb-2">Q: {{ q.question }}</p>
                 <p class="text-foreground-muted text-sm leading-relaxed">A: {{ q.answer }}</p>

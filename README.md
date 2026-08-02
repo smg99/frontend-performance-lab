@@ -67,8 +67,6 @@ Structured tutorials mapped directly to the analyzer's findings. Fix what the an
 
 ## Get Started
 
-## Get Started
-
 The easiest way to get started is by using the official CLI.
 
 ```bash
@@ -155,6 +153,15 @@ _The analyzer engine is fully shared between the UI and the MCP server — your 
 ---
 
 ## Contributing
+
+To contribute to the core analyzer rules, MCP server, or documentation, you will need to clone the repository:
+
+```bash
+git clone https://github.com/smg99/frontend-performance-lab.git
+cd frontend-performance-lab
+npm install
+npm run dev
+```
 
 No commit without a regression test. Run `npm run validate:analyzer` before opening a PR.
 

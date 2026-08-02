@@ -7,17 +7,17 @@
 
     <!-- Controls -->
     <div
-      class="bg-card border border-border rounded-xl p-4 shadow-subtle flex flex-col sm:flex-row gap-4 justify-between items-center"
+      class="bg-background-base border border-border-subtle rounded-xl p-4 shadow-subtle flex flex-col sm:flex-row gap-4 justify-between items-center"
     >
-      <div class="flex space-x-2 bg-surface p-1 rounded-lg border border-border">
+      <div class="flex space-x-2 bg-background-surface p-1 rounded-lg border border-border-subtle">
         <button
           v-for="stage in stages"
           :key="stage.id"
           :class="[
             'px-4 py-2 rounded-md text-sm font-medium transition-colors',
             activeStage === stage.id
-              ? 'bg-primary text-white shadow'
-              : 'text-text-secondary hover:text-text-primary hover:bg-border/50'
+              ? 'bg-primary text-primary-foreground shadow'
+              : 'text-foreground-muted hover:text-foreground-primary hover:bg-border/50'
           ]"
           @click="setStage(stage.id)"
         >
@@ -25,10 +25,10 @@
         </button>
       </div>
       <div class="flex items-center space-x-3">
-        <span class="text-sm font-medium text-text-secondary">Items:</span>
+        <span class="text-sm font-medium text-foreground-muted">Items:</span>
         <select
           v-model="itemCount"
-          class="bg-surface border border-border text-text-primary text-sm rounded-lg focus:ring-primary focus:border-primary block p-2 outline-none"
+          class="bg-background-surface border border-border-subtle text-foreground-primary text-sm rounded-lg focus:ring-primary focus:border-primary block p-2 outline-none"
         >
           <option :value="1000">1,000</option>
           <option :value="10000">10,000</option>
@@ -47,11 +47,11 @@
 
     <!-- Implementation Area -->
     <div
-      class="flex-1 min-h-[500px] bg-card border border-border rounded-xl shadow-subtle overflow-hidden flex flex-col"
+      class="flex-1 min-h-[500px] bg-background-base border border-border-subtle rounded-xl shadow-subtle overflow-hidden flex flex-col"
     >
-      <div class="p-4 border-b border-border bg-surface/50">
-        <h3 class="font-semibold text-text-primary">{{ currentStageDetails.name }}</h3>
-        <p class="text-sm text-text-secondary mt-1">{{ currentStageDetails.description }}</p>
+      <div class="p-4 border-b border-border-subtle bg-background-surface/50">
+        <h3 class="font-semibold text-foreground-primary">{{ currentStageDetails.name }}</h3>
+        <p class="text-sm text-foreground-muted mt-1">{{ currentStageDetails.description }}</p>
       </div>
 
       <div class="flex-1 relative bg-background/50">

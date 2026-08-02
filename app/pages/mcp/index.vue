@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-background-base text-foreground-primary">
     <!-- Hero Section -->
-    <section class="py-16 md:py-24 border-b border-border-subtle bg-background-surface/30">
+    <section class="py-16 md:py-24 border-b border-border-subtle-subtle bg-background-surface/30">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <PageHeader>
           <div class="flex flex-col items-center text-center">
@@ -20,15 +20,15 @@
             </p>
             <div class="flex flex-wrap justify-center gap-4">
               <NuxtLink
-                to="/mcp/install"
+                to="/install"
                 class="inline-flex items-center justify-center h-12 px-6 text-sm font-medium bg-primary text-primary-foreground rounded-lg shadow-md hover:bg-primary-hover hover:shadow-lg transition-all"
               >
-                Install MCP Server
+                Install Frontend Performance Lab
               </NuxtLink>
               <a
                 href="https://github.com/smg99/frontend-performance-lab"
                 target="_blank"
-                class="inline-flex items-center justify-center h-12 px-6 text-sm font-medium bg-background-surface border border-border-strong text-foreground-primary rounded-lg shadow-sm hover:bg-background-hover hover:border-primary/50 transition-all"
+                class="inline-flex items-center justify-center h-12 px-6 text-sm font-medium bg-background-surface border border-border-subtle-strong text-foreground-primary rounded-lg shadow-sm hover:bg-background-hover hover:border-primary/50 transition-all"
               >
                 View GitHub
               </a>
@@ -67,49 +67,6 @@
         <MCPArchitecture />
       </section>
 
-      <!-- Installation -->
-      <section id="installation" class="max-w-3xl mx-auto">
-        <h2 class="text-2xl font-bold tracking-tight mb-6">Installation</h2>
-        <Card class="p-6">
-          <p class="text-foreground-muted text-sm mb-4">
-            Run the following commands in the root of the project to start the stdio MCP server.
-          </p>
-          <div class="space-y-4">
-            <div>
-              <p class="text-xs font-medium text-foreground-primary mb-1">
-                1. Install dependencies
-              </p>
-              <CodeSnippet code="npm install" />
-            </div>
-            <div>
-              <p class="text-xs font-medium text-foreground-primary mb-1">
-                2. Start the MCP server
-              </p>
-              <CodeSnippet code="npm run mcp:start" />
-            </div>
-          </div>
-        </Card>
-      </section>
-
-      <!-- IDE Configuration -->
-      <section>
-        <h2 class="text-2xl font-bold tracking-tight mb-6">IDE Configuration</h2>
-        <Tabs :tabs="ideTabs" default-value="cursor">
-          <template v-for="tab in ideTabs" :key="tab.value" #[tab.value]>
-            <CodeSnippet :code="tab.content" />
-          </template>
-        </Tabs>
-      </section>
-
-      <!-- MCP Inspector -->
-      <section class="max-w-3xl mx-auto">
-        <h2 class="text-2xl font-bold tracking-tight mb-6">Verify Connection (MCP Inspector)</h2>
-        <p class="text-foreground-muted mb-4">
-          Use the official inspector to test the server directly from your browser.
-        </p>
-        <CodeSnippet code="npx @modelcontextprotocol/inspector npx tsx mcp/server.ts" />
-      </section>
-
       <!-- Live Playground -->
       <section>
         <h2 class="text-2xl font-bold tracking-tight mb-6 flex items-center gap-2">
@@ -136,7 +93,7 @@
             <h3 class="font-mono text-primary font-bold mb-2 text-sm">{{ tool.name }}</h3>
             <p class="text-foreground-muted text-sm flex-1 mb-4">{{ tool.description }}</p>
             <div
-              class="text-[10px] font-mono bg-background-base p-2 rounded border border-border-subtle overflow-x-auto text-foreground-secondary"
+              class="text-[10px] font-mono bg-background-base p-2 rounded border border-border-subtle-subtle overflow-x-auto text-foreground-secondary"
             >
               {{ tool.schema }}
             </div>
@@ -186,7 +143,9 @@
             Ask the AI to review your current code for performance bottlenecks based on the lab
             guidelines.
           </p>
-          <div class="text-xs font-mono bg-background-base p-3 rounded border border-border-subtle">
+          <div
+            class="text-xs font-mono bg-background-base p-3 rounded border border-border-subtle-subtle"
+          >
             Arguments: { framework?: string }
           </div>
         </Card>
@@ -211,14 +170,21 @@
 </template>
 
 <script setup lang="ts">
-import { CodeIcon, BlocksIcon, FileSearchIcon, BoxesIcon, ZapIcon, PuzzleIcon, GithubIcon, ArrowRightIcon } from 'lucide-vue-next'
+import {
+  CodeIcon,
+  BlocksIcon,
+  FileSearchIcon,
+  BoxesIcon,
+  ZapIcon,
+  PuzzleIcon,
+  GithubIcon,
+  ArrowRightIcon
+} from 'lucide-vue-next'
 import { mcpTools } from '@registry/mcp-tools'
 
 import PageHeader from '../../components/patterns/PageHeader.vue'
 import Badge from '../../components/ui/Badge.vue'
 import Card from '../../components/ui/Card.vue'
-import CodeSnippet from '../../components/common/learning/CodeSnippet.vue'
-import Tabs from '../../components/ui/Tabs.vue'
 import Accordion from '../../components/ui/Accordion.vue'
 import SiteFooter from '../../components/landing/SiteFooter.vue'
 
@@ -243,52 +209,6 @@ useHead({
   ],
   link: [{ rel: 'canonical', href: 'https://frontend-performance-lab.dev/mcp' }]
 })
-
-const getPath = () => {
-  if (typeof window !== 'undefined') {
-    return (
-      window.location.pathname.replace('/mcp', '') ||
-      '/Users/username/Projects/Frontend Performance Lab'
-    )
-  }
-  return '/Users/username/Projects/Frontend Performance Lab'
-}
-
-const configJson = (_client?: string) => {
-  return `{
-  "mcpServers": {
-    "frontend-performance-lab": {
-      "command": "npx",
-      "args": ["tsx", "mcp/server.ts"],
-      "env": {},
-      "cwd": "${getPath()}"
-    }
-  }
-}`
-}
-
-const ideTabs = [
-  {
-    value: 'cursor',
-    label: 'Cursor',
-    content: `Add this to your Cursor MCP Configuration:\n\n${configJson('cursor')}`
-  },
-  {
-    value: 'claude',
-    label: 'Claude Code',
-    content: `Run this in your terminal:\n\nclaude mcp add frontend-performance-lab npx -y tsx ${getPath()}/mcp/server.ts`
-  },
-  {
-    value: 'vscode',
-    label: 'VS Code',
-    content: `Use the Cline or Roo extension and add to your MCP settings:\n\n${configJson('vscode')}`
-  },
-  {
-    value: 'windsurf',
-    label: 'Windsurf',
-    content: `Add to your mcp_config.json:\n\n${configJson('windsurf')}`
-  }
-]
 
 const faqs = [
   {

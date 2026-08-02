@@ -2,7 +2,7 @@
   <div class="h-full overflow-y-auto bg-background-base p-6 space-y-6">
     <div
       v-if="!report"
-      class="flex flex-col items-center justify-center h-full text-text-secondary"
+      class="flex flex-col items-center justify-center h-full text-foreground-muted"
     >
       <div class="text-4xl mb-4 opacity-50">🔬</div>
       <p>Select a file and click Analyze to generate a performance review.</p>
@@ -10,7 +10,7 @@
 
     <template v-else>
       <div class="flex justify-between items-end">
-        <h2 class="text-2xl font-bold text-text-primary tracking-tight">Review Summary</h2>
+        <h2 class="text-2xl font-bold text-foreground-primary tracking-tight">Review Summary</h2>
 
         <div class="flex items-center gap-2">
           <Button variant="outline" size="sm" @click="downloadReport('json')">
@@ -29,9 +29,9 @@
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="md:col-span-2 space-y-4">
-          <h3 class="text-lg font-bold text-text-primary flex items-center gap-2">
+          <h3 class="text-lg font-bold text-foreground-primary flex items-center gap-2">
             Detected Issues
-            <span class="bg-border-strong text-text-secondary text-xs px-2 py-0.5 rounded-full">{{
+            <span class="bg-border-strong text-foreground-muted text-xs px-2 py-0.5 rounded-full">{{
               report.issues.length
             }}</span>
           </h3>
@@ -50,10 +50,10 @@
 
         <div class="space-y-6">
           <OptimizationChecklist :checklist="report.checklist" />
-          <div class="p-4 bg-background-surface border border-border-subtle rounded-lg">
-            <h4 class="text-sm font-bold text-text-primary mb-2">Report Hash</h4>
+          <div class="p-4 bg-background-surface border border-border-subtle-subtle rounded-lg">
+            <h4 class="text-sm font-bold text-foreground-primary mb-2">Report Hash</h4>
             <code
-              class="text-xs text-text-secondary break-all bg-background-base p-2 rounded block"
+              class="text-xs text-foreground-muted break-all bg-background-base p-2 rounded block"
               >{{ report.reportHash }}</code
             >
           </div>

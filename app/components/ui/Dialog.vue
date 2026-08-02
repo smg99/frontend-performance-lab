@@ -29,7 +29,7 @@ const emit = defineEmits(['update:open'])
     <DialogPortal>
       <DialogOverlay class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm animate-fade-in" />
       <DialogContent
-        class="fixed left-[50%] top-[50%] z-50 w-full max-w-lg translate-x-[-50%] translate-y-[-50%] rounded-xl border border-border-subtle bg-background-base p-6 shadow-dialog animate-zoom-in focus:outline-none"
+        class="fixed left-[50%] top-[50%] z-50 w-full max-w-lg translate-x-[-50%] translate-y-[-50%] rounded-xl border border-border-subtle-subtle bg-background-base p-6 shadow-dialog animate-zoom-in focus:outline-none"
       >
         <DialogTitle class="text-lg font-semibold text-foreground-primary m-0">
           {{ title }}

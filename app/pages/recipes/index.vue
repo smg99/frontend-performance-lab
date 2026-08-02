@@ -82,7 +82,7 @@ const filteredRecipes = computed(() => {
   font-size: 1.1rem;
   border-radius: 8px;
   border: 1px solid var(--border-color, #333);
-  background: var(--bg-surface, #1e1e1e);
+  background: var(--bg-background-surface, #1e1e1e);
   color: var(--text-primary, #fff);
   margin-bottom: 2rem;
 }
@@ -94,7 +94,7 @@ const filteredRecipes = computed(() => {
 .recipe-card {
   display: flex;
   flex-direction: column;
-  background: var(--bg-surface, #1e1e1e);
+  background: var(--bg-background-surface, #1e1e1e);
   border: 1px solid var(--border-color, #333);
   border-radius: 12px;
   padding: 1.5rem;

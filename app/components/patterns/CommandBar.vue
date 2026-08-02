@@ -18,12 +18,13 @@ withDefaults(defineProps<Props>(), {
     <input
       type="text"
       :placeholder="placeholder"
-      class="w-full h-12 pl-12 pr-16 bg-background-surface hover:bg-background-hover focus:bg-background-base rounded-xl border border-border-subtle focus:border-border-strong text-foreground-primary placeholder:text-foreground-muted transition-all duration-200 outline-none focus:ring-4 focus:ring-border-subtle/50 shadow-sm"
+      class="w-full h-12 pl-12 pr-16 bg-background-surface hover:bg-background-hover focus:bg-background-base rounded-xl border border-border-subtle-subtle focus:border-border-subtle-strong text-foreground-primary placeholder:text-foreground-muted transition-all duration-200 outline-none focus:ring-4 focus:ring-border-subtle/50 shadow-sm"
     />
     <div
       class="absolute right-4 flex items-center gap-1 text-xs font-mono text-foreground-muted pointer-events-none"
     >
-      <kbd class="px-1.5 py-0.5 rounded border border-border-subtle bg-background-base shadow-sm"
+      <kbd
+        class="px-1.5 py-0.5 rounded border border-border-subtle-subtle bg-background-base shadow-sm"
         ><CommandIcon class="w-3 h-3 inline" /> K</kbd
       >
     </div>

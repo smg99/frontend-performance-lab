@@ -30,7 +30,7 @@ defineProps<Props>()
       </h3>
       <div
         v-if="icon"
-        class="p-2 bg-background-base rounded-md border border-border-subtle text-foreground-secondary group-hover:text-primary transition-colors"
+        class="p-2 bg-background-base rounded-md border border-border-subtle-subtle text-foreground-secondary group-hover:text-primary transition-colors"
       >
         <component :is="icon" class="w-4 h-4" />
       </div>

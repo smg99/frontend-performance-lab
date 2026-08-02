@@ -1,16 +1,16 @@
 <template>
   <div
-    class="bg-background-surface border border-border-subtle rounded-xl overflow-hidden flex flex-col md:flex-row shadow-sm"
+    class="bg-background-surface border border-border-subtle-subtle rounded-xl overflow-hidden flex flex-col md:flex-row shadow-sm"
   >
     <!-- Left: Configuration -->
     <div
-      class="w-full md:w-1/3 border-b md:border-b-0 md:border-r border-border-subtle bg-background-base p-4 flex flex-col gap-4"
+      class="w-full md:w-1/3 border-b md:border-b-0 md:border-r border-border-subtle-subtle bg-background-base p-4 flex flex-col gap-4"
     >
       <div class="flex flex-col gap-2">
         <label class="text-sm font-medium text-foreground-primary">Select Tool</label>
         <select
           v-model="selectedTool"
-          class="w-full bg-background-surface border border-border-strong rounded-md px-3 py-2 text-sm text-foreground-primary focus:outline-none focus:ring-2 focus:ring-primary"
+          class="w-full bg-background-surface border border-border-subtle-strong rounded-md px-3 py-2 text-sm text-foreground-primary focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option v-for="tool in tools" :key="tool.id" :value="tool.name">{{ tool.name }}</option>
         </select>
@@ -23,7 +23,7 @@
         </div>
         <textarea
           v-model="inputJson"
-          class="w-full flex-1 min-h-[150px] bg-background-surface border border-border-strong rounded-md p-3 text-xs font-mono text-foreground-primary resize-y focus:outline-none focus:ring-2 focus:ring-primary"
+          class="w-full flex-1 min-h-[150px] bg-background-surface border border-border-subtle-strong rounded-md p-3 text-xs font-mono text-foreground-primary resize-y focus:outline-none focus:ring-2 focus:ring-primary"
           placeholder="{}"
         />
         <p v-if="jsonError" class="text-xs text-error mt-1">{{ jsonError }}</p>

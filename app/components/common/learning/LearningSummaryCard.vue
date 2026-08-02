@@ -1,14 +1,22 @@
 <template>
-  <div class="bg-card border border-border p-6 rounded-xl shadow-subtle flex flex-col gap-8 max-w-4xl w-full">
-    
+  <div
+    class="bg-background-base border border-border-subtle p-6 rounded-xl shadow-subtle flex flex-col gap-8 max-w-4xl w-full"
+  >
     <!-- Header -->
-    <div class="flex justify-between items-start border-b border-border pb-4">
+    <div class="flex justify-between items-start border-b border-border-subtle pb-4">
       <div>
-        <h2 class="text-2xl font-bold text-text-primary tracking-tight">{{ data.title }} Summary</h2>
-        <p class="text-sm text-text-secondary mt-1">Comprehensive architectural breakdown and production recommendations.</p>
+        <h2 class="text-2xl font-bold text-foreground-primary tracking-tight">
+          {{ data.title }} Summary
+        </h2>
+        <p class="text-sm text-foreground-muted mt-1">
+          Comprehensive architectural breakdown and production recommendations.
+        </p>
       </div>
       <div class="flex gap-2">
-        <button class="text-xs px-3 py-1.5 bg-surface border border-border rounded hover:bg-border/50 transition-colors" @click="expandAll = !expandAll">
+        <button
+          class="text-xs px-3 py-1.5 bg-background-surface border border-border-subtle rounded hover:bg-border/50 transition-colors"
+          @click="expandAll = !expandAll"
+        >
           {{ expandAll ? 'Collapse All' : 'Expand All' }}
         </button>
       </div>
@@ -19,7 +27,9 @@
       <h3 class="text-lg font-bold text-primary flex items-center gap-2 mb-2">
         <span>📖</span> What is it?
       </h3>
-      <p class="text-sm text-text-secondary leading-relaxed bg-surface p-4 rounded-lg border border-border">
+      <p
+        class="text-sm text-foreground-muted leading-relaxed bg-background-surface p-4 rounded-lg border border-border-subtle"
+      >
         {{ data.whatIsIt }}
       </p>
     </section>
@@ -29,7 +39,9 @@
       <h3 class="text-lg font-bold text-info flex items-center gap-2 mb-2">
         <span>⚙️</span> How it works
       </h3>
-      <p class="text-sm text-text-secondary leading-relaxed bg-surface p-4 rounded-lg border border-border">
+      <p
+        class="text-sm text-foreground-muted leading-relaxed bg-background-surface p-4 rounded-lg border border-border-subtle"
+      >
         {{ data.howItWorks }}
       </p>
     </section>
@@ -42,18 +54,18 @@
       <div class="bg-success/10 border border-success/30 p-4 rounded-lg">
         <h4 class="font-bold text-success mb-2">{{ data.recommendation.approach }}</h4>
         <p class="text-sm text-success-foreground mb-3">{{ data.recommendation.reasoning }}</p>
-        <CodeSnippet 
-          v-if="data.recommendation.codeSample" 
-          :code="data.recommendation.codeSample" 
-          title="Recommended Implementation" 
-          :force-expand="expandAll" 
+        <CodeSnippet
+          v-if="data.recommendation.codeSample"
+          :code="data.recommendation.codeSample"
+          title="Recommended Implementation"
+          :force-expand="expandAll"
         />
       </div>
     </section>
 
     <!-- Decision Matrix -->
     <section v-if="data.decisionMatrix">
-      <h3 class="text-lg font-bold text-text-primary flex items-center gap-2 mb-2">
+      <h3 class="text-lg font-bold text-foreground-primary flex items-center gap-2 mb-2">
         <span>⚖️</span> Decision Matrix
       </h3>
       <DecisionMatrix :rows="data.decisionMatrix" />
@@ -65,33 +77,40 @@
         <span>⚠️</span> Common Mistakes
       </h3>
       <div class="space-y-4">
-        <div v-for="(mistake, idx) in data.commonMistakes" :key="idx" class="bg-surface border border-border p-4 rounded-lg">
+        <div
+          v-for="(mistake, idx) in data.commonMistakes"
+          :key="idx"
+          class="bg-background-surface border border-border-subtle p-4 rounded-lg"
+        >
           <div class="flex gap-2 items-start mb-2">
             <span class="text-danger mt-0.5">❌</span>
             <div>
               <span class="font-bold text-sm block">{{ mistake.problem }}</span>
-              <span class="text-xs text-text-secondary">{{ mistake.impact }}</span>
+              <span class="text-xs text-foreground-muted">{{ mistake.impact }}</span>
             </div>
           </div>
-          <div class="flex gap-2 items-start pt-2 border-t border-border">
+          <div class="flex gap-2 items-start pt-2 border-t border-border-subtle">
             <span class="text-success mt-0.5">✅</span>
             <div class="flex-1">
               <span class="text-sm">{{ mistake.fix }}</span>
             </div>
           </div>
-          
-          <div v-if="mistake.badCode || mistake.goodCode" class="mt-4 pt-4 border-t border-border grid grid-cols-1 md:grid-cols-2 gap-4">
-            <CodeSnippet 
-              v-if="mistake.badCode" 
-              :code="mistake.badCode" 
-              title="❌ Avoid" 
-              :force-expand="expandAll" 
+
+          <div
+            v-if="mistake.badCode || mistake.goodCode"
+            class="mt-4 pt-4 border-t border-border-subtle grid grid-cols-1 md:grid-cols-2 gap-4"
+          >
+            <CodeSnippet
+              v-if="mistake.badCode"
+              :code="mistake.badCode"
+              title="❌ Avoid"
+              :force-expand="expandAll"
             />
-            <CodeSnippet 
-              v-if="mistake.goodCode" 
-              :code="mistake.goodCode" 
-              title="✅ Do This Instead" 
-              :force-expand="expandAll" 
+            <CodeSnippet
+              v-if="mistake.goodCode"
+              :code="mistake.goodCode"
+              title="✅ Do This Instead"
+              :force-expand="expandAll"
             />
           </div>
         </div>
@@ -104,11 +123,11 @@
         <span>🎯</span> Interview Questions
       </h3>
       <div class="space-y-4">
-        <InterviewQuestion 
-          v-for="(q, idx) in data.interviewQuestions" 
-          :key="idx" 
-          :question="q" 
-          :force-expand="expandAll" 
+        <InterviewQuestion
+          v-for="(q, idx) in data.interviewQuestions"
+          :key="idx"
+          :question="q"
+          :force-expand="expandAll"
         />
       </div>
     </section>
@@ -118,11 +137,12 @@
       <h3 class="text-lg font-bold text-warning flex items-center gap-2 mb-2">
         <span>💡</span> Pro Tips
       </h3>
-      <ul class="list-disc pl-5 space-y-2 text-sm text-text-secondary bg-surface p-4 rounded-lg border border-border">
+      <ul
+        class="list-disc pl-5 space-y-2 text-sm text-foreground-muted bg-background-surface p-4 rounded-lg border border-border-subtle"
+      >
         <li v-for="(tip, idx) in data.proTips" :key="idx">{{ tip }}</li>
       </ul>
     </section>
-
   </div>
 </template>
 

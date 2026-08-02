@@ -7,8 +7,10 @@
 
     <!-- 1. The Rendering Pipeline -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">1. The Browser Rendering Pipeline</h3>
-      <p class="text-text-secondary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">
+        1. The Browser Rendering Pipeline
+      </h3>
+      <p class="text-foreground-muted mb-4">
         Every time a web page loads or updates, the browser executes a precise sequence of steps to
         convert HTML/CSS/JS into pixels on the screen. Understanding this pipeline is the key to
         mastering rendering performance.
@@ -18,10 +20,10 @@
 
     <!-- 2. Layout Thrashing -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">
         2. Layout Thrashing (Forced Synchronous Layout)
       </h3>
-      <p class="text-text-secondary mb-4">
+      <p class="text-foreground-muted mb-4">
         Reading a layout property (like <code>offsetHeight</code>) and immediately writing to the
         DOM (like <code>style.height</code>) inside a loop forces the browser to recalculate the
         entire layout synchronously over and over again. This destroys performance.
@@ -31,10 +33,10 @@
 
     <!-- 3. Animation Performance (Layout vs Composite) -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">
         3. Animation Performance: Layout vs Composite
       </h3>
-      <p class="text-text-secondary mb-4">
+      <p class="text-foreground-muted mb-4">
         Animating properties like <code>top</code>, <code>left</code>, or
         <code>width</code> triggers Layout and Paint for every frame. Animating properties like
         <code>transform</code> or <code>opacity</code> triggers only Composite, running natively on
@@ -45,8 +47,8 @@
 
     <!-- 4. Paint Flashing -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">4. Paint Flashing Simulation</h3>
-      <p class="text-text-secondary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">4. Paint Flashing Simulation</h3>
+      <p class="text-foreground-muted mb-4">
         A simulation of Chrome DevTools' "Paint Flashing" feature. Observe how changing different
         properties causes the browser to repaint localized rectangles or the entire screen.
       </p>

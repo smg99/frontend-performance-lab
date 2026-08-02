@@ -7,8 +7,10 @@
 
     <!-- 1. Garbage Collection (Heap & Stack) -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">1. Garbage Collection: Mark & Sweep</h3>
-      <p class="text-text-secondary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">
+        1. Garbage Collection: Mark & Sweep
+      </h3>
+      <p class="text-foreground-muted mb-4">
         JavaScript uses an automatic memory management system called a Garbage Collector. It traces
         paths from root objects (like the `window`) to find active memory. Anything disconnected
         (unreachable) gets swept away.
@@ -18,8 +20,8 @@
 
     <!-- 2. Memory Leak Laboratory -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">2. Memory Leak Laboratory</h3>
-      <p class="text-text-secondary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">2. Memory Leak Laboratory</h3>
+      <p class="text-foreground-muted mb-4">
         Memory leaks occur when you accidentally keep references to objects that are no longer
         needed. The Garbage Collector cannot free them, causing the Heap to grow until the browser
         crashes.
@@ -29,8 +31,8 @@
 
     <!-- 3. Weak References -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">3. Weak References</h3>
-      <p class="text-text-secondary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">3. Weak References</h3>
+      <p class="text-foreground-muted mb-4">
         A <code>WeakMap</code> or <code>WeakRef</code> allows you to reference an object without
         preventing it from being garbage collected. They are essential for building caches that
         don't leak memory.
@@ -40,8 +42,10 @@
 
     <!-- 4. LCP Visualizer -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">4. Largest Contentful Paint (LCP)</h3>
-      <p class="text-text-secondary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">
+        4. Largest Contentful Paint (LCP)
+      </h3>
+      <p class="text-foreground-muted mb-4">
         LCP measures when the largest text block or image element becomes visible. A fast LCP
         reassures the user that the page is useful.
       </p>
@@ -50,8 +54,10 @@
 
     <!-- 5. CLS Visualizer -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">5. Cumulative Layout Shift (CLS)</h3>
-      <p class="text-text-secondary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">
+        5. Cumulative Layout Shift (CLS)
+      </h3>
+      <p class="text-foreground-muted mb-4">
         CLS measures visual stability. If elements jump around without user input (like a
         late-loading image pushing text down), it causes a frustrating user experience.
       </p>
@@ -60,8 +66,10 @@
 
     <!-- 6. INP Visualizer -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">6. Interaction to Next Paint (INP)</h3>
-      <p class="text-text-secondary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">
+        6. Interaction to Next Paint (INP)
+      </h3>
+      <p class="text-foreground-muted mb-4">
         INP measures responsiveness. It captures the latency of every click, tap, and keyboard
         interaction throughout the lifespan of the page.
       </p>

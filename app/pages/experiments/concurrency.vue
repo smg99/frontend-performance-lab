@@ -7,8 +7,8 @@
 
     <!-- 1. Event Loop Architecture -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">1. Event Loop Architecture</h3>
-      <p class="text-text-secondary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">1. Event Loop Architecture</h3>
+      <p class="text-foreground-muted mb-4">
         JavaScript runs on a single main thread. The Event Loop is responsible for executing code,
         collecting and processing events, and executing queued sub-tasks.
       </p>
@@ -17,8 +17,8 @@
 
     <!-- 2. Main Thread Blocker -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">2. Main Thread Blocker</h3>
-      <p class="text-text-secondary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">2. Main Thread Blocker</h3>
+      <p class="text-foreground-muted mb-4">
         If you execute heavy, synchronous work, the entire browser tab freezes. Animations stop,
         clicks are ignored, and FPS drops to 0. Try starting the animation below, then block the
         main thread.
@@ -28,8 +28,8 @@
 
     <!-- 2. Web Worker Demo -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">2. Web Worker Offloading</h3>
-      <p class="text-text-secondary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">2. Web Worker Offloading</h3>
+      <p class="text-foreground-muted mb-4">
         Web Workers run on separate background threads. By offloading heavy work (like sorting or
         hashing), the main thread remains free to render animations at a buttery smooth 60 FPS.
       </p>
@@ -38,8 +38,8 @@
 
     <!-- 3. Event Loop Queues -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">3. The Event Loop Queues</h3>
-      <p class="text-text-secondary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">3. The Event Loop Queues</h3>
+      <p class="text-foreground-muted mb-4">
         The Event Loop doesn't just execute code top-to-bottom. It maintains separate queues for
         tasks.
         <strong>Microtasks</strong> (Promises, <code>queueMicrotask</code>) are given extreme
@@ -51,8 +51,8 @@
 
     <!-- 4. Worker Pool -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">4. Worker Pool</h3>
-      <p class="text-text-secondary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">4. Worker Pool</h3>
+      <p class="text-foreground-muted mb-4">
         Web Workers are heavy. Instead of creating a new worker for every small task, a Worker Pool
         allocates tasks to a fixed number of workers.
       </p>
@@ -61,8 +61,10 @@
 
     <!-- 5. requestAnimationFrame vs requestIdleCallback -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">5. Frame Scheduling (rAF vs rIC)</h3>
-      <p class="text-text-secondary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">
+        5. Frame Scheduling (rAF vs rIC)
+      </h3>
+      <p class="text-foreground-muted mb-4">
         Compare how visual updates (rAF) sync with the display refresh rate, while background tasks
         (rIC) only execute during idle time.
       </p>
@@ -71,8 +73,8 @@
 
     <!-- 6. Long Task Monitor -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">6. Long Task Monitor</h3>
-      <p class="text-text-secondary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">6. Long Task Monitor</h3>
+      <p class="text-foreground-muted mb-4">
         Detects tasks exceeding 50ms using the PerformanceObserver API.
       </p>
       <LongTaskMonitor />
@@ -80,8 +82,10 @@
 
     <!-- 7. Timeline Visualizer -->
     <section>
-      <h3 class="text-2xl font-bold text-text-primary mb-4">7. DevTools Timeline Simulation</h3>
-      <p class="text-text-secondary mb-4">
+      <h3 class="text-2xl font-bold text-foreground-primary mb-4">
+        7. DevTools Timeline Simulation
+      </h3>
+      <p class="text-foreground-muted mb-4">
         A visual breakdown of how the browser schedules the rendering pipeline across threads during
         a typical frame.
       </p>

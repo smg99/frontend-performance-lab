@@ -1,12 +1,14 @@
 <template>
-  <div class="h-full flex flex-col bg-background-surface border-r border-border-subtle relative">
+  <div
+    class="h-full flex flex-col bg-background-surface border-r border-border-subtle-subtle relative"
+  >
     <div
-      class="p-2 border-b border-border-subtle flex justify-between items-center bg-background-base text-sm"
+      class="p-2 border-b border-border-subtle-subtle flex justify-between items-center bg-background-base text-sm"
     >
       <div class="flex items-center gap-2">
         <select
           v-model="localLang"
-          class="bg-background-surface text-foreground-primary border border-border-subtle rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
+          class="bg-background-surface text-foreground-primary border border-border-subtle-subtle rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
         >
           <option value="vue">Vue</option>
           <option value="js">JavaScript</option>
@@ -15,7 +17,7 @@
           <option value="tsx">React (TSX)</option>
         </select>
         <button
-          class="text-xs px-2 py-1 rounded text-foreground-muted hover:text-foreground-primary transition-colors border border-transparent hover:border-border-subtle"
+          class="text-xs px-2 py-1 rounded text-foreground-muted hover:text-foreground-primary transition-colors border border-transparent hover:border-border-subtle-subtle"
           @click="toggleMinimap"
           title="Toggle Minimap"
         >

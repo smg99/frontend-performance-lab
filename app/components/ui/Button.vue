@@ -37,11 +37,11 @@ const variantClasses = computed(() => {
     case 'default':
       return 'bg-primary text-primary-foreground hover:bg-primary-hover shadow-sm'
     case 'secondary':
-      return 'bg-background-surface hover:bg-background-hover text-foreground-primary border border-border-subtle shadow-sm'
+      return 'bg-background-surface hover:bg-background-hover text-foreground-primary border border-border-subtle-subtle shadow-sm'
     case 'ghost':
       return 'hover:bg-background-hover text-foreground-primary'
     case 'outline':
-      return 'border border-border-strong bg-transparent hover:bg-background-hover text-foreground-primary shadow-sm'
+      return 'border border-border-subtle-strong bg-transparent hover:bg-background-hover text-foreground-primary shadow-sm'
     case 'destructive':
       return 'bg-danger text-white hover:bg-danger/90 shadow-sm'
     default:

@@ -4,7 +4,7 @@
       <!-- Node: IDE -->
       <div class="flex flex-col items-center">
         <div
-          class="w-24 h-24 rounded-2xl bg-background-surface border border-border-strong flex items-center justify-center shadow-md relative group"
+          class="w-24 h-24 rounded-2xl bg-background-surface border border-border-subtle-strong flex items-center justify-center shadow-md relative group"
         >
           <div
             class="absolute inset-0 bg-primary/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"
@@ -139,22 +139,22 @@
       <!-- Node: Knowledge Graph -->
       <div class="flex flex-col gap-2">
         <div
-          class="px-4 py-2 rounded border border-border-strong bg-background-surface text-sm font-medium text-foreground-primary"
+          class="px-4 py-2 rounded border border-border-subtle-strong bg-background-surface text-sm font-medium text-foreground-primary"
         >
           Experiments
         </div>
         <div
-          class="px-4 py-2 rounded border border-border-strong bg-background-surface text-sm font-medium text-foreground-primary"
+          class="px-4 py-2 rounded border border-border-subtle-strong bg-background-surface text-sm font-medium text-foreground-primary"
         >
           Browser APIs
         </div>
         <div
-          class="px-4 py-2 rounded border border-border-strong bg-background-surface text-sm font-medium text-foreground-primary"
+          class="px-4 py-2 rounded border border-border-subtle-strong bg-background-surface text-sm font-medium text-foreground-primary"
         >
           Recipes
         </div>
         <div
-          class="px-4 py-2 rounded border border-border-strong bg-background-surface text-sm font-medium text-foreground-primary"
+          class="px-4 py-2 rounded border border-border-subtle-strong bg-background-surface text-sm font-medium text-foreground-primary"
         >
           Analyzer
         </div>

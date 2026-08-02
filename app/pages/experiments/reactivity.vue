@@ -5,20 +5,22 @@
       description="Trace how state mutations propagate through components and trigger renders."
     />
 
-    <div class="flex items-center space-x-4 bg-surface p-4 rounded-xl border border-border">
+    <div
+      class="flex items-center space-x-4 bg-background-surface p-4 rounded-xl border border-border-subtle"
+    >
       <span class="font-medium">Advanced Mode:</span>
       <button
         :class="[
           'px-4 py-1.5 rounded-md text-sm font-semibold transition-colors',
           advancedMode
             ? 'bg-danger text-white'
-            : 'bg-background border border-border text-text-secondary hover:text-text-primary'
+            : 'bg-background border border-border-subtle text-foreground-muted hover:text-foreground-primary'
         ]"
         @click="advancedMode = !advancedMode"
       >
         {{ advancedMode ? 'Enabled' : 'Disabled' }}
       </button>
-      <span class="text-sm text-text-secondary ml-4"
+      <span class="text-sm text-foreground-muted ml-4"
         >Reveals internal APIs (track, trigger, WeakMap, EffectScope)</span
       >
     </div>
@@ -28,31 +30,35 @@
 
     <!-- Section 1: Ref vs Reactive -->
     <section>
-      <h3 class="text-2xl font-bold mb-4 text-text-primary">1. Ref vs Reactive</h3>
+      <h3 class="text-2xl font-bold mb-4 text-foreground-primary">1. Ref vs Reactive</h3>
       <RefVsReactive :advanced="advancedMode" />
     </section>
 
     <!-- Section 2: Computed vs Method -->
     <section>
-      <h3 class="text-2xl font-bold mb-4 text-text-primary">2. Computed vs Method Benchmark</h3>
+      <h3 class="text-2xl font-bold mb-4 text-foreground-primary">
+        2. Computed vs Method Benchmark
+      </h3>
       <ComputedVsMethod :advanced="advancedMode" />
     </section>
 
     <!-- Section 3: Watch vs WatchEffect -->
     <section>
-      <h3 class="text-2xl font-bold mb-4 text-text-primary">3. Watch vs WatchEffect</h3>
+      <h3 class="text-2xl font-bold mb-4 text-foreground-primary">3. Watch vs WatchEffect</h3>
       <WatchVsWatchEffect :advanced="advancedMode" />
     </section>
 
     <!-- Section 4: Dependency Graph -->
     <section>
-      <h3 class="text-2xl font-bold mb-4 text-text-primary">4. Interactive Dependency Graph</h3>
+      <h3 class="text-2xl font-bold mb-4 text-foreground-primary">
+        4. Interactive Dependency Graph
+      </h3>
       <DependencyGraph :advanced="advancedMode" />
     </section>
 
     <!-- Section 5: Effect Timeline -->
     <section>
-      <h3 class="text-2xl font-bold mb-4 text-text-primary">5. Effect Timeline</h3>
+      <h3 class="text-2xl font-bold mb-4 text-foreground-primary">5. Effect Timeline</h3>
       <EffectTimeline :advanced="advancedMode" />
     </section>
 
@@ -74,13 +80,13 @@
 
     <!-- Section 7: Common Mistakes -->
     <section>
-      <h3 class="text-2xl font-bold mb-4 text-text-primary">6. Common Mistakes</h3>
+      <h3 class="text-2xl font-bold mb-4 text-foreground-primary">6. Common Mistakes</h3>
       <CommonMistakes />
     </section>
 
     <!-- Section 8: Takeaways -->
     <section>
-      <h3 class="text-2xl font-bold mb-4 text-text-primary">Performance Takeaways</h3>
+      <h3 class="text-2xl font-bold mb-4 text-foreground-primary">Performance Takeaways</h3>
       <PerformanceSummary />
     </section>
 

@@ -23,14 +23,14 @@ const props = withDefaults(defineProps<Props>(), {
 <template>
   <AccordionRoot
     :type="type"
-    :class="cn('w-full border-b border-border-subtle', props.class)"
+    :class="cn('w-full border-b border-border-subtle-subtle', props.class)"
     collapsible
   >
     <AccordionItem
       v-for="item in items"
       :key="item.value"
       :value="item.value"
-      class="border-t border-border-subtle"
+      class="border-t border-border-subtle-subtle"
     >
       <AccordionHeader class="flex">
         <AccordionTrigger

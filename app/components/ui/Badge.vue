@@ -3,7 +3,18 @@ import { computed } from 'vue'
 import { cn } from '../../utils/cn'
 
 interface Props {
-  variant?: 'default' | 'success' | 'warning' | 'danger' | 'outline' | 'emerald' | 'purple' | 'orange' | 'blue' | 'cyan' | 'indigo'
+  variant?:
+    | 'default'
+    | 'success'
+    | 'warning'
+    | 'danger'
+    | 'outline'
+    | 'emerald'
+    | 'purple'
+    | 'orange'
+    | 'blue'
+    | 'cyan'
+    | 'indigo'
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -21,7 +32,7 @@ const variantClasses = computed(() => {
     case 'danger':
       return 'bg-danger-bg text-danger border-danger-border'
     case 'outline':
-      return 'text-foreground-primary border-border-strong bg-transparent'
+      return 'text-foreground-primary border-border-subtle-strong bg-transparent'
     case 'emerald':
       return 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
     case 'purple':

@@ -15,7 +15,7 @@ defineProps<Props>()
   <div
     :class="
       cn(
-        'flex flex-col items-center justify-center p-12 text-center rounded-2xl border border-dashed border-border-strong bg-background-surface/50',
+        'flex flex-col items-center justify-center p-12 text-center rounded-2xl border border-dashed border-border-subtle-strong bg-background-surface/50',
         $props.class
       )
     "

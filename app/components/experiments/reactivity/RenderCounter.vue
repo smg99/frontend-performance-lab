@@ -1,12 +1,14 @@
 <template>
-  <div class="fixed bottom-4 right-4 bg-card border border-border p-4 rounded-xl shadow-subtle-dark z-50 flex items-center gap-4">
+  <div
+    class="fixed bottom-4 right-4 bg-background-base border border-border-subtle p-4 rounded-xl shadow-subtle-dark z-50 flex items-center gap-4"
+  >
     <div class="flex flex-col">
-      <span class="text-xs text-text-secondary uppercase font-semibold">Global Renders</span>
+      <span class="text-xs text-foreground-muted uppercase font-semibold">Global Renders</span>
       <span ref="countNode" class="text-xl font-bold font-mono text-primary">0</span>
     </div>
-    <div class="h-8 w-px bg-border"/>
+    <div class="h-8 w-px bg-border" />
     <div class="flex flex-col">
-      <span class="text-xs text-text-secondary uppercase font-semibold">Last Render</span>
+      <span class="text-xs text-foreground-muted uppercase font-semibold">Last Render</span>
       <span ref="timeNode" class="text-sm font-mono text-success">0.0 ms</span>
     </div>
   </div>
@@ -27,7 +29,7 @@ onUpdated(() => {
   time = now - lastUpdate
   lastUpdate = now
   count++
-  
+
   if (countNode.value) countNode.value.textContent = count.toString()
   if (timeNode.value) {
     timeNode.value.textContent = `${time.toFixed(1)} ms`

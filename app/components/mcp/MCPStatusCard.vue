@@ -3,7 +3,7 @@
     <div
       v-for="(stat, index) in statsList"
       :key="index"
-      class="bg-background-surface border border-border-subtle rounded-xl p-5 shadow-sm"
+      class="bg-background-surface border border-border-subtle-subtle rounded-xl p-5 shadow-sm"
     >
       <div class="flex items-center justify-between mb-2">
         <h4 class="text-sm font-medium text-foreground-muted">{{ stat.label }}</h4>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-background-surface border border-border-subtle rounded-xl shadow-sm overflow-hidden"
+    class="bg-background-surface border border-border-subtle-subtle rounded-xl shadow-sm overflow-hidden"
   >
     <div
       class="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gradient-to-br from-background-surface to-background-base"
@@ -20,22 +20,24 @@
         <div class="flex flex-col gap-2">
           <div>
             <div class="flex justify-between items-end text-sm mb-1">
-              <span class="text-text-secondary font-medium">Performance Score</span>
-              <span class="font-bold text-text-primary">{{ report.performanceScore }}/100</span>
+              <span class="text-foreground-muted font-medium">Performance Score</span>
+              <span class="font-bold text-foreground-primary"
+                >{{ report.performanceScore }}/100</span
+              >
             </div>
             <div
-              class="w-48 bg-background-base rounded-full h-2 overflow-hidden border border-border-subtle"
+              class="w-48 bg-background-base rounded-full h-2 overflow-hidden border border-border-subtle-subtle"
             >
               <div class="h-full bg-primary" :style="{ width: report.performanceScore + '%' }" />
             </div>
           </div>
           <div>
             <div class="flex justify-between items-end text-sm mb-1">
-              <span class="text-text-secondary font-medium">AI Confidence</span>
-              <span class="font-bold text-text-primary">{{ report.confidenceScore }}%</span>
+              <span class="text-foreground-muted font-medium">AI Confidence</span>
+              <span class="font-bold text-foreground-primary">{{ report.confidenceScore }}%</span>
             </div>
             <div
-              class="w-48 bg-background-base rounded-full h-2 overflow-hidden border border-border-subtle"
+              class="w-48 bg-background-base rounded-full h-2 overflow-hidden border border-border-subtle-subtle"
             >
               <div class="h-full bg-info" :style="{ width: report.confidenceScore + '%' }" />
             </div>
@@ -45,21 +47,25 @@
 
       <!-- Estimates Grid -->
       <div
-        class="grid grid-cols-2 gap-x-8 gap-y-4 text-sm bg-background-base p-4 rounded-lg border border-border-subtle"
+        class="grid grid-cols-2 gap-x-8 gap-y-4 text-sm bg-background-base p-4 rounded-lg border border-border-subtle-subtle"
       >
         <div>
           <span class="text-text-muted text-xs uppercase tracking-wide block mb-0.5">FPS Gain</span>
-          <span class="text-text-primary font-medium">{{ report.estimates.performanceGain }}</span>
+          <span class="text-foreground-primary font-medium">{{
+            report.estimates.performanceGain
+          }}</span>
         </div>
         <div>
           <span class="text-text-muted text-xs uppercase tracking-wide block mb-0.5">Memory</span>
-          <span class="text-text-primary font-medium">{{ report.estimates.memoryReduction }}</span>
+          <span class="text-foreground-primary font-medium">{{
+            report.estimates.memoryReduction
+          }}</span>
         </div>
         <div>
           <span class="text-text-muted text-xs uppercase tracking-wide block mb-0.5"
             >Rendering</span
           >
-          <span class="text-text-primary font-medium">{{
+          <span class="text-foreground-primary font-medium">{{
             report.estimates.renderingImprovement
           }}</span>
         </div>
@@ -67,7 +73,7 @@
           <span class="text-text-muted text-xs uppercase tracking-wide block mb-0.5"
             >Est. Time</span
           >
-          <span class="text-text-primary font-medium">{{ report.estimates.timeToFix }}</span>
+          <span class="text-foreground-primary font-medium">{{ report.estimates.timeToFix }}</span>
         </div>
       </div>
     </div>
