@@ -1,0 +1,50 @@
+# Publish Frontend Performance Lab CLI to npm using OIDC Trusted Publisher
+name: Publish CLI
+
+# Trigger only on tag pushes that match v*
+on:
+  push:
+    tags:
+      - 'v*'
+
+# Permissions required for OIDC token to authenticate with npm registry
+permissions:
+  contents: read # read repository contents
+  id-token: write # generate OIDC token for npm Trusted Publisher
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        # Ensure all npm commands run in the CLI package directory
+        working-directory: packages/cli
+
+    steps:
+      # Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up Node.js 22 and configure npm to use the public registry
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: https://registry.npmjs.org
+          # Enable OIDC auth for npm (no token needed)
+          cache: 'npm'
+
+      # Install all dependencies without modifying lockfile
+      - name: Install dependencies
+        run: npm ci
+
+      # Build the CLI (ensure compiled output is ready for publishing)
+      - name: Build CLI
+        run: npm run build
+
+      # Publish to npm using OIDC token (Trusted Publisher)
+      - name: Publish to npm
+        run: npm publish --access public
+        # npm will automatically use the OIDC token provided by GitHub Actions
+        env:
+          NPM_CONFIG_PROVENANCE: true
