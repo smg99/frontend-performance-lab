@@ -10,7 +10,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
+    "postinstall": "nuxt prepare || echo \"nuxt not found, skipping postinstall\"",
     "test": "vitest --passWithNoTests",
     "test:watch": "vitest --watch --passWithNoTests",
     "test:coverage": "vitest --coverage --passWithNoTests",
