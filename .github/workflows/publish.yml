@@ -29,10 +29,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
+          node-version: '22'
           scope: '@frontend-performance-lab'
-          registry-url: https://registry.npmjs.org
+          registry-url: https://registry.npmjs.org/
           # Enable OIDC auth for npm (no token needed)
           cache: 'npm'
+          # Optional fallback token (OIDC supplies token automatically)
+          # auth-token: ${{ secrets.NPM_TOKEN }}
 
       # Install all dependencies without modifying lockfile
       - name: Install dependencies
