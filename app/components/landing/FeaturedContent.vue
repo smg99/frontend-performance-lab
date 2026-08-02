@@ -9,7 +9,7 @@
       </p>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-10">
       <!-- 1 Experiment -->
       <NuxtLink
         v-if="featuredExperiment"
@@ -18,7 +18,7 @@
       >
         <FeatureCard
           :title="featuredExperiment.title"
-          :description="featuredExperiment.summary"
+          :description="featuredExperiment.description"
           :icon="BeakerIcon"
           class="h-full"
         >

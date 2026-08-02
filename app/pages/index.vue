@@ -1,6 +1,8 @@
 <template>
   <div class="min-h-screen bg-background-base flex flex-col">
     <HeroSection />
+    <FrameworkSupport />
+    <WhySection />
     <ExplorePlatform />
     <FeaturedContent />
     <CallToAction />
@@ -10,6 +12,8 @@
 
 <script setup lang="ts">
 import HeroSection from '../components/landing/HeroSection.vue'
+import FrameworkSupport from '../components/landing/FrameworkSupport.vue'
+import WhySection from '../components/landing/WhySection.vue'
 import ExplorePlatform from '../components/landing/ExplorePlatform.vue'
 import FeaturedContent from '../components/landing/FeaturedContent.vue'
 import CallToAction from '../components/landing/CallToAction.vue'

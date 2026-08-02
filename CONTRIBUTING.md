@@ -8,11 +8,27 @@ Welcome! This project is designed as an AI-first, framework-independent knowledg
 2. **Framework Agnostic**: The `shared/` directory must contain ZERO Nuxt, Vue, or DOM imports. It is pure TypeScript.
 3. **Strongly Typed**: Every experiment must adhere to the `ExperimentManifest` schema defined in `shared/schemas/`.
 
-## Development Setup
+## Repository Structure
 
-1. **Install dependencies**: `npm install`
-2. **Run Dev Server**: `npm run dev`
-3. **Run MCP Server**: `npx @modelcontextprotocol/inspector@latest npx tsx mcp/server.ts`
+- `packages/` - Standalone npm packages, like the official CLI.
+- `shared/` - Core AST analyzer, knowledge graph, and schemas (framework-independent).
+- `app/` - The Nuxt 4 web application and dashboard.
+- `mcp/` - The Model Context Protocol (stdio) server logic.
+- `docs/` - Architecture decisions, checklists, and migration guides.
+
+## Development Workflow
+
+To contribute to the core analyzer rules, MCP server, or documentation, you will need to clone the repository:
+
+```bash
+git clone https://github.com/smg99/frontend-performance-lab.git
+cd frontend-performance-lab
+npm install
+npm run dev
+npm run validate
+npm test
+npm run build
+```
 
 ## Pull Request Requirements
 

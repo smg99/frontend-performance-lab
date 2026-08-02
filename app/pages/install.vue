@@ -1,19 +1,45 @@
 <template>
   <div class="min-h-screen bg-background-base text-foreground-primary">
     <!-- Header -->
-    <section class="py-12 border-b border-border-subtle-subtle bg-background-surface/30">
+    <section class="py-16 md:py-24 border-b border-border-subtle-subtle bg-background-surface/30">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <PageHeader>
-          <div class="flex flex-col items-center text-center">
-            <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-              Install Frontend Performance Lab
-            </h1>
-            <p class="text-lg text-foreground-muted max-w-2xl mx-auto mb-8">
-              Connect your AI IDE directly to the Frontend Performance Lab's AST Analyzer and
-              Knowledge Graph in two minutes.
-            </p>
+        <div class="flex flex-col items-center text-center">
+          <div class="flex flex-wrap justify-center gap-2 mb-6">
+            <Badge variant="secondary">CLI First</Badge>
+            <Badge variant="primary">MCP Ready</Badge>
+            <Badge variant="secondary">Cursor</Badge>
+            <Badge variant="secondary">Claude</Badge>
+            <Badge variant="secondary">VS Code</Badge>
+            <Badge variant="outline">Open Source</Badge>
           </div>
-        </PageHeader>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+            Install Frontend Performance Lab
+          </h1>
+          <p
+            class="text-lg md:text-xl text-foreground-muted max-w-2xl mx-auto mb-10 leading-relaxed"
+          >
+            Bring AI-powered frontend performance analysis directly into Cursor, Claude, VS Code and
+            every MCP-compatible IDE. Ready in under 2 minutes.
+          </p>
+          <div class="w-full max-w-md mx-auto mb-8">
+            <CodeSnippet code="npm install -g @frontend-performance-lab/cli" />
+          </div>
+          <div class="flex flex-wrap justify-center gap-4">
+            <button
+              class="inline-flex items-center justify-center h-12 px-6 text-sm font-medium bg-primary text-primary-foreground rounded-lg shadow-md hover:bg-primary-hover hover:shadow-lg transition-all"
+              @click="copyInstall"
+            >
+              <CopyIcon class="w-4 h-4 mr-2" /> Copy Install Command
+            </button>
+            <a
+              href="https://github.com/smg99/frontend-performance-lab"
+              target="_blank"
+              class="inline-flex items-center justify-center h-12 px-6 text-sm font-medium bg-background-surface border border-border-subtle-strong text-foreground-primary rounded-lg shadow-sm hover:bg-background-hover hover:border-primary/50 transition-all"
+            >
+              ⭐ Star on GitHub
+            </a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -81,46 +107,35 @@
       </section>
 
       <!-- Verification -->
-      <section class="bg-background-surface/50 border border-border-subtle-subtle rounded-xl p-8">
-        <h2 class="text-2xl font-bold mb-6">Verification Checklist</h2>
-        <div class="space-y-4">
-          <label class="flex items-start gap-3 cursor-pointer group">
-            <input
-              type="checkbox"
-              class="mt-1 w-4 h-4 text-primary bg-background-base border-border-subtle-strong rounded focus:ring-primary focus:ring-2"
-            />
-            <span class="text-foreground-primary group-hover:text-primary transition-colors"
-              >I successfully ran `npm install -g @frontend-performance-lab/cli`.</span
-            >
-          </label>
-          <label class="flex items-start gap-3 cursor-pointer group">
-            <input
-              type="checkbox"
-              class="mt-1 w-4 h-4 text-primary bg-background-base border-border-subtle-strong rounded focus:ring-primary focus:ring-2"
-            />
-            <span class="text-foreground-primary group-hover:text-primary transition-colors"
-              >I completed the `fpl setup` wizard.</span
-            >
-          </label>
-          <label class="flex items-start gap-3 cursor-pointer group">
-            <input
-              type="checkbox"
-              class="mt-1 w-4 h-4 text-primary bg-background-base border-border-subtle-strong rounded focus:ring-primary focus:ring-2"
-            />
-            <span class="text-foreground-primary group-hover:text-primary transition-colors"
-              >Running `fpl doctor` shows all checks passing (100% healthy).</span
-            >
-          </label>
-          <label class="flex items-start gap-3 cursor-pointer group">
-            <input
-              type="checkbox"
-              class="mt-1 w-4 h-4 text-primary bg-background-base border-border-subtle-strong rounded focus:ring-primary focus:ring-2"
-            />
-            <span class="text-foreground-primary group-hover:text-primary transition-colors"
-              >My IDE shows a green "Connected" status for `frontend-performance-lab`.</span
-            >
-          </label>
-        </div>
+      <section>
+        <h2 class="text-2xl font-bold mb-6">Verify Installation</h2>
+        <Card class="p-6 border-l-4 border-l-success">
+          <p class="text-sm text-foreground-muted mb-4">
+            Run the doctor command to verify everything is working.
+          </p>
+          <div class="mb-4">
+            <CodeSnippet code="fpl doctor" />
+          </div>
+          <div
+            class="bg-background-base p-4 rounded border border-border-subtle-subtle font-mono text-sm space-y-2"
+          >
+            <div class="text-success flex items-center gap-2">
+              <CheckIcon class="w-4 h-4" /> CLI Installed
+            </div>
+            <div class="text-success flex items-center gap-2">
+              <CheckIcon class="w-4 h-4" /> Node Compatible
+            </div>
+            <div class="text-success flex items-center gap-2">
+              <CheckIcon class="w-4 h-4" /> MCP Ready
+            </div>
+            <div class="text-success flex items-center gap-2">
+              <CheckIcon class="w-4 h-4" /> Knowledge Graph Loaded
+            </div>
+            <div class="text-success flex items-center gap-2">
+              <CheckIcon class="w-4 h-4" /> Analyzer Ready
+            </div>
+          </div>
+        </Card>
       </section>
 
       <!-- Advanced Manual Configuration -->
@@ -156,9 +171,10 @@
 </template>
 
 <script setup lang="ts">
-import { CodeIcon } from 'lucide-vue-next'
-import PageHeader from '../components/patterns/PageHeader.vue'
+import { CodeIcon, CopyIcon, CheckIcon } from 'lucide-vue-next'
+
 import Card from '../components/ui/Card.vue'
+import Badge from '../components/ui/Badge.vue'
 import CodeSnippet from '../components/common/learning/CodeSnippet.vue'
 import Tabs from '../components/ui/Tabs.vue'
 import Accordion from '../components/ui/Accordion.vue'
@@ -174,6 +190,10 @@ useHead({
     }
   ]
 })
+
+const copyInstall = async () => {
+  await navigator.clipboard.writeText('npm install -g @frontend-performance-lab/cli')
+}
 
 const configJson = () => {
   return `{

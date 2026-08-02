@@ -5,6 +5,7 @@ import { getAllExperiments } from '@registry/index'
 import { getAllBrowserAPIs } from '@registry/browser-apis'
 import { getAllRecipes } from '@registry/recipes'
 import FeatureCard from './FeatureCard.vue'
+import Badge from '../ui/Badge.vue'
 
 interface Props {
   entityId: string
@@ -94,7 +95,12 @@ const hasRelated = computed(
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <NuxtLink v-for="recipe in relatedRecipes" :key="recipe.id" :to="`/recipes/${recipe.id}`">
-            <FeatureCard :title="recipe.title" :description="recipe.problem" />
+            <FeatureCard :title="recipe.title" :description="recipe.problem">
+              <template #badges>
+                <Badge variant="outline" class="text-[10px]">Recipe</Badge>
+              </template>
+              <template #action> Open &rarr; </template>
+            </FeatureCard>
           </NuxtLink>
         </div>
       </div>
@@ -107,7 +113,12 @@ const hasRelated = computed(
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <NuxtLink v-for="api in relatedAPIs" :key="api.id" :to="`/browser-apis/${api.id}`">
-            <FeatureCard :title="api.name" :description="api.description" />
+            <FeatureCard :title="api.name" :description="api.description">
+              <template #badges>
+                <Badge variant="outline" class="text-[10px]">Browser API</Badge>
+              </template>
+              <template #action> Open &rarr; </template>
+            </FeatureCard>
           </NuxtLink>
         </div>
       </div>
@@ -120,7 +131,12 @@ const hasRelated = computed(
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <NuxtLink v-for="exp in relatedExperiments" :key="exp.id" :to="`/experiments/${exp.id}`">
-            <FeatureCard :title="exp.title" :description="exp.description" />
+            <FeatureCard :title="exp.title" :description="exp.description">
+              <template #badges>
+                <Badge variant="outline" class="text-[10px]">Experiment</Badge>
+              </template>
+              <template #action> Open &rarr; </template>
+            </FeatureCard>
           </NuxtLink>
         </div>
       </div>

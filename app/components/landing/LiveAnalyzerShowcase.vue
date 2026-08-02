@@ -63,156 +63,49 @@
       <transition name="fade">
         <div
           v-if="currentState >= 2"
-          class="absolute inset-0 bg-background-base/95 backdrop-blur-md flex flex-col p-6 z-20"
+          class="absolute inset-0 bg-background-base/95 backdrop-blur-md flex flex-col p-6 z-20 justify-center items-center"
         >
-          <!-- State 2: Timeline -->
-          <transition name="fade">
-            <div
-              v-if="currentState === 2"
-              class="flex-1 flex flex-col justify-center gap-6 absolute inset-6"
-            >
-              <h3 class="text-center font-sans font-bold text-lg text-primary animate-pulse">
-                Analyzing AST...
-              </h3>
-              <div class="space-y-4 font-sans">
-                <div class="flex justify-between text-xs text-foreground-muted">
-                  <span class="flex items-center gap-2"
-                    ><div class="w-1.5 h-1.5 rounded-full bg-success"></div>
-                    Source</span
-                  >
-                  <span class="text-success font-medium">1ms</span>
-                </div>
-                <div class="flex justify-between text-xs text-foreground-muted">
-                  <span class="flex items-center gap-2"
-                    ><div class="w-1.5 h-1.5 rounded-full bg-success"></div>
-                    Parser</span
-                  >
-                  <span class="text-success font-medium">8ms</span>
-                </div>
-                <div class="flex justify-between text-xs text-foreground-primary">
-                  <span class="flex items-center gap-2"
-                    ><div class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>
-                    Rules</span
-                  >
-                  <span class="text-primary font-medium animate-pulse">Running...</span>
-                </div>
+          <div class="w-full max-w-sm space-y-5 font-mono text-sm">
+            <transition name="fade-slide-up">
+              <div v-if="currentState >= 2" class="flex items-center gap-3 text-foreground-muted">
                 <div
-                  class="h-1.5 bg-background-surface rounded-full overflow-hidden shadow-inner border border-border-subtle-subtle"
-                >
-                  <div
-                    class="h-full bg-gradient-to-r from-primary to-blue-500 animate-progress origin-left"
-                  ></div>
-                </div>
+                  v-if="currentState === 2"
+                  class="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin"
+                ></div>
+                <CheckIcon v-else class="w-4 h-4 text-success" />
+                <span>Parsing Component...</span>
               </div>
-            </div>
-          </transition>
+            </transition>
 
-          <!-- State 3-6: Results -->
-          <transition name="fade-slide">
-            <div v-if="currentState >= 3" class="flex-1 flex flex-col font-sans">
+            <transition name="fade-slide-up">
+              <div v-if="currentState >= 3" class="flex items-center gap-3 text-foreground-primary">
+                <CheckIcon class="w-4 h-4 text-success" />
+                <span>Layout Thrashing detected</span>
+              </div>
+            </transition>
+
+            <transition name="fade-slide-up">
+              <div v-if="currentState >= 4" class="flex items-center gap-3 text-foreground-primary">
+                <CheckIcon class="w-4 h-4 text-success" />
+                <span>Virtualization Recommended</span>
+              </div>
+            </transition>
+
+            <transition name="fade-slide-up">
               <div
-                class="flex justify-between items-center mb-6 pb-4 border-b border-border-subtle-subtle"
+                v-if="currentState >= 5"
+                class="mt-8 p-4 bg-success/5 border border-success/30 rounded-lg flex items-center justify-between text-success shadow-sm relative overflow-hidden"
               >
-                <div class="flex flex-col">
-                  <span class="font-bold text-2xl text-danger">3 Issues Found</span>
-                  <span class="text-xs text-foreground-muted mt-1 font-mono"
-                    >react-large-map • layout-thrashing</span
-                  >
-                </div>
                 <div
-                  class="w-12 h-12 rounded-xl border border-danger/30 flex items-center justify-center font-bold text-xl text-danger bg-danger/10 shadow-sm"
+                  class="absolute inset-0 bg-gradient-to-r from-transparent via-success/10 to-transparent shimmer-effect"
+                ></div>
+                <span class="font-bold uppercase tracking-wider text-xs relative z-10"
+                  >Analysis Complete</span
                 >
-                  C-
-                </div>
+                <span class="font-bold text-lg relative z-10">Score: A</span>
               </div>
-
-              <div class="space-y-3 flex-1 flex flex-col justify-end">
-                <transition name="fade-slide-up">
-                  <div
-                    v-if="currentState >= 4"
-                    class="p-3 bg-background-surface/80 rounded-lg border border-border-subtle-subtle flex gap-3 items-center backdrop-blur shadow-sm"
-                  >
-                    <div class="text-blue-500 bg-blue-500/10 p-2 rounded-md">
-                      <ZapIcon class="w-4 h-4" />
-                    </div>
-                    <div class="flex flex-col flex-1">
-                      <span
-                        class="text-[10px] uppercase tracking-wider text-foreground-muted font-semibold"
-                        >Browser API</span
-                      >
-                      <span class="font-bold text-sm text-foreground-primary"
-                        >IntersectionObserver</span
-                      >
-                    </div>
-                  </div>
-                </transition>
-
-                <transition name="fade-slide-up">
-                  <div
-                    v-if="currentState >= 5"
-                    class="p-3 bg-background-surface/80 rounded-lg border border-border-subtle-subtle flex gap-3 items-center backdrop-blur shadow-sm"
-                  >
-                    <div class="text-success bg-success/10 p-2 rounded-md">
-                      <BookOpenIcon class="w-4 h-4" />
-                    </div>
-                    <div class="flex flex-col flex-1">
-                      <span
-                        class="text-[10px] uppercase tracking-wider text-foreground-muted font-semibold"
-                        >Recommended Recipe</span
-                      >
-                      <span class="font-bold text-sm text-foreground-primary"
-                        >Virtualized Data Table</span
-                      >
-                    </div>
-                  </div>
-                </transition>
-
-                <transition name="fade-slide-up">
-                  <div
-                    v-if="currentState >= 6"
-                    class="p-3 bg-background-surface/80 rounded-lg border border-border-subtle-subtle flex gap-3 items-center backdrop-blur shadow-sm mt-2"
-                  >
-                    <div class="text-info bg-info/10 p-2 rounded-md">
-                      <BeakerIcon class="w-4 h-4" />
-                    </div>
-                    <div class="flex flex-col flex-1">
-                      <span
-                        class="text-[10px] uppercase tracking-wider text-foreground-muted font-semibold"
-                        >Recommended Experiment</span
-                      >
-                      <span class="font-bold text-sm text-foreground-primary"
-                        >DOM Virtualization vs Pagination</span
-                      >
-                    </div>
-                  </div>
-                </transition>
-
-                <transition name="fade-slide-up">
-                  <div
-                    v-if="currentState >= 7"
-                    class="p-4 bg-success/5 rounded-lg border border-success/30 flex justify-between items-center relative overflow-hidden mt-2 shadow-sm"
-                  >
-                    <div
-                      class="absolute inset-0 bg-gradient-to-r from-transparent via-success/10 to-transparent shimmer-effect"
-                    ></div>
-                    <div class="flex flex-col relative z-10 w-full">
-                      <span class="text-[10px] text-success font-bold uppercase tracking-wider mb-2"
-                        >Performance Score Improved</span
-                      >
-                      <div class="flex justify-between w-full font-mono font-bold text-sm">
-                        <span class="text-success flex items-center gap-1"
-                          ><ArrowUpIcon class="w-3 h-3" /> 98/100</span
-                        >
-                        <span class="text-success flex items-center gap-1"
-                          ><ArrowDownIcon class="w-3 h-3" /> 41% DOM</span
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </transition>
-              </div>
-            </div>
-          </transition>
+            </transition>
+          </div>
         </div>
       </transition>
     </div>
@@ -221,7 +114,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { ZapIcon, BookOpenIcon, BeakerIcon, ArrowUpIcon, ArrowDownIcon } from 'lucide-vue-next'
+import { CheckIcon } from 'lucide-vue-next'
 import Card from '../ui/Card.vue'
 
 const currentState = ref(0)
@@ -230,7 +123,7 @@ let timer: ReturnType<typeof setTimeout>
 const advanceState = () => {
   currentState.value++
 
-  if (currentState.value > 7) {
+  if (currentState.value > 5) {
     // Hold the final state briefly, then restart
     timer = setTimeout(() => {
       currentState.value = 0
@@ -238,7 +131,7 @@ const advanceState = () => {
     }, 4000)
   } else {
     // Timing logic for each step
-    const delays = [0, 1500, 1500, 1500, 800, 800, 800, 800]
+    const delays = [0, 1500, 1200, 800, 800, 800]
     timer = setTimeout(advanceState, delays[currentState.value])
   }
 }
@@ -248,7 +141,7 @@ onMounted(() => {
   if (typeof window !== 'undefined') {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced) {
-      currentState.value = 7 // Just show results statically
+      currentState.value = 5 // Just show results statically
       return
     }
   }

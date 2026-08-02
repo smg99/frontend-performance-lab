@@ -50,9 +50,8 @@
           <p
             class="text-lg sm:text-xl text-foreground-muted mb-10 font-medium max-w-2xl leading-relaxed"
           >
-            The professional Frontend Performance Engineering Platform. Learn browser internals,
-            analyze real code, explore Browser APIs and Recipes, and use the built-in AST Analyzer
-            directly from your IDE.
+            Analyze frontend performance, understand browser internals, discover optimization
+            patterns, and improve your code directly from your IDE.
           </p>
 
           <!-- CTAs -->
@@ -63,7 +62,7 @@
               as="NuxtLink"
               href="/tools/performance-review"
             >
-              Try Analyzer
+              Analyze Sample Code
             </Button>
 
             <Button
@@ -73,18 +72,18 @@
               as="NuxtLink"
               href="/install"
             >
-              Install Frontend Performance Lab
+              Install CLI
             </Button>
 
             <a
               href="https://github.com/smg99/frontend-performance-lab"
               target="_blank"
-              class="flex items-center justify-center w-full sm:w-auto px-6 py-4 text-sm font-medium text-foreground-muted hover:text-foreground-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded-full group"
+              class="flex items-center justify-center w-full sm:w-auto px-6 py-4 text-sm font-medium text-foreground-primary bg-background-surface/50 border border-border-subtle-subtle hover:bg-background-hover hover:border-border-subtle-strong transition-all focus:outline-none focus:ring-2 focus:ring-primary rounded-full group shadow-sm whitespace-nowrap"
             >
               <GithubIcon
-                class="w-5 h-5 mr-2 opacity-70 group-hover:opacity-100 transition-opacity"
+                class="w-5 h-5 mr-2 opacity-90 group-hover:opacity-100 transition-opacity shrink-0"
               />
-              GitHub
+              ⭐ Star on GitHub
             </a>
           </div>
 

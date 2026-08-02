@@ -21,6 +21,17 @@
           <label class="text-sm font-medium text-foreground-primary">Arguments (JSON)</label>
           <button class="text-xs text-primary hover:underline" @click="formatJson">Format</button>
         </div>
+
+        <div class="flex flex-wrap gap-2 mb-2">
+          <button
+            v-for="example in examples"
+            :key="example.label"
+            class="text-[10px] px-2 py-1 rounded bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors border border-primary/20"
+            @click="loadExample(example)"
+          >
+            {{ example.label }}
+          </button>
+        </div>
         <textarea
           v-model="inputJson"
           class="w-full flex-1 min-h-[150px] bg-background-surface border border-border-subtle-strong rounded-md p-3 text-xs font-mono text-foreground-primary resize-y focus:outline-none focus:ring-2 focus:ring-primary"
@@ -55,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import { mcpTools } from '@registry/mcp-tools'
 
@@ -75,6 +86,25 @@ const formatJson = () => {
   } catch (e: unknown) {
     jsonError.value = 'Invalid JSON: ' + (e instanceof Error ? e.message : String(e))
   }
+}
+
+const examples = [
+  { label: 'Review Vue Component', tool: 'review_performance', args: { framework: 'vue' } },
+  { label: 'Explain ResizeObserver', tool: 'get_browser_api', args: { id: 'resize-observer' } },
+  { label: 'Find Layout Thrashing', tool: 'search', args: { query: 'layout thrashing' } },
+  { label: 'Recommend Virtualization', tool: 'get_recipe', args: { id: 'virtualization' } },
+  {
+    label: 'Search requestAnimationFrame',
+    tool: 'search',
+    args: { query: 'requestAnimationFrame' }
+  }
+]
+
+const loadExample = async (example: (typeof examples)[0]) => {
+  selectedTool.value = example.tool
+  inputJson.value = JSON.stringify(example.args, null, 2)
+  await nextTick()
+  executeTool()
 }
 
 watch(selectedTool, () => {

@@ -33,11 +33,9 @@ All documentation for the Frontend Performance Lab, organized by audience.
 
 ## Project Health
 
-| Document                                                      | Description                        |
-| ------------------------------------------------------------- | ---------------------------------- |
-| [CHANGELOG.md](../CHANGELOG.md)                               | Notable changes per release        |
-| [docs/product-quality-report.md](./product-quality-report.md) | Internal UX audit report (Phase 1) |
-| [docs/LAUNCH_CHECKLIST.md](./LAUNCH_CHECKLIST.md)             | Pre-launch task tracker            |
+| Document                        | Description                 |
+| ------------------------------- | --------------------------- |
+| [CHANGELOG.md](../CHANGELOG.md) | Notable changes per release |
 
 ## Community
 

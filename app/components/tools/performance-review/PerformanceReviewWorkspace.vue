@@ -39,26 +39,30 @@
       </div>
 
       <div class="flex-1 overflow-y-auto p-2 space-y-1">
-        <button
+        <div
           v-for="(file, index) in files"
           :key="index"
-          class="w-full text-left px-3 py-1.5 rounded text-sm flex items-center gap-2 group transition-colors"
+          role="button"
+          tabindex="0"
+          class="w-full text-left px-3 py-1.5 rounded text-sm flex items-center gap-2 group transition-colors cursor-pointer"
           :class="
             activeIndex === index
               ? 'bg-primary/10 text-primary font-medium'
               : 'text-foreground-muted hover:bg-background-base hover:text-foreground-primary'
           "
           @click="activeIndex = index"
+          @keydown.enter="activeIndex = index"
         >
           <FileCodeIcon class="w-4 h-4 opacity-70 flex-shrink-0" />
           <span class="flex-1 truncate">{{ file.filename }}</span>
           <button
             class="opacity-0 group-hover:opacity-100 hover:text-error transition-opacity flex-shrink-0"
             @click.stop="removeFile(index)"
+            aria-label="Remove file"
           >
             <XIcon class="w-3 h-3" />
           </button>
-        </button>
+        </div>
 
         <div
           v-if="files.length === 0"
@@ -76,7 +80,7 @@
           :disabled="isAnalyzing || files.length === 0"
           @click="runAnalysis('workspace')"
         >
-          <PlayIcon class="w-4 h-4 mr-2" /> Analyze All
+          <PlayIcon class="w-4 h-4 mr-2" /> Analyze Performance
         </Button>
       </div>
     </div>
@@ -92,25 +96,30 @@
       <div
         class="flex border-b border-border-subtle-subtle bg-background-surface overflow-x-auto hide-scrollbar"
       >
-        <button
+        <div
           v-for="(file, index) in files"
           :key="`tab-${index}`"
-          class="px-4 py-2 text-sm border-r border-border-subtle-subtle flex items-center gap-2 transition-colors min-w-[120px]"
+          role="tab"
+          :aria-selected="activeIndex === index"
+          tabindex="0"
+          class="px-4 py-2 text-sm border-r border-border-subtle-subtle flex items-center gap-2 transition-colors min-w-[120px] cursor-pointer"
           :class="
             activeIndex === index
               ? 'bg-background-base text-primary border-t-2 border-t-primary font-medium'
               : 'text-foreground-muted hover:bg-background-base border-t-2 border-t-transparent'
           "
           @click="activeIndex = index"
+          @keydown.enter="activeIndex = index"
         >
           <span class="truncate max-w-[150px]">{{ file.filename }}</span>
           <button
             class="hover:bg-border-subtle rounded-full p-0.5 ml-auto"
             @click.stop="removeFile(index)"
+            aria-label="Close tab"
           >
             <XIcon class="w-3 h-3" />
           </button>
-        </button>
+        </div>
       </div>
       <div class="flex-1 relative bg-background-base">
         <div v-if="files.length > 0 && activeFile" class="absolute inset-0">
@@ -190,7 +199,7 @@
       :style="{ width: rightPaneWidth + 'px' }"
     >
       <AnalyzerTimeline v-if="timelineState !== 'idle'" :state="timelineState" />
-      <ReviewPanel :report="report" class="flex-1 overflow-y-auto" />
+      <ReviewPanel :report="report" class="flex-1 overflow-y-auto" @load-sample="loadSample" />
 
       <!-- Loading Overlay -->
       <div
@@ -334,8 +343,11 @@ const handleAnalyzeShortcut = () => {
   runAnalysis('workspace')
 }
 
-const loadSample = (type: 'react' | 'vue') => {
-  if (type === 'react') {
+const loadSample = (
+  type:
+    'react-rendering' | 'vue-reactivity' | 'layout-thrashing' | 'virtualization' | 'react' | 'vue'
+) => {
+  if (type === 'layout-thrashing' || type === 'react') {
     files.value = [
       {
         filename: 'Dashboard.tsx',
@@ -343,7 +355,7 @@ const loadSample = (type: 'react' | 'vue') => {
         code: "import React, { useState, useEffect, useRef } from 'react';\n\nexport default function Dashboard() {\n  const [width, setWidth] = useState(0);\n  const boxRef = useRef<HTMLDivElement>(null);\n\n  // BAD: Layout Thrashing\n  useEffect(() => {\n    const handleScroll = () => {\n      if (boxRef.current) {\n        // Forces synchronous layout calculation\n        const currentWidth = boxRef.current.getBoundingClientRect().width;\n        setWidth(currentWidth + 10);\n      }\n    };\n    window.addEventListener('scroll', handleScroll);\n    return () => window.removeEventListener('scroll', handleScroll);\n  }, []);\n\n  return (\n    <div ref={boxRef} style={{ width: width + 'px' }}>\n      Dashboard Content\n    </div>\n  );\n}"
       }
     ]
-  } else {
+  } else if (type === 'vue-reactivity' || type === 'vue') {
     files.value = [
       {
         filename: 'DataGrid.vue',
@@ -354,6 +366,27 @@ const loadSample = (type: 'react' | 'vue') => {
           '/script>\n\n<' +
           'template>\n  <div v-for="item in items" :key="item.id">\n    {{ item.name }}\n  </div>\n<' +
           '/template>'
+      }
+    ]
+  } else if (type === 'react-rendering') {
+    files.value = [
+      {
+        filename: 'ProductList.tsx',
+        language: 'tsx',
+        code: "import React, { useState } from 'react';\n\nexport default function ProductList({ products }) {\n  const [filter, setFilter] = useState('');\n\n  // BAD: Rendering 10,000 DOM nodes at once\n  return (\n    <div>\n      <input onChange={e => setFilter(e.target.value)} />\n      {products.map(p => (\n        <div key={p.id} className=\"p-4 border\">\n          <h3>{p.name}</h3>\n          <p>{p.description}</p>\n        </div>\n      ))}\n    </div>\n  );\n}"
+      }
+    ]
+  } else if (type === 'virtualization') {
+    files.value = [
+      {
+        filename: 'HeavyList.vue',
+        language: 'vue',
+        code:
+          '<' +
+          'template>\n  <div>\n    <!-- BAD: Rendering too many nodes without virtualization -->\n    <div v-for="i in 100000" :key="i" class="item-row">\n      <span>Row {{ i }}</span>\n      <button @click="doSomething(i)">Action</button>\n    </div>\n  </div>\n<' +
+          '/template>\n\n<' +
+          'script setup>\nconst doSomething = (i) => console.log(i)\n<' +
+          '/script>'
       }
     ]
   }

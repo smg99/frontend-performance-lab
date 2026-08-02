@@ -2,146 +2,71 @@
 
 The Model Context Protocol (MCP) enables your AI assistant to directly access the Frontend Performance Lab's AST Analyzer, Knowledge Graph, and Recipes natively inside your IDE.
 
-This guide provides setup instructions for all supported clients.
+## 1. Quick Start (Recommended)
 
-## Architecture Modes
+The easiest way to get started is by using the official CLI.
 
-### Local Mode (Recommended)
-The server runs directly on your machine. This is **required** for the AST Analyzer to function, as it needs secure read-access to your file system to scan for layout thrashing, memory leaks, and massive DOM renders.
-
-### Hosted Mode
-> **Coming Soon**  
-> We plan to offer a remote SSE (Server-Sent Events) endpoint. Hosted mode will grant your AI access to our Knowledge Graph and Browser APIs without local installation, but will *not* support local AST code analysis.
-
----
-
-## 1. General Requirements & Installation
-
-Regardless of your IDE, the server must be installed locally.
-
-**Requirements:**
-- Node.js >= 18.x
-
-**Installation:**
 ```bash
-git clone https://github.com/smg99/frontend-performance-lab.git
-cd frontend-performance-lab
-npm install
+npm install -g @frontend-performance-lab/cli
+fpl setup
+fpl doctor
 ```
 
-Make sure you know the absolute path to this cloned repository. You will need it below.
+The `fpl setup` wizard will automatically detect your installed IDEs (Cursor, Claude Code, VS Code, Windsurf) and configure the MCP server for you. Restart your IDE afterward, and you will be ready to go!
 
 ---
 
-## 2. Cursor Configuration
+## 2. Advanced Manual Configuration
 
-**Configuration:**
+If you prefer not to use the automated `fpl setup` wizard, you can manually configure your IDE to point to the global npx package.
+
+### Cursor
+
 1. Open Cursor Settings (`Cmd + Shift + J`).
 2. Navigate to **Features > MCP**.
 3. Click **+ Add New MCP Server**.
 4. Set the following:
    - **Name:** `Frontend Performance Lab`
    - **Type:** `command`
-   - **Command:** `npx tsx /YOUR/ABSOLUTE/PATH/TO/frontend-performance-lab/mcp/server.ts`
+   - **Command:** `npx -y @frontend-performance-lab/cli mcp`
 
-**Verification:**
-Ask Cursor: *"What experiments are available in the Frontend Performance Lab?"*
+### Claude Code
 
----
-
-## 3. Claude Code Configuration
-
-**Configuration:**
 Open your terminal and run the Claude Code CLI tool:
 
 ```bash
-claude mcp add frontend-performance-lab npx -y tsx /YOUR/ABSOLUTE/PATH/TO/frontend-performance-lab/mcp/server.ts
+claude mcp add frontend-performance-lab npx -y @frontend-performance-lab/cli mcp
 ```
 
-**Verification:**
-Ask Claude Code: *"Use the performance reviewer to analyze my App.vue file."*
+### VS Code (via Cline/Roo)
 
----
-
-## 4. VS Code (via Cline/Roo) Configuration
-
-**Configuration:**
-1. Install the [Cline](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev) or Roo extension.
-2. Open the extension settings and navigate to the MCP configuration file (`mcp_settings.json`).
-3. Add the following entry:
+Open your MCP settings JSON file and append:
 
 ```json
 {
   "mcpServers": {
     "frontend-performance-lab": {
       "command": "npx",
-      "args": ["tsx", "/YOUR/ABSOLUTE/PATH/TO/frontend-performance-lab/mcp/server.ts"],
+      "args": ["-y", "@frontend-performance-lab/cli", "mcp"],
       "env": {}
     }
   }
 }
 ```
 
-**Verification:**
-Ask the VS Code assistant: *"Review my current component for Layout Thrashing."*
+### Windsurf
 
----
+Open your global `~/.codeium/windsurf/mcp_config.json` (or workspace-specific config) and append the same JSON configuration as above.
 
-## 5. Windsurf Configuration
+### Continue.dev
 
-**Configuration:**
-1. Open your global `~/.codeium/windsurf/mcp_config.json` (or workspace-specific config).
-2. Add the server entry:
+Open your `~/.continue/config.json` and append to the `mcpServers` array:
 
 ```json
 {
-  "mcpServers": {
-    "frontend-performance-lab": {
-      "command": "npx",
-      "args": ["tsx", "/YOUR/ABSOLUTE/PATH/TO/frontend-performance-lab/mcp/server.ts"]
-    }
-  }
-}
-```
-
-**Verification:**
-Ask Windsurf: *"List the frontend performance browser APIs available."*
-
----
-
-## 6. Continue.dev Configuration
-
-**Configuration:**
-1. Open your `~/.continue/config.json`.
-2. Add the server configuration under the `mcpServers` array/object (depending on extension version):
-
-```json
-{
-  "mcpServers": [
-    {
-      "name": "frontend-performance-lab",
-      "command": "npx",
-      "args": ["tsx", "/YOUR/ABSOLUTE/PATH/TO/frontend-performance-lab/mcp/server.ts"]
-    }
-  ]
-}
-```
-
----
-
-## 7. Gemini CLI Configuration
-
-**Configuration:**
-Depending on your Gemini CLI wrapper, you generally export the command. If using a JSON config:
-
-```json
-{
-  "mcpServers": {
-    "frontend-performance-lab": {
-      "command": "npx",
-      "args": ["tsx", "/YOUR/ABSOLUTE/PATH/TO/frontend-performance-lab/mcp/server.ts"]
-    }
-  }
+  "name": "frontend-performance-lab",
+  "command": "npx",
+  "args": ["-y", "@frontend-performance-lab/cli", "mcp"]
 }
 ```
 
@@ -150,15 +75,18 @@ Depending on your Gemini CLI wrapper, you generally export the command. If using
 ## Troubleshooting & Expected Output
 
 ### Expected Output
+
 When configured correctly, the server connects silently via `stdio`. Your IDE should show a "Connected" green status indicator next to the server name in its respective MCP settings panel.
 
 ### Common Issues
+
 If your IDE cannot connect:
-1. Double-check that the path to `/mcp/server.ts` is absolute.
-2. Ensure you have run `npm install` in the lab directory.
+
+1. Ensure you have Node.js >= 18.x installed.
+2. Run `fpl doctor` to verify your environment health.
 3. Test the server independently using the official inspector:
    ```bash
-   npx @modelcontextprotocol/inspector npx tsx /YOUR/ABSOLUTE/PATH/TO/frontend-performance-lab/mcp/server.ts
+   npx @modelcontextprotocol/inspector npx -y @frontend-performance-lab/cli mcp
    ```
 
 For detailed error resolution, see our [Troubleshooting Guide](../troubleshooting.md).

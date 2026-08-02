@@ -70,8 +70,8 @@ const classes = computed(() => cn(baseClasses, variantClasses.value, sizeClasses
 <template>
   <component
     :is="componentType"
-    :to="href"
-    :href="href"
+    :to="componentType !== 'a' && href ? href : undefined"
+    :href="componentType === 'a' ? href : undefined"
     :class="classes"
     :disabled="disabled || loading"
     :aria-disabled="disabled || loading"

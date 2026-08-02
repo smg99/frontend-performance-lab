@@ -37,6 +37,39 @@ const recipe = getRecipe(id)
       </template>
     </PageHeader>
 
+    <!-- 1. Hero Relationships -->
+    <div
+      class="mb-10 flex flex-wrap gap-x-6 gap-y-3 pt-4 border-t border-border-subtle-subtle text-sm"
+    >
+      <span class="text-xs font-semibold text-foreground-muted uppercase tracking-wider self-center"
+        >Related</span
+      >
+      <div v-if="recipe.relatedBrowserAPIs?.length" class="flex items-center gap-2">
+        <span class="text-foreground-muted">Browser APIs:</span>
+        <NuxtLink
+          :to="`/browser-apis/${recipe.relatedBrowserAPIs[0]}`"
+          class="text-primary hover:underline font-medium"
+          >{{ recipe.relatedBrowserAPIs[0] }}</NuxtLink
+        >
+      </div>
+      <div v-if="recipe.relatedRecipes?.length" class="flex items-center gap-2">
+        <span class="text-foreground-muted">Recipes:</span>
+        <NuxtLink
+          :to="`/recipes/${recipe.relatedRecipes[0]}`"
+          class="text-primary hover:underline font-medium"
+          >{{ recipe.relatedRecipes[0] }}</NuxtLink
+        >
+      </div>
+      <div v-if="recipe.relatedExperiments?.length" class="flex items-center gap-2">
+        <span class="text-foreground-muted">Experiments:</span>
+        <NuxtLink
+          :to="`/experiments/${recipe.relatedExperiments[0]}`"
+          class="text-primary hover:underline font-medium"
+          >{{ recipe.relatedExperiments[0] }}</NuxtLink
+        >
+      </div>
+    </div>
+
     <SplitView sidebar-position="right" sidebar-width="md">
       <template #default>
         <div class="space-y-8">
@@ -74,6 +107,55 @@ const recipe = getRecipe(id)
             </div>
           </Card>
 
+          <!-- 2. Expected Performance Gains -->
+          <Card class="p-6 md:p-8 bg-success/5 border-success/20">
+            <h3 class="font-semibold mb-4 text-success flex items-center gap-2">
+              <ZapIcon class="w-5 h-5" /> Typical Expected Improvements
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div
+                class="bg-background-base p-4 rounded-lg border border-border-subtle-subtle shadow-sm"
+              >
+                <div
+                  class="text-xs font-semibold text-foreground-muted uppercase tracking-wider mb-1"
+                >
+                  DOM Nodes
+                </div>
+                <div class="text-xl font-bold text-foreground-primary">↓ 95%</div>
+              </div>
+              <div
+                class="bg-background-base p-4 rounded-lg border border-border-subtle-subtle shadow-sm"
+              >
+                <div
+                  class="text-xs font-semibold text-foreground-muted uppercase tracking-wider mb-1"
+                >
+                  Memory
+                </div>
+                <div class="text-xl font-bold text-foreground-primary">↓ 80%</div>
+              </div>
+              <div
+                class="bg-background-base p-4 rounded-lg border border-border-subtle-subtle shadow-sm"
+              >
+                <div
+                  class="text-xs font-semibold text-foreground-muted uppercase tracking-wider mb-1"
+                >
+                  FPS
+                </div>
+                <div class="text-xl font-bold text-foreground-primary">↑ 3–5×</div>
+              </div>
+              <div
+                class="bg-background-base p-4 rounded-lg border border-border-subtle-subtle shadow-sm"
+              >
+                <div
+                  class="text-xs font-semibold text-foreground-muted uppercase tracking-wider mb-1"
+                >
+                  Initial Render
+                </div>
+                <div class="text-xl font-bold text-foreground-primary">↓ 70%</div>
+              </div>
+            </div>
+          </Card>
+
           <Card class="p-6 md:p-8">
             <h2 class="text-xl font-bold mb-2">Decision Matrix</h2>
             <p class="text-foreground-muted text-sm mb-6">
@@ -91,19 +173,28 @@ const recipe = getRecipe(id)
                 </h4>
                 <div class="space-y-3 text-sm">
                   <div class="flex gap-2">
-                    <strong class="shrink-0">Recommended:</strong>
+                    <strong class="shrink-0 flex items-center gap-1.5"
+                      ><span class="text-[12px]">✅</span> Recommended:</strong
+                    >
                     <span class="text-success font-medium">{{ matrix.recommendedApproach }}</span>
                   </div>
                   <div class="flex gap-2">
-                    <strong class="shrink-0 text-foreground-muted">Alternatives:</strong>
+                    <strong class="shrink-0 text-foreground-muted flex items-center gap-1.5"
+                      ><span class="text-[12px]">🔄</span> Alternatives:</strong
+                    >
                     <span class="text-foreground-muted">{{ matrix.alternatives.join(', ') }}</span>
                   </div>
                   <p class="text-foreground-muted mt-2">
-                    <strong class="text-foreground-primary">Trade-offs:</strong>
+                    <strong class="text-foreground-primary flex items-center gap-1.5"
+                      ><span class="text-[12px]">⚖️</span> Trade-offs:</strong
+                    >
                     {{ matrix.tradeoffs }}
                   </p>
                   <p class="text-foreground-muted">
-                    <strong class="text-foreground-primary">Why:</strong> {{ matrix.why }}
+                    <strong class="text-foreground-primary flex items-center gap-1.5"
+                      ><span class="text-[12px]">💡</span> Why:</strong
+                    >
+                    {{ matrix.why }}
                   </p>
                 </div>
               </div>
@@ -132,7 +223,7 @@ const recipe = getRecipe(id)
             <div class="grid sm:grid-cols-2 gap-8">
               <div>
                 <h3 class="font-semibold mb-4 text-success flex items-center gap-2">
-                  <CheckIcon class="w-5 h-5" /> Recommended
+                  <CheckIcon class="w-5 h-5" /> Do This
                 </h3>
                 <ul class="space-y-3">
                   <li
@@ -146,7 +237,7 @@ const recipe = getRecipe(id)
               </div>
               <div>
                 <h3 class="font-semibold mb-4 text-danger flex items-center gap-2">
-                  <XIcon class="w-5 h-5" /> Avoid
+                  <XIcon class="w-5 h-5" /> Anti-patterns
                 </h3>
                 <ul class="space-y-3">
                   <li
@@ -157,6 +248,75 @@ const recipe = getRecipe(id)
                     {{ app }}
                   </li>
                 </ul>
+              </div>
+            </div>
+          </Card>
+
+          <Card class="p-6 md:p-8">
+            <h2 class="text-xl font-bold mb-6">Implementation</h2>
+            <div class="rounded-xl overflow-hidden border border-border-subtle-subtle">
+              <div class="bg-background-surface border-b border-border-subtle-subtle flex">
+                <button
+                  class="px-6 py-3 text-sm font-semibold border-b-2 border-primary text-foreground-primary"
+                >
+                  Vue
+                </button>
+                <button
+                  class="px-6 py-3 text-sm font-medium text-foreground-muted hover:text-foreground-primary transition-colors border-b-2 border-transparent"
+                >
+                  React
+                </button>
+                <button
+                  class="px-6 py-3 text-sm font-medium text-foreground-muted hover:text-foreground-primary transition-colors border-b-2 border-transparent"
+                >
+                  Vanilla
+                </button>
+              </div>
+              <div class="bg-background-base p-6 font-mono text-sm overflow-x-auto relative group">
+                <button
+                  class="absolute top-4 right-4 text-xs font-semibold text-foreground-muted uppercase tracking-wider hover:text-primary transition-colors opacity-0 group-hover:opacity-100 bg-background-surface px-2 py-1 rounded border border-border-subtle-subtle"
+                >
+                  Copy
+                </button>
+                <pre
+                  class="text-foreground-secondary leading-relaxed"
+                ><span class="text-pink-500">import</span> { useVirtualList } <span class="text-pink-500">from</span> <span class="text-green-500">'@vueuse/core'</span>
+
+<span class="text-pink-500">const</span> { list, containerProps, wrapperProps } = <span class="text-blue-400">useVirtualList</span>(
+  hugeDataArray,
+  {
+    itemHeight: <span class="text-orange-400">48</span>
+  }
+)
+</pre>
+              </div>
+            </div>
+          </Card>
+
+          <Card class="p-6 md:p-8 border-primary/30 bg-primary/5 relative overflow-hidden group">
+            <div
+              class="absolute -right-4 -top-4 p-4 opacity-10 group-hover:opacity-20 transition-opacity"
+            >
+              <ZapIcon class="w-32 h-32 text-primary" />
+            </div>
+            <div class="relative z-10">
+              <h2 class="text-lg font-bold mb-2 flex items-center gap-2">
+                <ZapIcon class="w-5 h-5 text-primary" /> Use AI
+              </h2>
+              <p class="text-sm text-foreground-muted mb-6 max-w-lg">
+                Instantly analyze your codebase using this recipe via MCP. Open your AI agent and
+                run this prompt.
+              </p>
+              <div
+                class="bg-background-base border border-primary/20 rounded-lg p-3 text-sm font-mono flex items-center justify-between group/prompt cursor-pointer hover:border-primary/50 transition-colors"
+              >
+                <span class="text-foreground-primary"
+                  >Review my Vue table for virtualization opportunities</span
+                >
+                <span
+                  class="text-xs font-bold text-primary uppercase tracking-wider px-2 py-1 opacity-0 group-hover/prompt:opacity-100 transition-opacity"
+                  >Copy Prompt</span
+                >
               </div>
             </div>
           </Card>
