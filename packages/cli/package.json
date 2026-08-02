@@ -1,7 +1,11 @@
 {
   "name": "@frontend-performance-lab/cli",
-  "version": "1.0.0",
-  "description": "Frontend Performance Lab CLI & MCP Server",
+  "version": "1.0.0-beta.1",
+  "description": "CLI and MCP server for AI-powered frontend performance analysis and knowledge graph exploration.",
+  "author": {
+    "name": "Sumit Gajjar",
+    "url": "https://github.com/smg99"
+  },
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -20,13 +24,22 @@
     "fpl": "./dist/cli.mjs"
   },
   "keywords": [
-    "performance",
     "frontend",
+    "performance",
+    "web-performance",
     "mcp",
-    "ast",
-    "analyzer",
+    "model-context-protocol",
+    "ai",
+    "cursor",
+    "claude",
+    "typescript",
+    "javascript",
     "vue",
     "react",
+    "analyzer",
+    "ast",
+    "developer-tools",
+    "knowledge-graph",
     "cli"
   ],
   "homepage": "https://github.com/smg99/frontend-performance-lab#readme",
@@ -62,5 +75,10 @@
   "publishConfig": {
     "access": "public"
   },
-  "license": "MIT"
+  "sideEffects": false,
+  "license": "MIT",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/smg99"
+  }
 }
