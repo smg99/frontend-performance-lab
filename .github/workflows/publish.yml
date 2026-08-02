@@ -37,6 +37,10 @@ jobs:
           # Optional fallback token (OIDC supplies token automatically)
           # auth-token: ${{ secrets.NPM_TOKEN }}
 
+      # Ensure npm is up to date for proper OIDC support (v11.5.1+)
+      - name: Update npm
+        run: npm install -g npm@latest
+
       # Install all dependencies without modifying lockfile
       - name: Install dependencies
         run: npm ci
