@@ -30,7 +30,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          scope: '@smg99'
+          scope: '@frontend-performance-lab'
           registry-url: 'https://registry.npmjs.org'
           # Enable OIDC auth for npm (no token needed)
           cache: 'npm'
@@ -47,7 +47,7 @@ jobs:
 
       # Publish to npm using OIDC token (Trusted Publisher)
       - name: Publish to npm
-        run: npm publish --access public
+        run: npm publish --provenance --access public
         # npm will automatically use the OIDC token provided by GitHub Actions
         env:
           NPM_CONFIG_PROVENANCE: true
