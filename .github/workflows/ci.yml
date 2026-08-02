@@ -1,0 +1,57 @@
+# CI workflow for Frontend Performance Lab
+name: CI
+
+# Trigger on pushes to main and on pull requests
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up Node.js 22 and cache npm dependencies
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Validate project (custom script if present)
+      - name: Validate project
+        if: ${{ hashFiles('package.json') != '' }}
+        run: |
+          if npm run | grep -q "validate"; then npm run validate; else echo "No validate script, skipping..."; fi
+
+      # Lint
+      - name: Lint
+        run: |
+          if npm run | grep -q "lint"; then npm run lint; else echo "No lint script, skipping..."; fi
+
+      # Typecheck
+      - name: Typecheck
+        run: |
+          if npm run | grep -q "typecheck"; then npm run typecheck; else echo "No typecheck script, skipping..."; fi
+
+      # Test
+      - name: Test
+        run: |
+          if npm run | grep -q "test"; then npm run test; else echo "No test script, skipping..."; fi
+
+      # Build
+      - name: Build
+        run: |
+          if npm run | grep -q "build"; then npm run build; else echo "No build script, skipping..."; fi
