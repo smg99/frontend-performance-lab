@@ -44,7 +44,7 @@ Get up and running with the CLI and MCP server in under two minutes:
 
 ```bash
 # 1. Install the CLI globally
-npm install -g @frontend-performance-lab/cli
+npm install -g @smg99/frontend-performance-lab-cli
 
 # 2. Configure your IDE (Cursor, Claude, VS Code, Windsurf)
 fpl setup
@@ -57,7 +57,7 @@ Restart your IDE and you're ready to go!
 
 ### What happens during setup?
 
-- ✓ Installs the `@frontend-performance-lab/cli` globally
+- ✓ Installs the `@smg99/frontend-performance-lab-cli` globally
 - ✓ Detects your active IDE (Cursor, Claude Desktop, Windsurf, etc.)
 - ✓ Configures the MCP server automatically in your IDE settings
 - ✓ Verifies the connection and dependencies with `fpl doctor`

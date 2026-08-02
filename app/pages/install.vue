@@ -22,7 +22,7 @@
             every MCP-compatible IDE. Ready in under 2 minutes.
           </p>
           <div class="w-full max-w-md mx-auto mb-8">
-            <CodeSnippet code="npm install -g @frontend-performance-lab/cli" />
+            <CodeSnippet code="npm install -g @smg99/frontend-performance-lab-cli" />
           </div>
           <div class="flex flex-wrap justify-center gap-4">
             <button
@@ -65,7 +65,7 @@
                 <p class="text-sm text-foreground-muted mb-4">
                   Install the standalone package globally using npm.
                 </p>
-                <CodeSnippet code="npm install -g @frontend-performance-lab/cli" />
+                <CodeSnippet code="npm install -g @smg99/frontend-performance-lab-cli" />
               </div>
             </div>
           </Card>
@@ -192,7 +192,7 @@ useHead({
 })
 
 const copyInstall = async () => {
-  await navigator.clipboard.writeText('npm install -g @frontend-performance-lab/cli')
+  await navigator.clipboard.writeText('npm install -g @smg99/frontend-performance-lab-cli')
 }
 
 const configJson = () => {
@@ -200,7 +200,7 @@ const configJson = () => {
   "mcpServers": {
     "frontend-performance-lab": {
       "command": "npx",
-      "args": ["-y", "@frontend-performance-lab/cli", "mcp"],
+      "args": ["-y", "@smg99/frontend-performance-lab-cli", "mcp"],
       "env": {}
     }
   }
@@ -211,12 +211,12 @@ const ideTabs = [
   {
     value: 'cursor',
     label: 'Cursor',
-    content: `Navigate to Settings > Features > MCP.\nAdd a new server of type "command".\nCommand:\n\nnpx -y @frontend-performance-lab/cli mcp`
+    content: `Navigate to Settings > Features > MCP.\nAdd a new server of type "command".\nCommand:\n\nnpx -y @smg99/frontend-performance-lab-cli mcp`
   },
   {
     value: 'claude',
     label: 'Claude Code',
-    content: `Run this command in your terminal:\n\nclaude mcp add frontend-performance-lab npx -y @frontend-performance-lab/cli mcp`
+    content: `Run this command in your terminal:\n\nclaude mcp add frontend-performance-lab npx -y @smg99/frontend-performance-lab-cli mcp`
   },
   {
     value: 'vscode',
@@ -231,7 +231,7 @@ const ideTabs = [
   {
     value: 'continue',
     label: 'Continue.dev',
-    content: `Open ~/.continue/config.json and append to mcpServers array:\n\n{\n  "name": "frontend-performance-lab",\n  "command": "npx",\n  "args": ["-y", "@frontend-performance-lab/cli", "mcp"]\n}`
+    content: `Open ~/.continue/config.json and append to mcpServers array:\n\n{\n  "name": "frontend-performance-lab",\n  "command": "npx",\n  "args": ["-y", "@smg99/frontend-performance-lab-cli", "mcp"]\n}`
   },
   {
     value: 'gemini',

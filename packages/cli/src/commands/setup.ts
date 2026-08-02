@@ -84,7 +84,7 @@ export default defineCommand({
       mcpServers: {
         'frontend-performance-lab': {
           command: 'npx',
-          args: ['-y', '@frontend-performance-lab/cli', 'mcp']
+          args: ['-y', '@smg99/frontend-performance-lab-cli', 'mcp']
         }
       }
     }

@@ -1,6 +1,6 @@
 # Migration Guide
 
-Frontend Performance Lab is transitioning from a repository-based tool into a standalone, installable CLI & MCP package (`@frontend-performance-lab/cli`).
+Frontend Performance Lab is transitioning from a repository-based tool into a standalone, installable CLI & MCP package (`@smg99/frontend-performance-lab-cli`).
 
 If you previously cloned the repository to run the MCP server locally, you can now transition to the npm package.
 
@@ -17,7 +17,7 @@ rm -rf frontend-performance-lab
 Install the new CLI globally on your system:
 
 ```bash
-npm install -g @frontend-performance-lab/cli
+npm install -g @smg99/frontend-performance-lab-cli
 ```
 
 ## 3. Run Setup
@@ -48,7 +48,7 @@ If you prefer to configure your IDE manually, update your configuration from the
   "mcpServers": {
     "frontend-performance-lab": {
       "command": "npx",
-      "args": ["-y", "@frontend-performance-lab/cli", "mcp"]
+      "args": ["-y", "@smg99/frontend-performance-lab-cli", "mcp"]
     }
   }
 }

@@ -24,7 +24,7 @@ The repository will adopt a pure npm workspace model with clearly defined bounda
 frontend-performance-lab/
 ├── package.json (Workspace Root & Nuxt App)
 ├── packages/
-│   ├── cli/            # @frontend-performance-lab/cli
+│   ├── cli/            # @smg99/frontend-performance-lab-cli
 │   ├── core/           # @frontend-performance-lab/core
 │   └── knowledge/      # @frontend-performance-lab/knowledge
 ├── integrations/
@@ -44,7 +44,7 @@ These are published to the public npm registry for end-user consumption.
 
 | Package       | Name                                  | Responsibility                                                                                                                                              |
 | ------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **CLI**       | `@frontend-performance-lab/cli`       | The primary developer entry point. Exposes the `fpl` binary for installation, analysis (`fpl analyze`), and the MCP server (`fpl mcp`).                     |
+| **CLI**       | `@smg99/frontend-performance-lab-cli` | The primary developer entry point. Exposes the `fpl` binary for installation, analysis (`fpl analyze`), and the MCP server (`fpl mcp`).                     |
 | **Core**      | `@frontend-performance-lab/core`      | The headless AST analyzer engine. Extracts the babel traversal logic so it can be consumed by the CLI, Nuxt app, and ESLint plugin without UI dependencies. |
 | **Knowledge** | `@frontend-performance-lab/knowledge` | The structured knowledge graph (Recipes, Browser APIs, Experiments). Exposes an SDK for querying the knowledge base programmatically.                       |
 | **ESLint**    | `eslint-plugin-frontend-performance`  | Real-time editor feedback based on the Core analyzer.                                                                                                       |

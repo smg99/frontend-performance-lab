@@ -1,7 +1,7 @@
 # CLI Beta Release Notes
 
 **Version:** 1.0.0-beta
-**Package:** `@frontend-performance-lab/cli`
+**Package:** `@smg99/frontend-performance-lab-cli`
 
 Frontend Performance Lab is officially launching its standalone Command-Line Interface and Model Context Protocol (MCP) server on npm!
 
@@ -18,7 +18,7 @@ This milestone allows developers to add a powerful Frontend Performance AI assis
 ## 🛠 Usage
 
 ```bash
-npm install -g @frontend-performance-lab/cli
+npm install -g @smg99/frontend-performance-lab-cli
 fpl setup
 fpl doctor
 fpl --help

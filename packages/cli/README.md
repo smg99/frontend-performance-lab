@@ -8,15 +8,15 @@ Configure AI assistants like **Cursor**, **Claude Desktop**, **VS Code (Roo/Cli
 
 ### Badges
 
-[![npm version](https://img.shields.io/npm/v/@frontend-performance-lab/cli.svg?style=flat-square)](https://www.npmjs.com/package/@frontend-performance-lab/cli)
-[![npm downloads](https://img.shields.io/npm/dm/@frontend-performance-lab/cli.svg?style=flat-square)](https://www.npmjs.com/package/@frontend-performance-lab/cli)
-[![license](https://img.shields.io/npm/l/@frontend-performance-lab/cli.svg?style=flat-square)](https://github.com/smg99/frontend-performance-lab/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/@smg99/frontend-performance-lab-cli.svg?style=flat-square)](https://www.npmjs.com/package/@smg99/frontend-performance-lab-cli)
+[![npm downloads](https://img.shields.io/npm/dm/@smg99/frontend-performance-lab-cli.svg?style=flat-square)](https://www.npmjs.com/package/@smg99/frontend-performance-lab-cli)
+[![license](https://img.shields.io/npm/l/@smg99/frontend-performance-lab-cli.svg?style=flat-square)](https://github.com/smg99/frontend-performance-lab/blob/main/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/smg99/frontend-performance-lab.svg?style=flat-square)](https://github.com/smg99/frontend-performance-lab/stargazers)
 
 ---
 
 ```bash
-npm install -g @frontend-performance-lab/cli
+npm install -g @smg99/frontend-performance-lab-cli
 ```
 
 Supported platforms: **Node 18+** on macOS, Windows, and Linux.
@@ -28,7 +28,7 @@ Supported platforms: **Node 18+** on macOS, Windows, and Linux.
 ### 1️⃣ Install (if you haven’t already)
 
 ```bash
-npm install -g @frontend-performance-lab/cli
+npm install -g @smg99/frontend-performance-lab-cli
 ```
 
 ⬇️

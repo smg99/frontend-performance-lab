@@ -4,7 +4,7 @@ Welcome to the first public beta of **Frontend Performance Lab**!
 
 ## 🚀 Features & Enhancements
 
-- **CLI-First Onboarding**: The new `@frontend-performance-lab/cli` provides a seamless setup wizard. Just run `fpl setup` and your IDE is automatically configured for MCP.
+- **CLI-First Onboarding**: The new `@smg99/frontend-performance-lab-cli` provides a seamless setup wizard. Just run `fpl setup` and your IDE is automatically configured for MCP.
 - **MCP Integration**: Fully configured Model Context Protocol (MCP) server supporting Cursor, Claude Code, VS Code, Windsurf, Continue.dev, and Gemini CLI. Your AI assistant now has full access to the performance knowledge graph.
 - **AST Analyzer Pipeline**: Analyze Vue and React code instantly. Finds layout thrashing, massive DOM trees, and memory leaks before you ship.
 - **Interactive Knowledge Graph**: Live Vue-based experiments showcasing performance issues and how to fix them in real-time.

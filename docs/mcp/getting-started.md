@@ -7,7 +7,7 @@ The Model Context Protocol (MCP) enables your AI assistant to directly access th
 The easiest way to get started is by using the official CLI.
 
 ```bash
-npm install -g @frontend-performance-lab/cli
+npm install -g @smg99/frontend-performance-lab-cli
 fpl setup
 fpl doctor
 ```
@@ -28,14 +28,14 @@ If you prefer not to use the automated `fpl setup` wizard, you can manually conf
 4. Set the following:
    - **Name:** `Frontend Performance Lab`
    - **Type:** `command`
-   - **Command:** `npx -y @frontend-performance-lab/cli mcp`
+   - **Command:** `npx -y @smg99/frontend-performance-lab-cli mcp`
 
 ### Claude Code
 
 Open your terminal and run the Claude Code CLI tool:
 
 ```bash
-claude mcp add frontend-performance-lab npx -y @frontend-performance-lab/cli mcp
+claude mcp add frontend-performance-lab npx -y @smg99/frontend-performance-lab-cli mcp
 ```
 
 ### VS Code (via Cline/Roo)
@@ -47,7 +47,7 @@ Open your MCP settings JSON file and append:
   "mcpServers": {
     "frontend-performance-lab": {
       "command": "npx",
-      "args": ["-y", "@frontend-performance-lab/cli", "mcp"],
+      "args": ["-y", "@smg99/frontend-performance-lab-cli", "mcp"],
       "env": {}
     }
   }
@@ -66,7 +66,7 @@ Open your `~/.continue/config.json` and append to the `mcpServers` array:
 {
   "name": "frontend-performance-lab",
   "command": "npx",
-  "args": ["-y", "@frontend-performance-lab/cli", "mcp"]
+  "args": ["-y", "@smg99/frontend-performance-lab-cli", "mcp"]
 }
 ```
 
@@ -86,7 +86,7 @@ If your IDE cannot connect:
 2. Run `fpl doctor` to verify your environment health.
 3. Test the server independently using the official inspector:
    ```bash
-   npx @modelcontextprotocol/inspector npx -y @frontend-performance-lab/cli mcp
+   npx @modelcontextprotocol/inspector npx -y @smg99/frontend-performance-lab-cli mcp
    ```
 
 For detailed error resolution, see our [Troubleshooting Guide](../troubleshooting.md).
