@@ -1,29 +1,142 @@
-# @frontend-performance-lab/cli
+# Frontend Performance Lab CLI
 
-The official CLI and MCP Server for Frontend Performance Lab.
+The official CLI and MCP Server for **Frontend Performance Lab**.
 
-## Installation
+Configure AI assistants like **Cursor**, **Claude Desktop**, **VS Code (Roo/Cline)**, **Windsurf**, and other MCP‑compatible clients in minutes.
+
+---
+
+### Badges
+
+[![npm version](https://img.shields.io/npm/v/@frontend-performance-lab/cli.svg?style=flat-square)](https://www.npmjs.com/package/@frontend-performance-lab/cli)
+[![npm downloads](https://img.shields.io/npm/dm/@frontend-performance-lab/cli.svg?style=flat-square)](https://www.npmjs.com/package/@frontend-performance-lab/cli)
+[![license](https://img.shields.io/npm/l/@frontend-performance-lab/cli.svg?style=flat-square)](https://github.com/smg99/frontend-performance-lab/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/smg99/frontend-performance-lab.svg?style=flat-square)](https://github.com/smg99/frontend-performance-lab/stargazers)
+
+---
 
 ```bash
 npm install -g @frontend-performance-lab/cli
 ```
 
-## Setup
+Supported platforms: **Node 18+** on macOS, Windows, and Linux.
 
-Run the setup wizard to configure your environment and connect the MCP server to your IDE:
+---
+
+## Two‑Minute Quick Start
+
+### 1️⃣ Install (if you haven’t already)
+
+```bash
+npm install -g @frontend-performance-lab/cli
+```
+
+⬇️
+
+### 2️⃣ Configure your IDE
 
 ```bash
 fpl setup
 ```
 
-## Commands
+⬇️
 
-- `fpl setup` - Configure IDEs and environment.
-- `fpl doctor` - Run health checks.
-- `fpl info` - Print environment information.
-- `fpl mcp` - Run the MCP server via stdio.
-- `fpl analyze` - Run the AST analyzer in the terminal (coming soon).
+> **TIP**
+> `fpl setup` automatically detects and configures supported AI assistants (Cursor, Claude Desktop, VS Code, Windsurf, Gemini CLI). No manual steps needed.
+
+### 3️⃣ Restart your IDE
+
+_(Most IDEs pick up the changes on the next launch.)_
+
+⬇️
+
+### 4️⃣ Verify the installation
+
+```bash
+fpl doctor
+```
+
+---
+
+## Verify Installation
+
+When everything is wired correctly you’ll see output similar to:
+
+```
+✔ CLI Installed
+✔ Node Compatible
+✔ MCP Ready
+✔ Analyzer Ready
+✔ Knowledge Graph Loaded
+
+Environment is 100% healthy!
+```
+
+If any step fails, the message will point you to the missing prerequisite.
+
+---
+
+## Available Commands
+
+| Command       | Description                                                         |
+| ------------- | ------------------------------------------------------------------- |
+| `fpl setup`   | Interactive wizard that configures supported IDEs and AI assistants |
+| `fpl doctor`  | Runs health checks and prints a concise status report               |
+| `fpl info`    | Shows environment details (Node version, installed plugins, etc.)   |
+| `fpl mcp`     | Starts the MCP server (stdio transport)                             |
+| `fpl analyze` | Analyze code from the terminal _(coming soon)_                      |
+
+---
+
+## Supported Clients
+
+- **Cursor**
+- **Claude Desktop**
+- **VS Code** (Roo/Cline)
+- **Windsurf**
+- **Gemini CLI**
+- _Any MCP‑compatible client_ – the CLI follows the Model Context Protocol, so any tool that implements MCP can talk to it.
+
+---
+
+## What You Get
+
+- ✅ Interactive CLI with guided setup
+- ✅ Built‑in MCP server for seamless AI integration
+- ✅ Curated **Frontend Performance Knowledge Graph**
+- ✅ Browser API reference & performance‑focused recipes
+- ✅ Interactive experiments & AST analyzer
+
+---
+
+## Documentation
+
+- 📚 **GitHub Repository** – <https://github.com/smg99/frontend-performance-lab>
+- 🐞 **Issues** – <https://github.com/smg99/frontend-performance-lab/issues>
+- 💬 **Discussions** – <https://github.com/smg99/frontend-performance-lab/discussions>
+- 🌐 **Website / Docs** – <https://frontend-performance-lab.dev>
+
+---
+
+## Roadmap (Beta)
+
+**Current** – CLI, MCP server, knowledge graph, browser APIs, recipes, interactive experiments.
+
+**Coming Soon**
+
+- `fpl analyze` – terminal‑based AST analyzer
+- VS Code extension
+- ESLint plugin
+- Additional analyzer rules and performance metrics
+
+---
+
+## Contributing
+
+We love contributions! If you’d like to help, please read our [contributing guide](https://github.com/smg99/frontend-performance-lab/blob/main/CONTRIBUTING.md) and open a PR or issue.
+
+---
 
 ## License
 
-MIT
+MIT © [Sumit Gajjar](https://github.com/smg99)
