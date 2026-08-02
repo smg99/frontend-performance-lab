@@ -23,7 +23,7 @@
     "mcp:start": "tsx mcp/server.ts",
     "validate:mcp": "tsx scripts/validate-mcp.ts",
     "validate:analyzer": "tsx scripts/validate-analyzer.ts",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "dependencies": {
     "@babel/parser": "^7.29.8",
