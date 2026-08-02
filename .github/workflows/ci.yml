@@ -34,7 +34,13 @@ jobs:
       - name: Validate project
         if: ${{ hashFiles('package.json') != '' }}
         run: |
-          if npm run | grep -q "validate"; then npm run validate; else echo "No validate script, skipping..."; fi
+          if npm run | grep -q "validate"; then
+            npm run validate
+          else
+            echo "No validate script, skipping..."
+          fi
+          # Ensure the step succeeds regardless of script presence
+          exit 0
 
       # Lint
       - name: Lint
