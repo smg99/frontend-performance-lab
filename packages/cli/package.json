@@ -1,6 +1,6 @@
 {
-  "name": "@frontend-performance-lab/cli",
-  "version": "1.0.0-beta.7",
+  "name": "@smg99/frontend-performance-lab-cli",
+  "version": "1.0.0-beta.8",
   "description": "CLI and MCP server for AI-powered frontend performance analysis and knowledge graph exploration.",
   "author": {
     "name": "Sumit Gajjar",

@@ -30,7 +30,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          scope: '@frontend-performance-lab'
+          scope: '@smg99'
           registry-url: 'https://registry.npmjs.org'
           # Enable OIDC auth for npm (no token needed)
           cache: 'npm'
