@@ -31,6 +31,7 @@ jobs:
         with:
           node-version: '22'
           scope: '@frontend-performance-lab'
+          registry-url: 'https://registry.npmjs.org'
           # Enable OIDC auth for npm (no token needed)
           cache: 'npm'
           # Optional fallback token (OIDC supplies token automatically)
