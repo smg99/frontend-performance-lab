@@ -116,7 +116,7 @@ const analyzeCode = async () => {
     const payload = {
       files: [
         {
-          filename: \`playground.\${ext}\`,
+          filename: `playground.${ext}`,
           code: sourceCode.value,
           language: ext,
           framework: framework.value
