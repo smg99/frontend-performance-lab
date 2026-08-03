@@ -1,24 +1,28 @@
 <template>
   <div class="page-container">
-    <PageHeader 
-      title="Enterprise Dashboard"
-      description="Organization-wide performance governance, CI analytics, and historical reporting."
-    />
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold">Enterprise Dashboard</h1>
+      <p class="text-muted-foreground mt-2">Organization-wide performance governance, CI analytics, and historical reporting.</p>
+    </div>
     
     <div class="mt-8">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <StatCard title="Total CI Runs (30d)">
-          <template #value>4,821</template>
-        </StatCard>
-        <StatCard title="Critical Regressions">
-          <template #value><span class="text-red-500">12</span></template>
-        </StatCard>
-        <StatCard title="Avg Score">
-          <template #value><span class="text-green-500">92/100</span></template>
-        </StatCard>
-        <StatCard title="Private Plugins">
-          <template #value>3 Active</template>
-        </StatCard>
+        <div class="border border-border rounded-lg p-6 bg-background-surface">
+          <h3 class="text-sm font-medium text-muted-foreground">Total CI Runs (30d)</h3>
+          <div class="mt-2 text-2xl font-bold">4,821</div>
+        </div>
+        <div class="border border-border rounded-lg p-6 bg-background-surface">
+          <h3 class="text-sm font-medium text-muted-foreground">Critical Regressions</h3>
+          <div class="mt-2 text-2xl font-bold"><span class="text-red-500">12</span></div>
+        </div>
+        <div class="border border-border rounded-lg p-6 bg-background-surface">
+          <h3 class="text-sm font-medium text-muted-foreground">Avg Score</h3>
+          <div class="mt-2 text-2xl font-bold"><span class="text-green-500">92/100</span></div>
+        </div>
+        <div class="border border-border rounded-lg p-6 bg-background-surface">
+          <h3 class="text-sm font-medium text-muted-foreground">Private Plugins</h3>
+          <div class="mt-2 text-2xl font-bold">3 Active</div>
+        </div>
       </div>
 
       <div class="bg-background-surface border border-border rounded-lg p-6">
@@ -66,6 +70,5 @@
 </template>
 
 <script setup lang="ts">
-import PageHeader from '~/components/PageHeader.vue'
-import StatCard from '~/components/ui/StatCard.vue'
+// Enterprise Dashboard Logic
 </script>

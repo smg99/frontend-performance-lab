@@ -1,9 +1,9 @@
 <template>
   <div class="page-container">
-    <PageHeader 
-      title="Plugin Marketplace"
-      description="Discover and install custom performance analysis rules built by the community."
-    />
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold">Plugin Marketplace</h1>
+      <p class="text-muted-foreground mt-2">Discover and install custom performance analysis rules built by the community.</p>
+    </div>
     
     <div class="mt-8 space-y-6">
       <div class="flex items-center justify-between border-b border-border pb-4">
@@ -14,27 +14,26 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <StatCard v-for="plugin in plugins" :key="plugin.id" :title="plugin.name">
-          <template #value>
-            <div class="text-sm font-normal text-muted-foreground mt-2">
-              {{ plugin.description }}
-            </div>
-            <div class="flex items-center gap-4 mt-4 text-xs font-medium">
-              <span class="flex items-center gap-1 text-primary">
-                <Icon name="lucide:download" class="w-4 h-4" /> {{ plugin.downloads }}
-              </span>
-              <span class="flex items-center gap-1 text-yellow-500">
-                <Icon name="lucide:star" class="w-4 h-4" /> {{ plugin.rating }}
-              </span>
-              <span v-if="plugin.verified" class="flex items-center gap-1 text-green-500 bg-green-500/10 px-2 py-0.5 rounded-full">
-                <Icon name="lucide:check-circle" class="w-3 h-3" /> Verified
-              </span>
-            </div>
-          </template>
-          <template #icon>
+        <div v-for="plugin in plugins" :key="plugin.id" class="border border-border rounded-lg p-6 bg-background-surface flex flex-col">
+          <div class="flex items-center gap-3 mb-2">
             <Icon name="lucide:package" class="w-5 h-5 text-muted-foreground" />
-          </template>
-        </StatCard>
+            <h3 class="font-semibold">{{ plugin.name }}</h3>
+          </div>
+          <div class="text-sm font-normal text-muted-foreground mt-2 flex-1">
+            {{ plugin.description }}
+          </div>
+          <div class="flex items-center gap-4 mt-4 text-xs font-medium">
+            <span class="flex items-center gap-1 text-primary">
+              <Icon name="lucide:download" class="w-4 h-4" /> {{ plugin.downloads }}
+            </span>
+            <span class="flex items-center gap-1 text-yellow-500">
+              <Icon name="lucide:star" class="w-4 h-4" /> {{ plugin.rating }}
+            </span>
+            <span v-if="plugin.verified" class="flex items-center gap-1 text-green-500 bg-green-500/10 px-2 py-0.5 rounded-full">
+              <Icon name="lucide:check-circle" class="w-3 h-3" /> Verified
+            </span>
+          </div>
+        </div>
       </div>
 
       <div class="bg-primary/5 rounded-lg border border-primary/20 p-6 mt-12 flex flex-col items-center justify-center text-center">
@@ -52,9 +51,6 @@
 </template>
 
 <script setup lang="ts">
-import PageHeader from '~/components/PageHeader.vue'
-import StatCard from '~/components/ui/StatCard.vue'
-
 const plugins = [
   {
     id: 'fpl-plugin-react-native',
