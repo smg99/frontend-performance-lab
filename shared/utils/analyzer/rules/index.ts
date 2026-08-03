@@ -5,13 +5,15 @@ import { memoryEventListener } from './memory-event-listener'
 import { AnalyzerEngine } from '../engine/index'
 
 import { reactUnmemoizedContextProvider } from './react-unmemoized-context-provider'
+import { jsxDynamicLayoutStyle } from './jsx-dynamic-layout-style'
 
 export const analyzerRules = [
   vueLargeVFor,
   reactLargeMap,
   domLayoutThrashing,
   memoryEventListener,
-  reactUnmemoizedContextProvider
+  reactUnmemoizedContextProvider,
+  jsxDynamicLayoutStyle
 ]
 
 export const getConfiguredEngine = () => {

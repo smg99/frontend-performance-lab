@@ -3,6 +3,7 @@ import { memoryEventListener } from './rules/memory-event-listener'
 import { vueLargeVFor } from './rules/vue-large-v-for'
 import { reactLargeMap } from './rules/react-large-map'
 import { reactUnmemoizedContextProvider } from './rules/react-unmemoized-context-provider'
+import { jsxDynamicLayoutStyle } from './rules/jsx-dynamic-layout-style'
 import type { DiagnosticDefinition, EnrichedDiagnostic } from './types'
 
 export const DiagnosticsRegistry: Record<string, DiagnosticDefinition> = {
@@ -10,7 +11,8 @@ export const DiagnosticsRegistry: Record<string, DiagnosticDefinition> = {
   [memoryEventListener.id]: memoryEventListener,
   [vueLargeVFor.id]: vueLargeVFor,
   [reactLargeMap.id]: reactLargeMap,
-  [reactUnmemoizedContextProvider.id]: reactUnmemoizedContextProvider
+  [reactUnmemoizedContextProvider.id]: reactUnmemoizedContextProvider,
+  [jsxDynamicLayoutStyle.id]: jsxDynamicLayoutStyle
 }
 
 export const DiagnosticsMapper = {

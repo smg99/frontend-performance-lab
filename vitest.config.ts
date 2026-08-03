@@ -19,7 +19,7 @@ export default defineConfig({
       {
         test: {
           name: 'unit',
-          include: ['test/unit/*.{test,spec}.ts', 'packages/cli/test/**/*.test.ts'],
+          include: ['test/unit/**/*.{test,spec}.ts', 'packages/cli/test/**/*.test.ts'],
           environment: 'node',
           alias: {
             '@shared': fileURLToPath(new URL('./shared', import.meta.url)),

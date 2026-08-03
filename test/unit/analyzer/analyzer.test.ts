@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import fs from 'fs'
 import path from 'path'
-import { getConfiguredEngine } from './rules/index'
+import { getConfiguredEngine } from '../../../shared/utils/analyzer/rules/index'
 
 const FIXTURE_ROOT = path.join(__dirname, 'test-fixtures')
 

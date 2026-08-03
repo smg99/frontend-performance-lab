@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { runAnalyzer, loadFixture } from '../tests/helpers'
+import { runAnalyzer, loadFixture } from '../../../../shared/utils/analyzer/tests/helpers'
 
 describe('Rule: vue-large-v-for', () => {
   it('detects a basic v-for without virtualization', () => {

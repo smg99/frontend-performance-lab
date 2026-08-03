@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { runAnalyzer, loadFixture } from '../tests/helpers'
+import { runAnalyzer, loadFixture } from '../../../../shared/utils/analyzer/tests/helpers'
 
 describe('Rule: memory-event-listener', () => {
   it('detects a global addEventListener with no removeEventListener', () => {

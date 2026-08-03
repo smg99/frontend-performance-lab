@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { runAnalyzer, loadFixture } from '../tests/helpers'
+import { runAnalyzer, loadFixture } from '../../../../shared/utils/analyzer/tests/helpers'
 
 describe('Rule: dom-layout-thrashing', () => {
   it('detects style mutations causing thrashing', () => {
