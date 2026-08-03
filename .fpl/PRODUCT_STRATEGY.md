@@ -55,6 +55,8 @@ Capabilities include:
 - Analysis
 - Diagnostics
 - Reporting
+- Auto-Fix
+- CI/CD Automation
 - AI
 - Plugins
 - Marketplace

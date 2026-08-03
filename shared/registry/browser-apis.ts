@@ -4,13 +4,19 @@ import { intersectionObserverManifest } from '../content/browser-apis/intersecti
 import { webWorkersManifest } from '../content/browser-apis/web-workers/manifest'
 import { resizeObserverManifest } from '../content/browser-apis/resize-observer/manifest'
 import { requestIdleCallbackManifest } from '../content/browser-apis/request-idle-callback/manifest'
+import { mutationObserverManifest } from '../content/browser-apis/mutation-observer/manifest'
+import { performanceObserverManifest } from '../content/browser-apis/performance-observer/manifest'
+import { viewTransitionsManifest } from '../content/browser-apis/view-transitions/manifest'
 
 export const browserAPIRegistry: Record<string, BrowserAPI> = {
   [requestAnimationFrameManifest.id]: requestAnimationFrameManifest,
   [intersectionObserverManifest.id]: intersectionObserverManifest,
   [webWorkersManifest.id]: webWorkersManifest,
   [resizeObserverManifest.id]: resizeObserverManifest,
-  [requestIdleCallbackManifest.id]: requestIdleCallbackManifest
+  [requestIdleCallbackManifest.id]: requestIdleCallbackManifest,
+  [mutationObserverManifest.id]: mutationObserverManifest,
+  [performanceObserverManifest.id]: performanceObserverManifest,
+  [viewTransitionsManifest.id]: viewTransitionsManifest
 }
 
 export function getAllBrowserAPIs(): BrowserAPI[] {

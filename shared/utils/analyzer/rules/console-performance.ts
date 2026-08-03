@@ -8,8 +8,8 @@ export const consolePerformance: ASTRule = {
   description: 'Detects synchronous console logging which can block the main thread and leak memory in production.',
   severity: 'Warning',
   category: 'CPU',
-  frameworks: ['react', 'vue', 'svelte', 'js'],
-  supportedLanguages: ['js', 'jsx', 'ts', 'tsx', 'vue', 'svelte'],
+  frameworks: ['react', 'js'],
+  supportedLanguages: ['js', 'jsx', 'ts', 'tsx'],
   impact: 'Synchronous console.log statements pause the JS thread and hold onto memory references, causing memory leaks and dropping frames.',
   fix: 'Remove console statements or use a build-time plugin (like terser drop_console) to strip them in production.',
   browserImpact: {
