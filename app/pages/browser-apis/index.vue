@@ -31,9 +31,10 @@
         <p class="description">{{ api.description }}</p>
         <div class="meta">
           <span class="difficulty" :class="api.difficulty.toLowerCase()">{{ api.difficulty }}</span>
-          <span class="performance-impact" :class="api.performanceImpact.toLowerCase()"
-            >Impact: {{ api.performanceImpact }}</span
-          >
+          <span class="performance-impact" :class="api.performanceImpact.toLowerCase()">
+            Impact: {{ api.performanceImpact }}
+          </span>
+          <span class="popularity">🔥 Pop: {{ api.usageStats.popularity }}</span>
         </div>
       </NuxtLink>
     </div>
@@ -47,7 +48,7 @@ import { getAllBrowserAPIs } from '@shared/registry/browser-apis'
 
 const searchQuery = ref('')
 
-const allApis = getAllBrowserAPIs()
+const allApis = getAllBrowserAPIs().sort((a, b) => b.usageStats.popularity - a.usageStats.popularity)
 
 const filteredApis = computed(() => {
   if (!searchQuery.value.trim()) return allApis
@@ -57,7 +58,7 @@ const filteredApis = computed(() => {
     type: 'browser-api'
   })
 
-  return results.map(r => r.item)
+  return results.map(r => r.item).sort((a, b) => b.usageStats.popularity - a.usageStats.popularity)
 })
 </script>
 
@@ -143,5 +144,9 @@ const filteredApis = computed(() => {
 }
 .difficulty.advanced {
   color: #f87171;
+}
+.popularity {
+  font-weight: 600;
+  color: #fb923c;
 }
 </style>

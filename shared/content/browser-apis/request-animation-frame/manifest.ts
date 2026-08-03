@@ -8,6 +8,9 @@ export const requestAnimationFrameManifest: BrowserAPI = {
   browserSupport: 'Global 98%+',
   baseline: 'Widely available',
   difficulty: 'Beginner',
+  usageStats: {
+    popularity: 95
+  },
   searchMetadata: {
     keywords: ['requestAnimationFrame', 'raf', 'animation', 'rendering'],
     synonyms: ['paint loop', 'frame sync'],

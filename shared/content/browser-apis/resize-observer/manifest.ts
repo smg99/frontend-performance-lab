@@ -9,6 +9,9 @@ export const resizeObserverManifest: BrowserAPI = {
   browserSupport: 'Chrome 64+, Firefox 69+, Safari 13.1+, Edge 79+',
   baseline: 'Widely available',
   difficulty: 'Beginner',
+  usageStats: {
+    popularity: 70
+  },
 
   searchMetadata: {
     keywords: ['resize', 'element size', 'layout change', 'responsive', 'container query polyfill'],

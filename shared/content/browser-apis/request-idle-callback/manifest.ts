@@ -10,6 +10,9 @@ export const requestIdleCallbackManifest: BrowserAPI = {
     'Chrome 47+, Firefox 55+, Edge 79+. Safari: Not supported (use polyfill or setTimeout fallback).',
   baseline: 'Newly available',
   difficulty: 'Intermediate',
+  usageStats: {
+    popularity: 60
+  },
 
   searchMetadata: {
     keywords: ['idle', 'background task', 'main thread', 'scheduling', 'non-blocking'],

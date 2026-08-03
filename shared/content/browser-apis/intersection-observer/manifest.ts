@@ -8,6 +8,9 @@ export const intersectionObserverManifest: BrowserAPI = {
   browserSupport: 'Global 97%+',
   baseline: 'Widely available',
   difficulty: 'Intermediate',
+  usageStats: {
+    popularity: 85
+  },
   searchMetadata: {
     keywords: ['IntersectionObserver', 'visibility', 'viewport'],
     synonyms: ['lazy loading', 'infinite scrolling', 'virtual scrolling'],

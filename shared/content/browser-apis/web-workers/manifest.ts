@@ -8,6 +8,9 @@ export const webWorkersManifest: BrowserAPI = {
   browserSupport: 'Global 99%+',
   baseline: 'Widely available',
   difficulty: 'Advanced',
+  usageStats: {
+    popularity: 75
+  },
   searchMetadata: {
     keywords: ['Web Workers', 'threads', 'multithreading'],
     synonyms: ['background worker', 'concurrency'],

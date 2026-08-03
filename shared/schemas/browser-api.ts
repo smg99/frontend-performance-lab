@@ -8,6 +8,9 @@ export interface BrowserAPI {
   browserSupport: string
   baseline: 'Newly available' | 'Widely available' | 'Limited'
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced'
+  usageStats: {
+    popularity: number // 0-100 scale
+  }
   searchMetadata: {
     keywords: string[]
     synonyms: string[]
