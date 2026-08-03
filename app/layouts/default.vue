@@ -163,6 +163,31 @@ const breadcrumbs = computed(() => {
                 MCP Hub
               </NuxtLink>
             </li>
+            <li>
+              <NuxtLink
+                to="/plugins"
+                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-foreground-muted hover:text-foreground-primary hover:bg-background-hover"
+                active-class="bg-background-hover text-foreground-primary font-semibold"
+              >
+                <svg
+                  class="w-4 h-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                  <path d="M2 17l10 5 10-5" />
+                  <path d="M2 12l10 5 10-5" />
+                </svg>
+                Plugins
+              </NuxtLink>
+            </li>
           </ul>
         </div>
       </nav>
