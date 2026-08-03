@@ -9,7 +9,7 @@
 
 - **CLI Enhancements**: Expand `packages/cli/` to manage local workspace configurations and allow developers to toggle specific performance rules on or off within their projects.
 - **MCP Server Hardening**: Enhance the MCP server with more granular queries and add detailed parameter validation and error handling for robust IDE integrations.
-  - _Status:_ `performance_audit` tool now securely supports analyzing actual files in the workspace alongside in-memory strings (Sprint 001 Slice 3). It also returns rich human-friendly diagnostics (Sprint 001 Slice 4). Recipe mapping is pending.
+  - _Status:_ `performance_audit` tool securely analyzes files (Sprint 001 Slice 3), maps them to rich diagnostics (Sprint 001 Slice 4), and outputs a beautiful deterministic markdown engineering report (Sprint 002 "Wow Moment"). Recipe mapping is pending.
 
 ## Low Priority
 

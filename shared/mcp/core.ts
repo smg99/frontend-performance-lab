@@ -6,6 +6,7 @@ import { searchPlatform } from '../utils/search/index.js'
 import { getConfiguredEngine } from '../utils/analyzer/rules/index.js'
 import { FileAccessService } from '../filesystem/FileAccessService.js'
 import { DiagnosticsMapper } from '../diagnostics/mapper.js'
+import { PerformanceReportBuilder } from '../reporting/builder.js'
 
 export function detectFrameworkAndLanguage(code: string) {
   if (code.includes('<template>') || code.includes('script setup')) {
@@ -178,10 +179,16 @@ export const mcpCore = {
         }))
       )
 
+      const reportMarkdown = PerformanceReportBuilder.build(enrichedIssues, {
+        score: report.performanceScore,
+        filename
+      })
+
       const data = {
         score: report.performanceScore,
         issues: enrichedIssues,
-        summary
+        summary,
+        markdownReport: reportMarkdown
       }
 
       // We omit withMetadata here to match the exact mock schema expected by the tests / IDE
