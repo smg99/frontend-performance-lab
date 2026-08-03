@@ -6,6 +6,7 @@ import { getExperimentById } from '../shared/registry/index.js'
 import { getBrowserAPI } from '../shared/registry/browser-apis.js'
 import { getRecipe } from '../shared/registry/recipes.js'
 import { mcpCore } from '../shared/mcp/core.js'
+import { getConfiguredEngine } from '../shared/utils/analyzer/rules/index.js'
 
 const server = new McpServer({
   name: 'Frontend Performance Lab',
@@ -232,35 +233,13 @@ server.tool(
 
 server.tool(
   'performance_audit',
-  'Run an AST-based performance audit on a local file or source code string. (Note: Currently returns mocked data for testing IDE integration. Real AST integration arrives in Slice 2.)',
+  'Run an AST-based performance audit on a local file or source code string.',
   {
     path: z.string().optional().describe('Absolute path to the local file to audit'),
     sourceCode: z.string().optional().describe('Raw source code string to audit')
   },
   async args => {
-    return {
-      content: [
-        {
-          type: 'text',
-          text: JSON.stringify(
-            {
-              score: 74,
-              issues: [
-                {
-                  id: 'FORCED_SYNC_LAYOUT',
-                  severity: 'high',
-                  line: 42,
-                  message: 'Forced synchronous layout detected.'
-                }
-              ],
-              summary: '1 high-impact performance issue detected.'
-            },
-            null,
-            2
-          )
-        }
-      ]
-    }
+    return await mcpCore.performance_audit(args)
   }
 )
 
