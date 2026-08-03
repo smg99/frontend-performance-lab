@@ -6,6 +6,7 @@ import { AnalyzerEngine } from '../engine/index'
 
 import { reactUnmemoizedContextProvider } from './react-unmemoized-context-provider'
 import { jsxDynamicLayoutStyle } from './jsx-dynamic-layout-style'
+import { passiveEventListenerMissing } from './passive-event-listener-missing'
 
 export const analyzerRules = [
   vueLargeVFor,
@@ -13,7 +14,8 @@ export const analyzerRules = [
   domLayoutThrashing,
   memoryEventListener,
   reactUnmemoizedContextProvider,
-  jsxDynamicLayoutStyle
+  jsxDynamicLayoutStyle,
+  passiveEventListenerMissing
 ]
 
 export const getConfiguredEngine = () => {

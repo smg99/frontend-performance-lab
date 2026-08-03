@@ -4,6 +4,7 @@ import { vueLargeVFor } from './rules/vue-large-v-for'
 import { reactLargeMap } from './rules/react-large-map'
 import { reactUnmemoizedContextProvider } from './rules/react-unmemoized-context-provider'
 import { jsxDynamicLayoutStyle } from './rules/jsx-dynamic-layout-style'
+import { passiveEventListenerMissing } from './rules/passive-event-listener-missing'
 import type { DiagnosticDefinition, EnrichedDiagnostic } from './types'
 
 export const DiagnosticsRegistry: Record<string, DiagnosticDefinition> = {
@@ -12,7 +13,8 @@ export const DiagnosticsRegistry: Record<string, DiagnosticDefinition> = {
   [vueLargeVFor.id]: vueLargeVFor,
   [reactLargeMap.id]: reactLargeMap,
   [reactUnmemoizedContextProvider.id]: reactUnmemoizedContextProvider,
-  [jsxDynamicLayoutStyle.id]: jsxDynamicLayoutStyle
+  [jsxDynamicLayoutStyle.id]: jsxDynamicLayoutStyle,
+  [passiveEventListenerMissing.id]: passiveEventListenerMissing
 }
 
 export const DiagnosticsMapper = {
