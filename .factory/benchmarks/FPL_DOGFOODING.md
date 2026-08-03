@@ -26,3 +26,12 @@
 - **Commands Used:** `write_to_file`, `replace_file_content`, `run_command`
 - **Pain Points:** Needed to ensure that the file reading logic was cleanly separated from the MCP handler and the AST analyzer to preserve security invariants.
 - **Ideas:** FileAccessService could be extended later to provide directory traversal or glob searching if we want bulk auditing.
+
+## Slice 4: Human-Friendly Diagnostics
+
+- **Date:** 2026-08-03
+- **Task:** Integrated rich diagnostic payloads for all violations.
+- **Time:** ~15 mins
+- **Tools Used:** `write_to_file`, `replace_file_content`
+- **Pain Points:** Modifying TypeScript objects for template literals inside Node tools requires double-escaping, but extracting them into standalone diagnostic variables avoids complex `replace_file_content` logic inside `core.ts`.
+- **Observations:** Enriched mapping provides dramatic improvements in human readability without coupling the AST engine to educational text. Diagnostics are 10x larger payload-wise, but provide the complete context needed for immediate LLM context hydration.

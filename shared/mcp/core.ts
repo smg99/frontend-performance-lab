@@ -5,6 +5,7 @@ import { mcpTools } from '../registry/mcp-tools.js'
 import { searchPlatform } from '../utils/search/index.js'
 import { getConfiguredEngine } from '../utils/analyzer/rules/index.js'
 import { FileAccessService } from '../filesystem/FileAccessService.js'
+import { DiagnosticsMapper } from '../diagnostics/mapper.js'
 
 export function detectFrameworkAndLanguage(code: string) {
   if (code.includes('<template>') || code.includes('script setup')) {
@@ -169,16 +170,17 @@ export const mcpCore = {
       ])
 
       const summary = `${report.issues.length} performance issue(s) detected.`
-      const data = {
-        score: report.performanceScore,
-        issues: report.issues.map(i => ({
+      const enrichedIssues = DiagnosticsMapper.enrich(
+        report.issues.map(i => ({
           id: i.ruleId,
           severity: i.severity,
-          line: i.lineNumbers?.[0] || 0,
-          message: i.title,
-          impact: i.impact,
-          fix: i.fix
-        })),
+          line: i.lineNumbers?.[0] || 0
+        }))
+      )
+
+      const data = {
+        score: report.performanceScore,
+        issues: enrichedIssues,
         summary
       }
 

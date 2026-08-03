@@ -22,3 +22,10 @@ Welcome to the **Frontend Performance Lab**! This project serves as an AI-powere
 - **Import Strictness:** Be extremely careful with imports. Code in `app/` and `mcp/` must ONLY import from `shared/registry` or `shared/utils`. They should NEVER directly import from `shared/content`. We rely on strict path aliases to enforce this until the monorepo migration is complete.
 - **CI/CD:** We have strict linting (`eslint`, `prettier`) and testing (`vitest`, `playwright`) requirements enforced by GitHub Actions. Always run `npm run lint` and `npm run test` before submitting a PR.
 - **Monorepo Migration:** Keep in mind that directory structures will shift as we complete the transition to `apps/` and `packages/` workspaces.
+
+### Principal Engineer Self-Review (Diagnostics Slice)
+
+- **Is every field genuinely useful?** Yes, `why` and `howToVerify` are extremely useful for LLMs to generate actionable explanations, and `references` provide ground truth.
+- **Is anything duplicated?** No. The AnalyzerEngine produces raw location and ID data. The Diagnostics Mapper enriches it without mutating the engine's internal state.
+- **Can future rule authors add diagnostics in under five minutes?** Yes. They only need to create a `rule-id.ts` file implementing `DiagnosticDefinition` and export it in `mapper.ts`.
+- **Does this architecture scale to 100+ analyzer rules?** Yes. The registry is an O(1) object map, and rule files can be easily split into subdirectories. It keeps the core analyzer extremely lightweight since strings aren't allocated in the AST traversal itself.
