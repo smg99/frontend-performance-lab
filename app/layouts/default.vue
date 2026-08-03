@@ -108,6 +108,30 @@ const breadcrumbs = computed(() => {
           <ul class="space-y-1">
             <li>
               <NuxtLink
+                to="/playground"
+                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-foreground-muted hover:text-foreground-primary hover:bg-background-hover"
+                active-class="bg-background-hover text-foreground-primary font-semibold"
+              >
+                <svg
+                  class="w-4 h-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+                AST Playground
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
                 to="/experiments/virtualization"
                 class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-foreground-muted hover:text-foreground-primary hover:bg-background-hover"
                 active-class="bg-background-hover text-foreground-primary font-semibold"
