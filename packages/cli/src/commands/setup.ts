@@ -1,11 +1,14 @@
 import { defineCommand } from 'citty'
 import consola from 'consola'
-import os from 'node:os'
-import fs from 'node:fs'
-import path from 'node:path'
 import * as p from '@clack/prompts'
 import { colorize } from 'consola/utils'
 import { execSync } from 'node:child_process'
+
+import { IDEFinder, type SupportedIDE } from '../setup/IDEFinder.js'
+import { ConfigLocator } from '../setup/ConfigLocator.js'
+import { BackupManager, RollbackManager } from '../setup/RollbackManager.js'
+import { ConfigPatcher } from '../setup/ConfigPatcher.js'
+import { InstallationValidator } from '../setup/InstallationValidator.js'
 
 export default defineCommand({
   meta: {
@@ -41,70 +44,69 @@ export default defineCommand({
     }
 
     // 2. IDE Detection
-    const home = os.homedir()
-    const ides = [
-      {
-        value: 'cursor',
-        label: 'Cursor',
-        path: path.join(home, 'Library/Application Support/Cursor/User/workspaceStorage')
-      },
-      {
-        value: 'claude',
-        label: 'Claude Desktop',
-        path: path.join(home, 'Library/Application Support/Claude/claude_desktop_config.json')
-      },
-      {
-        value: 'windsurf',
-        label: 'Windsurf',
-        path: path.join(home, '.codeium/windsurf/mcp_config.json')
-      },
-      {
-        value: 'vscode',
-        label: 'VS Code (Roo/Cline)',
-        path: path.join(home, 'Library/Application Support/Code/User/globalStorage')
-      },
-      { value: 'manual', label: 'Manual Setup', path: '' }
-    ]
+    const s2 = p.spinner()
+    s2.start('Scanning system for supported IDEs...')
+    const ides = IDEFinder.findInstalledIDEs()
 
-    const detectedIdes = ides.filter(ide => ide.value === 'manual' || fs.existsSync(ide.path))
+    if (ides.length === 0) {
+      s2.stop('No supported IDEs found.')
+      p.cancel('Could not detect Claude Desktop, Cursor, VSCode, or Antigravity.')
+      return process.exit(0)
+    }
+    
+    s2.stop(`Found IDEs: ${ides.join(', ')}`)
 
     // 3. IDE Selection
-    const selectedIde = await p.select({
-      message: 'Which IDE would you like to configure MCP for?',
-      options: detectedIdes.length > 1 ? detectedIdes : ides
+    const selectedIdes = await p.multiselect({
+      message: 'Which IDEs would you like to configure for MCP?',
+      options: ides.map((ide: string) => ({ value: ide, label: ide }))
     })
 
-    if (p.isCancel(selectedIde)) {
+    if (p.isCancel(selectedIdes) || selectedIdes.length === 0) {
       p.cancel('Setup cancelled.')
       return process.exit(0)
     }
 
-    // 4. Config Generation
-    const mcpConfig = {
-      mcpServers: {
-        'frontend-performance-lab': {
-          command: 'npx',
-          args: ['-y', '@smg99/frontend-performance-lab-cli', 'mcp']
-        }
+    // 4. Config Generation & Patching
+    for (const ide of selectedIdes as SupportedIDE[]) {
+      const configPath = ConfigLocator.getConfigPath(ide)
+      
+      if (!configPath) {
+        consola.warn(`Configuration path for ${ide} could not be resolved on this OS.`)
+        continue
       }
-    }
 
-    p.note(JSON.stringify(mcpConfig, null, 2), 'Add this to your MCP configuration file:')
+      const s3 = p.spinner()
+      s3.start(`Configuring ${ide}...`)
 
-    // 5. Verification
-    const confirmed = await p.confirm({
-      message: 'Did you successfully add the configuration?'
-    })
-
-    if (p.isCancel(confirmed) || !confirmed) {
-      p.cancel('Setup aborted.')
-      return process.exit(0)
+      let backupPath: string | null = null
+      try {
+        ConfigLocator.ensureConfigDir(configPath)
+        backupPath = BackupManager.backup(configPath)
+        
+        ConfigPatcher.patch(configPath)
+        
+        const isValid = InstallationValidator.validate(configPath)
+        if (isValid) {
+          s3.stop(colorize('green', `Successfully configured ${ide} MCP integration.`))
+        } else {
+          throw new Error('Validation failed post-patching. JSON is invalid.')
+        }
+      } catch (e: unknown) {
+        s3.stop(colorize('red', `Failed to configure ${ide}.`))
+        const msg = e instanceof Error ? e.message : String(e)
+        consola.error(msg)
+        
+        consola.info(`Rolling back ${ide} configuration...`)
+        RollbackManager.rollback(configPath, backupPath)
+        consola.success(`Rollback successful for ${ide}. Config was not modified.`)
+      }
     }
 
     p.outro(
       colorize(
         'green',
-        'Setup complete! You can now use Frontend Performance Lab inside your AI Assistant.'
+        'Setup complete! You can now use Frontend Performance Lab inside your AI Assistant. Remember to restart your IDE.'
       )
     )
   }
