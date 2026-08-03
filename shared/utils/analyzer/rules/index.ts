@@ -1,38 +1,40 @@
-import { vueLargeVFor } from './vue-large-v-for'
 import { reactLargeMap } from './react-large-map'
-import { domLayoutThrashing } from './dom-layout-thrashing'
-import { memoryEventListener } from './memory-event-listener'
-import { AnalyzerEngine } from '../engine/index'
-
 import { reactUnmemoizedContextProvider } from './react-unmemoized-context-provider'
 import { jsxDynamicLayoutStyle } from './jsx-dynamic-layout-style'
+import { vueLargeVFor } from './vue-large-v-for'
 import { largeReactiveStateObject } from './large-reactive-state-object'
-import { passiveEventListenerMissing } from './passive-event-listener-missing'
 import { lazyLoadImageMisses } from './lazy-load-image-misses'
 import { cssContainMissing } from './css-contain-missing'
-import { blockingCss } from './blocking-css'
-import { networkBatching } from './network-batching'
 import { heavyJsOnload } from './heavy-js-onload'
-export const analyzerRules = [
-  vueLargeVFor,
+import { domLayoutThrashing } from './dom-layout-thrashing'
+import { networkBatching } from './network-batching'
+import { passiveEventListenerMissing } from './passive-event-listener-missing'
+import { memoryEventListener } from './memory-event-listener'
+import { blockingCss } from './blocking-css'
+import { reactInlineProps } from './react-inline-props'
+import { AnalyzerEngine } from '../engine/index'
+
+export const builtInRules = [
   reactLargeMap,
-  domLayoutThrashing,
-  memoryEventListener,
   reactUnmemoizedContextProvider,
   jsxDynamicLayoutStyle,
-  passiveEventListenerMissing,
+  vueLargeVFor,
   largeReactiveStateObject,
   lazyLoadImageMisses,
   cssContainMissing,
-  blockingCss,
+  heavyJsOnload,
+  domLayoutThrashing,
   networkBatching,
-  heavyJsOnload
+  passiveEventListenerMissing,
+  memoryEventListener,
+  blockingCss,
+  reactInlineProps
 ]
 
 export const getConfiguredEngine = () => {
   const engine = new AnalyzerEngine()
 
-  for (const rule of analyzerRules) {
+  for (const rule of builtInRules) {
     engine.registerRule(rule)
   }
 
