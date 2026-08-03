@@ -7,7 +7,7 @@ Welcome to the **Frontend Performance Lab**! This project serves as an AI-powere
 ### Key Concepts
 
 1. **The AST Analyzer:** We don't just lint code; we perform static performance analysis. The core engine uses `@babel/parser` and `@babel/traverse`. If you need to detect new performance bottlenecks, you'll be writing Babel traversal visitors in `shared/utils/analyzer/`.
-2. **MCP Integration:** `mcp/server.ts` is the bridge to the outside world. It exposes our knowledge graph to AI agents like Claude, Cursor, and Windsurf via stdio. It also provides the `performance_audit` tool, which leverages the AST analyzer for in-memory source strings.
+2. **MCP Integration:** `mcp/server.ts` is the bridge to the outside world. It exposes our knowledge graph to AI agents like Claude, Cursor, and Windsurf via stdio. It provides the `performance_audit` tool, which leverages a secure `FileAccessService` to read files from the workspace and passes them to the AST analyzer.
 3. **Strict Separation of Concerns:** The `app/` directory is purely presentational (Nuxt 4). It has zero hardcoded educational content. All state, models, and data live in the `shared/` directory, acting as a single source of truth.
 
 ### Getting Started

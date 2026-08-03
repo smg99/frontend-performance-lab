@@ -4,6 +4,7 @@ import { getAllRecipes, getRecipe } from '../registry/recipes.js'
 import { mcpTools } from '../registry/mcp-tools.js'
 import { searchPlatform } from '../utils/search/index.js'
 import { getConfiguredEngine } from '../utils/analyzer/rules/index.js'
+import { FileAccessService } from '../filesystem/FileAccessService.js'
 
 export function detectFrameworkAndLanguage(code: string) {
   if (code.includes('<template>') || code.includes('script setup')) {
@@ -116,14 +117,40 @@ export const mcpCore = {
 
   async performance_audit(args: Record<string, unknown>) {
     let code = ''
+    let filename = 'in-memory'
+
     if (typeof args.sourceCode === 'string') {
       code = args.sourceCode
+    } else if (typeof args.path === 'string') {
+      const fileAccess = new FileAccessService()
+      const result = fileAccess.readFileSafely(args.path)
+
+      if (!result.success || !result.content) {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({
+                score: 100,
+                issues: [],
+                summary: 'File access error: ' + result.error
+              })
+            }
+          ]
+        }
+      }
+      code = result.content
+      filename = args.path
     } else {
       return {
         content: [
           {
             type: 'text',
-            text: JSON.stringify({ error: 'path is not supported yet, provide sourceCode' })
+            text: JSON.stringify({
+              score: 100,
+              issues: [],
+              summary: 'Analyzer error: Must provide either sourceCode or path.'
+            })
           }
         ]
       }
@@ -134,7 +161,7 @@ export const mcpCore = {
       const engine = getConfiguredEngine()
       const report = engine.analyze([
         {
-          filename: 'in-memory',
+          filename,
           code,
           language,
           framework

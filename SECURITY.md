@@ -1,16 +1,35 @@
-# Security Policy
+# Security Architecture
 
-## Supported Versions
+## MCP Server Security Boundary
 
-The following versions of the platform are currently being supported with security updates.
+The Frontend Performance Lab MCP Server relies on `shared/filesystem/FileAccessService.ts` to implement a strict security perimeter around the user's workspace.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.0.x   | :white_check_mark: |
-| < 1.0   | :x:                |
+### 1. Workspace Isolation
 
-## Reporting a Vulnerability
+The analyzer is firmly restricted to the active workspace root directory where the server is launched. It cannot analyze files outside this boundary.
 
-If you discover a security vulnerability within this project, please send an e-mail to our security team via sumitg3767@gmail.com. All security vulnerabilities will be promptly addressed.
+- **Path normalization**: All input paths are normalized (stripping redundant `./` and `../`).
+- **Traversal Prevention**: Inputs containing explicitly attempted directory traversal strings (like `../../`) are instantly rejected.
+- **Absolute Paths Verification**: Any absolute paths provided must begin with the workspace root path.
+- **Symlink Escaping**: We invoke `fs.realpathSync` to guarantee that the absolute resolved file path hasn't bypassed workspace limits via symbolic links pointing externally.
 
-We will try to review your report within 48 hours and provide an estimated timeline for resolution. Once the vulnerability is patched, we will request you to confirm that the fix works as expected. We will also coordinate a public disclosure if appropriate.
+### 2. Supported File Types
+
+Only specific web-focused file extensions can be passed into the engine to prevent parsing binaries, massive un-ignorable JSON data, or sensitive system files like `.env`.
+Supported:
+
+- `.vue`
+- `.jsx`
+- `.tsx`
+- `.js`
+- `.ts`
+- `.mjs`
+- `.cjs`
+
+### 3. File Size Limits
+
+To prevent the engine from OOM crashing or causing the MCP server to hang the IDE, individual files are hard-capped at **1 MB**.
+
+### 4. Robust Failure
+
+The File Access layer guarantees it will never throw an uncaught exception. All filesystem and permission errors are caught, sanitized, and returned as a structured response `FileAccessResult`, ensuring the MCP connection remains stable under stress.

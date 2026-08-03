@@ -4,6 +4,7 @@ import withNuxt from './.nuxt/eslint.config.mjs'
 export default withNuxt(
   {
     ignores: [
+      'test/fixtures/**',
       'shared/utils/analyzer/tests/fixtures/**',
       'shared/utils/analyzer/test-fixtures/**',
       'coverage/**',
