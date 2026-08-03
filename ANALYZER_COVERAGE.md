@@ -10,10 +10,19 @@ This report details the comprehensive regression test suite coverage for all Ana
 | `react-large-map` | 2 | 1 | 0 | >95% |
 | `dom-layout-thrashing` | 1 | 1 | 0 | >95% |
 | `memory-event-listener` | 1 | 2 | 0 | >95% |
+| `react-unmemoized-context-provider` | 0 | 0 | 0 | 0% |
+| `jsx-dynamic-layout-style` | 1 | 2 | 0 | >95% |
+| `passive-event-listener-missing` | 0 | 0 | 0 | 0% |
+| `large-reactive-state-object` | 0 | 0 | 0 | 0% |
+| `lazy-load-image-misses` | 0 | 0 | 0 | 0% |
+| `css-contain-missing` | 0 | 0 | 0 | 0% |
+| `blocking-css` | 0 | 0 | 0 | 0% |
+| `network-batching` | 0 | 0 | 0 | 0% |
+| `heavy-js-onload` | 0 | 0 | 0 | 0% |
 
-**Total Tests:** 13
-- **Positive Tests:** 7
-- **Negative Tests:** 5
+**Total Tests:** 16
+- **Positive Tests:** 8
+- **Negative Tests:** 7
 - **Edge Cases:** 1
 
 ## 2. Uncovered Scenarios Still Remaining
