@@ -172,6 +172,8 @@ export interface ASTRule {
     | 'relatedRecipes'
     | 'interviewQuestions'
   >[]
+
+  fixer?: (ast: any, context: AnalyzerContext, issues: Issue[]) => boolean
 }
 
 export interface FPLPlugin {

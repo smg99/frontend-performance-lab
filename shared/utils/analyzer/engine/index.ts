@@ -12,6 +12,8 @@ import type {
 import { parseVue } from '../parsers/vue'
 import { parseBabel } from '../parsers/babel'
 import { parseSvelte } from '../parsers/svelte'
+import _generate from '@babel/generator'
+const generate = typeof _generate === 'function' ? _generate : (_generate as any).default
 
 export class AnalyzerEngine {
   private rules: ASTRule[] = []
@@ -40,12 +42,14 @@ export class AnalyzerEngine {
     return { ast: null }
   }
 
-  public analyze(contexts: AnalyzerContext[]): ReviewReport {
+  public analyze(contexts: AnalyzerContext[], options?: { autoFix?: boolean }): ReviewReport {
     const allIssues: Issue[] = []
 
     for (const ctx of contexts) {
       const { ast } = this.parseCode(ctx)
       if (!ast) continue
+      
+      let fileMutated = false
 
       // Run applicable rules
       for (const rule of this.rules) {
@@ -79,6 +83,20 @@ export class AnalyzerEngine {
               lineNumbers: raw.lineNumbers
             })
           }
+          
+          if (options?.autoFix && rule.fixer) {
+            const ruleMutated = rule.fixer(ast, ctx, rawIssues as any)
+            if (ruleMutated) fileMutated = true
+          }
+        }
+      }
+      
+      if (fileMutated && options?.autoFix) {
+        try {
+          const output = generate(ast, {}, ctx.code)
+          ctx.code = output.code
+        } catch (e) {
+          console.error(`AutoFix code generation failed for ${ctx.filename}:`, e)
         }
       }
     }

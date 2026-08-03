@@ -55,6 +55,11 @@ export default defineCommand({
       type: 'positional',
       description: 'Target file or directory to analyze',
       required: false
+    },
+    'auto-fix': {
+      type: 'boolean',
+      description: 'Automatically fix detectable performance bottlenecks',
+      required: false
     }
   },
   async run({ args }) {
@@ -107,6 +112,7 @@ export default defineCommand({
       try {
         const content = readFileSync(filePath, 'utf8')
         contexts.push({
+          filename: filePath,
           code: content,
           language: detectLanguage(filePath),
           framework: detectFramework(filePath, content)
@@ -116,7 +122,32 @@ export default defineCommand({
       }
     }
 
-    const report = engine.analyze(contexts)
+    const autoFixEnabled = args['auto-fix'] === true
+    if (autoFixEnabled) {
+      consola.info('Auto-fix is enabled. Modifiable issues will be overwritten in source files.')
+    }
+
+    const report = engine.analyze(contexts, { autoFix: autoFixEnabled })
+
+    if (autoFixEnabled) {
+      // Save any files that were mutated
+      let fixedCount = 0
+      for (const ctx of contexts) {
+        // Read original to compare
+        const original = readFileSync(ctx.filename, 'utf8')
+        if (original !== ctx.code) {
+          try {
+            import('fs').then(fs => fs.writeFileSync(ctx.filename, ctx.code))
+            fixedCount++
+          } catch(e) {
+            consola.warn(`Failed to auto-fix ${ctx.filename}:`, e)
+          }
+        }
+      }
+      if (fixedCount > 0) {
+        consola.success(`Auto-fixed ${fixedCount} file(s)!`)
+      }
+    }
 
     console.log('\n--- Frontend Performance Lab Report ---\n')
     

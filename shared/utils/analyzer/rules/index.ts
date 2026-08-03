@@ -12,6 +12,7 @@ import { passiveEventListenerMissing } from './passive-event-listener-missing'
 import { memoryEventListener } from './memory-event-listener'
 import { blockingCss } from './blocking-css'
 import { reactInlineProps } from './react-inline-props'
+import { consolePerformance } from './console-performance'
 import { AnalyzerEngine } from '../engine/index'
 
 export const builtInRules = [
@@ -28,7 +29,8 @@ export const builtInRules = [
   passiveEventListenerMissing,
   memoryEventListener,
   blockingCss,
-  reactInlineProps
+  reactInlineProps,
+  consolePerformance
 ]
 
 export const getConfiguredEngine = () => {
