@@ -6,6 +6,11 @@ import { reactUnmemoizedContextProvider } from './rules/react-unmemoized-context
 import { jsxDynamicLayoutStyle } from './rules/jsx-dynamic-layout-style'
 import { passiveEventListenerMissing } from './rules/passive-event-listener-missing'
 import { largeReactiveStateObject } from './rules/large-reactive-state-object'
+import { cssContainMissing } from './rules/css-contain-missing'
+import { blockingCss } from './rules/blocking-css'
+import { networkBatching } from './rules/network-batching'
+import { heavyJsOnload } from './rules/heavy-js-onload'
+import { lazyLoadImageMisses } from './rules/lazy-load-image-misses'
 import type { DiagnosticDefinition, EnrichedDiagnostic } from './types'
 
 export const DiagnosticsRegistry: Record<string, DiagnosticDefinition> = {
@@ -16,7 +21,12 @@ export const DiagnosticsRegistry: Record<string, DiagnosticDefinition> = {
   [reactUnmemoizedContextProvider.id]: reactUnmemoizedContextProvider,
   [jsxDynamicLayoutStyle.id]: jsxDynamicLayoutStyle,
   [passiveEventListenerMissing.id]: passiveEventListenerMissing,
-  [largeReactiveStateObject.id]: largeReactiveStateObject
+  [largeReactiveStateObject.id]: largeReactiveStateObject,
+  [lazyLoadImageMisses.id]: lazyLoadImageMisses,
+  [cssContainMissing.id]: cssContainMissing,
+  [blockingCss.id]: blockingCss,
+  [networkBatching.id]: networkBatching,
+  [heavyJsOnload.id]: heavyJsOnload
 }
 
 export const DiagnosticsMapper = {

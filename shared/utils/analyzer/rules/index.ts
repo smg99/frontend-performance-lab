@@ -8,7 +8,11 @@ import { reactUnmemoizedContextProvider } from './react-unmemoized-context-provi
 import { jsxDynamicLayoutStyle } from './jsx-dynamic-layout-style'
 import { largeReactiveStateObject } from './large-reactive-state-object'
 import { passiveEventListenerMissing } from './passive-event-listener-missing'
-
+import { lazyLoadImageMisses } from './lazy-load-image-misses'
+import { cssContainMissing } from './css-contain-missing'
+import { blockingCss } from './blocking-css'
+import { networkBatching } from './network-batching'
+import { heavyJsOnload } from './heavy-js-onload'
 export const analyzerRules = [
   vueLargeVFor,
   reactLargeMap,
@@ -17,7 +21,12 @@ export const analyzerRules = [
   reactUnmemoizedContextProvider,
   jsxDynamicLayoutStyle,
   passiveEventListenerMissing,
-  largeReactiveStateObject
+  largeReactiveStateObject,
+  lazyLoadImageMisses,
+  cssContainMissing,
+  blockingCss,
+  networkBatching,
+  heavyJsOnload
 ]
 
 export const getConfiguredEngine = () => {
