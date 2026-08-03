@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import fs from 'fs'
 import path from 'path'
-import { FileAccessService } from '../../shared/filesystem/FileAccessService'
+import { FileAccessService } from '../../shared/filesystem/file-access-service'
 import os from 'os'
 
 describe('FileAccessService', () => {

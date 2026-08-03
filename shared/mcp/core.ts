@@ -4,7 +4,7 @@ import { getAllRecipes, getRecipe } from '../registry/recipes.js'
 import { mcpTools } from '../registry/mcp-tools.js'
 import { searchPlatform } from '../utils/search/index.js'
 import { getConfiguredEngine } from '../utils/analyzer/rules/index.js'
-import { FileAccessService } from '../filesystem/FileAccessService.js'
+import { FileAccessService } from '../filesystem/file-access-service.js'
 import { DiagnosticsMapper } from '../diagnostics/mapper.js'
 import { PerformanceReportBuilder } from '../reporting/builder.js'
 

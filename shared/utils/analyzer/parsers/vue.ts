@@ -9,7 +9,7 @@ export function parseVue(code: string) {
     const { descriptor } = compiler.parse(code)
     return { ast: descriptor }
   } catch (e) {
-    console.error('Failed to parse Vue SFC', e)
+    // Graceful fallback for malformed files
     return { ast: null }
   }
 }

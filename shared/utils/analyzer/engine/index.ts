@@ -19,9 +19,14 @@ export class AnalyzerEngine {
   }
 
   private parseCode(context: AnalyzerContext) {
-    if (context.language === 'vue') return parseVue(context.code)
-    if (['js', 'jsx', 'ts', 'tsx'].includes(context.language)) {
-      return parseBabel(context.code, context.language === 'tsx')
+    try {
+      if (context.language === 'vue') return parseVue(context.code)
+      if (['js', 'jsx', 'ts', 'tsx'].includes(context.language)) {
+        return parseBabel(context.code, context.language === 'tsx')
+      }
+    } catch (e) {
+      // Graceful fallback for malformed files
+      return { ast: null }
     }
     return { ast: null }
   }
