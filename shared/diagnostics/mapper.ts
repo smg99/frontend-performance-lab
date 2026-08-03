@@ -5,6 +5,7 @@ import { reactLargeMap } from './rules/react-large-map'
 import { reactUnmemoizedContextProvider } from './rules/react-unmemoized-context-provider'
 import { jsxDynamicLayoutStyle } from './rules/jsx-dynamic-layout-style'
 import { passiveEventListenerMissing } from './rules/passive-event-listener-missing'
+import { largeReactiveStateObject } from './rules/large-reactive-state-object'
 import type { DiagnosticDefinition, EnrichedDiagnostic } from './types'
 
 export const DiagnosticsRegistry: Record<string, DiagnosticDefinition> = {
@@ -14,7 +15,8 @@ export const DiagnosticsRegistry: Record<string, DiagnosticDefinition> = {
   [reactLargeMap.id]: reactLargeMap,
   [reactUnmemoizedContextProvider.id]: reactUnmemoizedContextProvider,
   [jsxDynamicLayoutStyle.id]: jsxDynamicLayoutStyle,
-  [passiveEventListenerMissing.id]: passiveEventListenerMissing
+  [passiveEventListenerMissing.id]: passiveEventListenerMissing,
+  [largeReactiveStateObject.id]: largeReactiveStateObject
 }
 
 export const DiagnosticsMapper = {

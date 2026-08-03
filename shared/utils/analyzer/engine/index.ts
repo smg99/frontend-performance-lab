@@ -101,13 +101,13 @@ export class AnalyzerEngine {
                   : 0
       deduction += p
 
-      if (i.browserImpact.rendering) rendering -= p
-      if (i.browserImpact.memory) {
+      if (i.browserImpact?.rendering) rendering -= p
+      if (i.browserImpact?.memory) {
         memory -= p
         hasMemory = true
       }
-      if (i.browserImpact.cpu) cpu -= p
-      if (i.browserImpact.cwv) cwv -= p
+      if (i.browserImpact?.cpu) cpu -= p
+      if (i.browserImpact?.cwv) cwv -= p
 
       totalConfidence += i.confidence.score
       totalTime += 5 // ~5 mins per fix

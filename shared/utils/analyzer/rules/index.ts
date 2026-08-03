@@ -6,6 +6,7 @@ import { AnalyzerEngine } from '../engine/index'
 
 import { reactUnmemoizedContextProvider } from './react-unmemoized-context-provider'
 import { jsxDynamicLayoutStyle } from './jsx-dynamic-layout-style'
+import { largeReactiveStateObject } from './large-reactive-state-object'
 import { passiveEventListenerMissing } from './passive-event-listener-missing'
 
 export const analyzerRules = [
@@ -15,7 +16,8 @@ export const analyzerRules = [
   memoryEventListener,
   reactUnmemoizedContextProvider,
   jsxDynamicLayoutStyle,
-  passiveEventListenerMissing
+  passiveEventListenerMissing,
+  largeReactiveStateObject
 ]
 
 export const getConfiguredEngine = () => {
