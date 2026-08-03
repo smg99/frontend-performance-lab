@@ -2,6 +2,7 @@ import { defineCommand } from 'citty'
 import consola from 'consola'
 import { resolve, extname, join, relative } from 'path'
 import { readFileSync, statSync, readdirSync, existsSync } from 'fs'
+import { loadConfig } from 'c12'
 import { getConfiguredEngine } from '../../../../shared/utils/analyzer/rules/index'
 import type { AnalyzerContext } from '../../../../shared/schemas/analyzer'
 
@@ -62,6 +63,13 @@ export default defineCommand({
       process.exit(1)
     }
 
+    // Load FPL Config
+    const { config } = await loadConfig({
+      name: 'fpl',
+      cwd: process.cwd(),
+      defaultConfig: { plugins: [] }
+    })
+
     const stat = statSync(targetPath)
     let filesToAnalyze: string[] = []
 
@@ -83,6 +91,14 @@ export default defineCommand({
     consola.info(`Found ${filesToAnalyze.length} file(s). Running Performance Analyzer...`)
     
     const engine = getConfiguredEngine()
+    
+    if (config?.plugins && Array.isArray(config.plugins)) {
+      for (const plugin of config.plugins) {
+        engine.registerPlugin(plugin)
+      }
+      consola.info(`Loaded ${config.plugins.length} external plugins from fpl.config.ts`)
+    }
+
     const contexts: AnalyzerContext[] = []
 
     for (const filePath of filesToAnalyze) {

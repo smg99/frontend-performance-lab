@@ -171,3 +171,10 @@ export interface ASTRule {
     | 'interviewQuestions'
   >[]
 }
+
+export interface FPLPlugin {
+  id: string
+  name: string
+  version: string
+  rules: ASTRule[]
+}

@@ -1,0 +1,40 @@
+{
+  "name": "@smg99/frontend-performance-lab-sdk",
+  "version": "1.0.0-beta.15",
+  "description": "Plugin SDK for Frontend Performance Lab.",
+  "author": {
+    "name": "Sumit Gajjar",
+    "url": "https://github.com/smg99"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4",
+    "unbuild": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18.x"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
+  "license": "MIT"
+}

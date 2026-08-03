@@ -2,6 +2,7 @@
 import type {
   AnalyzerContext,
   ASTRule,
+  FPLPlugin,
   Issue,
   ReviewReport,
   OptimizationChecklist,
@@ -16,6 +17,12 @@ export class AnalyzerEngine {
 
   public registerRule(rule: ASTRule) {
     this.rules.push(rule)
+  }
+
+  public registerPlugin(plugin: FPLPlugin) {
+    if (plugin.rules && Array.isArray(plugin.rules)) {
+      plugin.rules.forEach(rule => this.registerRule(rule))
+    }
   }
 
   private parseCode(context: AnalyzerContext) {
