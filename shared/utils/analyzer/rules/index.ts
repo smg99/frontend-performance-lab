@@ -4,7 +4,15 @@ import { domLayoutThrashing } from './dom-layout-thrashing'
 import { memoryEventListener } from './memory-event-listener'
 import { AnalyzerEngine } from '../engine/index'
 
-export const analyzerRules = [vueLargeVFor, reactLargeMap, domLayoutThrashing, memoryEventListener]
+import { reactUnmemoizedContextProvider } from './react-unmemoized-context-provider'
+
+export const analyzerRules = [
+  vueLargeVFor,
+  reactLargeMap,
+  domLayoutThrashing,
+  memoryEventListener,
+  reactUnmemoizedContextProvider
+]
 
 export const getConfiguredEngine = () => {
   const engine = new AnalyzerEngine()

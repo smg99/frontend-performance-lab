@@ -2,13 +2,15 @@ import { domLayoutThrashing } from './rules/dom-layout-thrashing'
 import { memoryEventListener } from './rules/memory-event-listener'
 import { vueLargeVFor } from './rules/vue-large-v-for'
 import { reactLargeMap } from './rules/react-large-map'
+import { reactUnmemoizedContextProvider } from './rules/react-unmemoized-context-provider'
 import type { DiagnosticDefinition, EnrichedDiagnostic } from './types'
 
 export const DiagnosticsRegistry: Record<string, DiagnosticDefinition> = {
   [domLayoutThrashing.id]: domLayoutThrashing,
   [memoryEventListener.id]: memoryEventListener,
   [vueLargeVFor.id]: vueLargeVFor,
-  [reactLargeMap.id]: reactLargeMap
+  [reactLargeMap.id]: reactLargeMap,
+  [reactUnmemoizedContextProvider.id]: reactUnmemoizedContextProvider
 }
 
 export const DiagnosticsMapper = {

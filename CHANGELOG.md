@@ -6,7 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
 ### Added
+
 - Modular architecture prepped for future monorepo.
 - Shared schemas and decoupled educational content.
 - MCP Server foundation.
+
+### Changed
+
+- Standardized file naming to kebab-case (`file-access-service.ts`).
+- Standardized test layout by colocating all analyzer tests into `test/unit/`.
+
+### Fixed
+
+- Fixed unhandled Babel SyntaxErrors throwing stack traces. Malformed files now fallback gracefully to a score of 100 with zero issues, strictly honoring the benchmark contract.
