@@ -1,0 +1,17 @@
+name: 'FPL AST Analyzer'
+description: 'Runs the Frontend Performance Lab AST Analyzer and annotates PRs with performance bottlenecks.'
+inputs:
+  directory:
+    description: 'The directory to analyze'
+    required: false
+    default: '.'
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Dependencies
+      shell: bash
+      run: npm install
+
+    - name: Run Analyzer Script
+      shell: bash
+      run: npx tsx .github/actions/fpl-analyzer/run.ts ${{ inputs.directory }}

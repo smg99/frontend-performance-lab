@@ -28,8 +28,9 @@ export interface AutoFix {
 
 export interface RuleConfidence {
   score: number
-  reasoning: string
-  limitations: string
+  reason: string
+  filename?: string
+  lineNumbers?: number[]
   falsePositiveRisk: 'Low' | 'Medium' | 'High'
 }
 
@@ -45,6 +46,7 @@ export interface Issue {
   fix: string
   estimatedImprovement?: string
   timeToFix?: string
+  filename?: string
 
   // New V2 Properties
   browserImpact: BrowserImpact

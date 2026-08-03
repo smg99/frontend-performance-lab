@@ -61,6 +61,7 @@ export class AnalyzerEngine {
               title: rule.title,
               description: rule.description,
               ruleId: rule.id,
+              filename: ctx.filename,
               severity: rule.severity,
               category: rule.category,
               impact: rule.impact,
