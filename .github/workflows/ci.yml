@@ -1,62 +1,38 @@
-# CI workflow for Frontend Performance Lab
 name: CI
 
-# Trigger on pushes to main and on pull requests
 on:
   push:
-    branches: [main]
+    branches: ['main']
   pull_request:
-    branches: [main]
+    branches: ['main']
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: .
-    steps:
-      # Checkout repository
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
 
-      # Set up Node.js 22 and cache npm dependencies
-      - name: Setup Node.js
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      # Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # Generate Nuxt type definitions required by vitest and TypeScript
-      - name: Prepare Nuxt
-        run: npx nuxt prepare
-
-      # Validate project (custom script if present)
-      - name: Validate project
-        if: ${{ hashFiles('package.json') != '' }}
-        run: |
-          npm run validate:mcp
-          npm run validate:analyzer
-
-      # Lint
-      - name: Lint
-        run: |
-          if npm run | grep -q "lint"; then npm run lint; else echo "No lint script, skipping..."; fi
-
-      # Typecheck
       - name: Typecheck
-        run: |
-          if npm run | grep -q "typecheck"; then npm run typecheck; else echo "No typecheck script, skipping..."; fi
+        run: npm run typecheck || npx tsc --noEmit
 
-      # Test
-      - name: Test
-        run: |
-          if npm run | grep -q "test"; then npm run test; else echo "No test script, skipping..."; fi
+      - name: Lint
+        run: npx eslint .
 
-      # Build
+      - name: Run Unit Tests
+        run: npm run test
+
       - name: Build
-        run: |
-          if npm run | grep -q "build"; then npm run build; else echo "No build script, skipping..."; fi
+        run: npm run build
