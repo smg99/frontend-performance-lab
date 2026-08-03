@@ -11,6 +11,7 @@ import type {
 } from '../../../schemas/analyzer'
 import { parseVue } from '../parsers/vue'
 import { parseBabel } from '../parsers/babel'
+import { parseSvelte } from '../parsers/svelte'
 
 export class AnalyzerEngine {
   private rules: ASTRule[] = []
@@ -28,6 +29,7 @@ export class AnalyzerEngine {
   private parseCode(context: AnalyzerContext) {
     try {
       if (context.language === 'vue') return parseVue(context.code)
+      if (context.language === 'svelte') return parseSvelte(context.code)
       if (['js', 'jsx', 'ts', 'tsx'].includes(context.language)) {
         return parseBabel(context.code, context.language === 'tsx')
       }

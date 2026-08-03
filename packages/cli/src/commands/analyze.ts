@@ -6,7 +6,7 @@ import { loadConfig } from 'c12'
 import { getConfiguredEngine } from '../../../../shared/utils/analyzer/rules/index'
 import type { AnalyzerContext } from '../../../../shared/schemas/analyzer'
 
-const SUPPORTED_EXTENSIONS = ['.js', '.jsx', '.ts', '.tsx', '.vue']
+const SUPPORTED_EXTENSIONS = ['.js', '.jsx', '.ts', '.tsx', '.vue', '.svelte']
 
 function walkDir(dir: string, fileList: string[] = []): string[] {
   const files = readdirSync(dir)
@@ -30,17 +30,19 @@ function walkDir(dir: string, fileList: string[] = []): string[] {
   return fileList
 }
 
-function detectFramework(filePath: string, content: string): 'react' | 'vue' | 'js' {
+function detectFramework(filePath: string, content: string): 'react' | 'vue' | 'js' | 'svelte' {
   if (filePath.endsWith('.vue')) return 'vue'
+  if (filePath.endsWith('.svelte')) return 'svelte'
   if (filePath.endsWith('.jsx') || filePath.endsWith('.tsx')) return 'react'
   if (content.includes('import React') || content.includes('from \'react\'')) return 'react'
   if (content.includes('from \'vue\'')) return 'vue'
+  if (content.includes('from \'svelte\'')) return 'svelte'
   return 'js'
 }
 
-function detectLanguage(filePath: string): 'js' | 'jsx' | 'ts' | 'tsx' | 'vue' {
+function detectLanguage(filePath: string): 'js' | 'jsx' | 'ts' | 'tsx' | 'vue' | 'svelte' {
   const ext = extname(filePath).slice(1)
-  return ext as 'js' | 'jsx' | 'ts' | 'tsx' | 'vue'
+  return ext as 'js' | 'jsx' | 'ts' | 'tsx' | 'vue' | 'svelte'
 }
 
 export default defineCommand({
