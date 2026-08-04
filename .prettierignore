@@ -2,6 +2,10 @@
 test/fixtures/malformed/
 shared/utils/analyzer/test-fixtures/edge-cases/invalid-syntax/
 
+# Analyzer test fixtures — line numbers are part of the test contract, never reformat
+shared/utils/analyzer/tests/fixtures/
+shared/utils/analyzer/test-fixtures/
+
 # Generated files
 .nuxt/
 .output/
