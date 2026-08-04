@@ -116,9 +116,13 @@ async function run() {
     })
   })
 
-  // Set workflow output for summary
-  console.log(`::set-output name=issues_count::${report.issues.length}`)
-  console.log(`::set-output name=overall_score::${report.overallScore}`)
+  // Set workflow output for summary using the modern GITHUB_OUTPUT env file
+  const outputFile = process.env.GITHUB_OUTPUT
+  if (outputFile) {
+    const { appendFileSync } = await import('fs')
+    appendFileSync(outputFile, `issues_count=${report.issues.length}\n`)
+    appendFileSync(outputFile, `overall_score=${report.overallScore}\n`)
+  }
 
   if (hasCritical) {
     console.log('Critical or High severity performance issues detected. Failing CI build.')
