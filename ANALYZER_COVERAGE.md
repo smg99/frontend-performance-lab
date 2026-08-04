@@ -4,24 +4,26 @@ This report details the comprehensive regression test suite coverage for all Ana
 
 ## 1. Rule Coverage Overview
 
-| Rule ID | Positive Tests | Negative Tests | Edge Cases | Coverage % |
-|---------|----------------|----------------|------------|------------|
-| `react-large-map` | 2 | 1 | 0 | >95% |
-| `react-unmemoized-context-provider` | 1 | 0 | 0 | >95% |
-| `jsx-dynamic-layout-style` | 1 | 2 | 0 | >95% |
-| `vue-large-v-for` | 3 | 1 | 1 | >95% |
-| `large-reactive-state-object` | 1 | 0 | 0 | >95% |
-| `lazy-load-image-misses` | 1 | 0 | 0 | >95% |
-| `css-contain-missing` | 1 | 0 | 0 | >95% |
-| `heavy-js-onload` | 1 | 0 | 0 | >95% |
-| `dom-layout-thrashing` | 1 | 1 | 0 | >95% |
-| `network-batching` | 1 | 0 | 0 | >95% |
-| `passive-event-listener-missing` | 1 | 0 | 0 | >95% |
-| `memory-event-listener` | 1 | 2 | 0 | >95% |
-| `blocking-css` | 1 | 0 | 0 | >95% |
-| `react-inline-props` | 1 | 0 | 0 | >95% |
+| Rule ID                             | Positive Tests | Negative Tests | Edge Cases | Coverage % |
+| ----------------------------------- | -------------- | -------------- | ---------- | ---------- |
+| `react-large-map`                   | 2              | 1              | 0          | >95%       |
+| `react-unmemoized-context-provider` | 1              | 0              | 0          | >95%       |
+| `jsx-dynamic-layout-style`          | 1              | 2              | 0          | >95%       |
+| `vue-large-v-for`                   | 3              | 1              | 1          | >95%       |
+| `large-reactive-state-object`       | 1              | 0              | 0          | >95%       |
+| `lazy-load-image-misses`            | 1              | 0              | 0          | >95%       |
+| `css-contain-missing`               | 1              | 0              | 0          | >95%       |
+| `heavy-js-onload`                   | 1              | 0              | 0          | >95%       |
+| `dom-layout-thrashing`              | 1              | 1              | 0          | >95%       |
+| `network-batching`                  | 1              | 0              | 0          | >95%       |
+| `passive-event-listener-missing`    | 1              | 0              | 0          | >95%       |
+| `memory-event-listener`             | 1              | 2              | 0          | >95%       |
+| `blocking-css`                      | 1              | 0              | 0          | >95%       |
+| `react-inline-props`                | 1              | 0              | 0          | >95%       |
+| `console-performance`               | 0              | 0              | 0          | 0%         |
 
 **Total Tests:** 25
+
 - **Positive Tests:** 17
 - **Negative Tests:** 7
 - **Edge Cases:** 1
