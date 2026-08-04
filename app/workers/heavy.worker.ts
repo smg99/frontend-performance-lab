@@ -26,21 +26,21 @@ export const heavySort = (size: number): number[] => {
 
 // If running in a Web Worker context, listen for messages
 if (typeof self !== 'undefined' && 'document' in self === false) {
-  self.onmessage = (e) => {
+  self.onmessage = e => {
     const { type, payload, id } = e.data
-    
+
     try {
       const start = performance.now()
       let result = null
-      
+
       if (type === 'primes') {
         result = calculatePrimes(payload)
       } else if (type === 'sort') {
         result = heavySort(payload)
       }
-      
+
       const end = performance.now()
-      
+
       self.postMessage({
         id,
         success: true,

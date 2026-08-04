@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect } from 'react'
 export function ReactBadComponent3() {
-  const items = Array.from({length: 10000})
+  const items = Array.from({ length: 10000 })
   useEffect(() => {
     window.addEventListener('scroll', () => console.log('scroll'))
   }, [])
@@ -9,7 +9,9 @@ export function ReactBadComponent3() {
   }, [])
   return (
     <div onMouseMove={() => document.body.clientWidth}>
-      {items.map((_, i) => <div key={i}>{i}</div>)}
+      {items.map((_, i) => (
+        <div key={i}>{i}</div>
+      ))}
     </div>
   )
 }

@@ -3,7 +3,8 @@ import type { BrowserAPI } from '../../../schemas/browser-api'
 export const viewTransitionsManifest: BrowserAPI = {
   id: 'view-transitions',
   name: 'View Transitions API',
-  description: 'Enables smooth, app-like visual transitions between different states of the DOM, including between entirely different documents (Multi-Page Apps).',
+  description:
+    'Enables smooth, app-like visual transitions between different states of the DOM, including between entirely different documents (Multi-Page Apps).',
   category: 'Rendering',
   browserSupport: '75%',
   baseline: 'Limited',
@@ -62,7 +63,8 @@ export const viewTransitionsManifest: BrowserAPI = {
   interviewQuestions: [
     {
       question: 'How does the View Transitions API actually work under the hood?',
-      answer: 'It takes a screenshot (rasterized image) of the old state, pauses rendering, executes your callback to update the DOM, takes a screenshot of the new state, and then natively crossfades or transforms between those two images.'
+      answer:
+        'It takes a screenshot (rasterized image) of the old state, pauses rendering, executes your callback to update the DOM, takes a screenshot of the new state, and then natively crossfades or transforms between those two images.'
     }
   ],
   references: [

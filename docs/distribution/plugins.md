@@ -5,6 +5,7 @@ The Frontend Performance Lab (FPL) allows you to author custom AST-based perform
 ## Creating a Plugin
 
 First, install the SDK:
+
 ```bash
 npm install -D @smg99/frontend-performance-lab-sdk
 ```
@@ -50,12 +51,12 @@ const customRule = defineRule({
   relatedExperiments: [],
   browserAPIs: ['web-workers'],
   relatedRecipes: [],
-  
+
   visitor: (ast, context) => {
     const issues = []
     // Example AST traversal (using babel ast directly)
     if (ast.type === 'File') {
-       // logic to detect
+      // logic to detect
     }
     return issues
   }
@@ -77,9 +78,7 @@ To use your plugin (or one downloaded from NPM), create an `fpl.config.ts` in yo
 import myPlugin from './my-fpl-plugin'
 
 export default {
-  plugins: [
-    myPlugin
-  ]
+  plugins: [myPlugin]
 }
 ```
 

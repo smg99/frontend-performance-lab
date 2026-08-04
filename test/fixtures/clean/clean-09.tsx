@@ -1,1 +1,4 @@
-import React from 'react'; export function CleanReact9() { return <div>Clean</div> }
+import React from 'react'
+export function CleanReact9() {
+  return <div>Clean</div>
+}

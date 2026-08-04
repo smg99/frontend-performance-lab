@@ -3,7 +3,8 @@ import type { BrowserAPI } from '../../../schemas/browser-api'
 export const webWorkersManifest: BrowserAPI = {
   id: 'web-workers',
   name: 'Web Workers',
-  description: 'An API that enables executing JavaScript in background threads. The worker thread can perform tasks without interfering with the user interface.',
+  description:
+    'An API that enables executing JavaScript in background threads. The worker thread can perform tasks without interfering with the user interface.',
   category: 'Concurrency',
   browserSupport: 'Global 99%+',
   baseline: 'Widely available',
@@ -66,7 +67,8 @@ self.onmessage = (e) => {
     self.postMessage(result);
   }
 };`,
-      explanation: 'The heavyCalculation function completely freezes the worker thread, but the main thread remains untouched. The UI remains perfectly responsive.'
+      explanation:
+        'The heavyCalculation function completely freezes the worker thread, but the main thread remains untouched. The UI remains perfectly responsive.'
     }
   ],
   relatedExperiments: ['concurrency', 'memory-vitals'],
@@ -74,12 +76,20 @@ self.onmessage = (e) => {
   relatedBrowserAPIs: ['MessageChannel', 'OffscreenCanvas'],
   interviewQuestions: [
     {
-      question: 'What is the cost of using postMessage to send a 50MB JSON object to a Web Worker, and how can it be optimized?',
-      answer: 'By default, postMessage uses the Structured Clone algorithm, which synchronously copies the 50MB object on the main thread, causing jank. To optimize, you can convert the data into an ArrayBuffer and pass it as a Transferable Object, which transfers ownership to the worker with zero-copy overhead.'
+      question:
+        'What is the cost of using postMessage to send a 50MB JSON object to a Web Worker, and how can it be optimized?',
+      answer:
+        'By default, postMessage uses the Structured Clone algorithm, which synchronously copies the 50MB object on the main thread, causing jank. To optimize, you can convert the data into an ArrayBuffer and pass it as a Transferable Object, which transfers ownership to the worker with zero-copy overhead.'
     }
   ],
   references: [
-    { title: 'MDN: Web Workers API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers' },
-    { title: 'Use web workers to run JavaScript off the browser\'s main thread', url: 'https://web.dev/workers-basics/' }
+    {
+      title: 'MDN: Web Workers API',
+      url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers'
+    },
+    {
+      title: "Use web workers to run JavaScript off the browser's main thread",
+      url: 'https://web.dev/workers-basics/'
+    }
   ]
 }

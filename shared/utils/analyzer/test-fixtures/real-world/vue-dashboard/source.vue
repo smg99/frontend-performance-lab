@@ -9,9 +9,9 @@
   </div>
 </template>
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted } from 'vue'
 // Intentionally bad: global event listener leak
 onMounted(() => {
-  window.addEventListener('scroll', () => {});
-});
+  window.addEventListener('scroll', () => {})
+})
 </script>

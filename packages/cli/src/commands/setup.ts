@@ -53,7 +53,7 @@ export default defineCommand({
       p.cancel('Could not detect Claude Desktop, Cursor, VSCode, or Antigravity.')
       return process.exit(0)
     }
-    
+
     s2.stop(`Found IDEs: ${ides.join(', ')}`)
 
     // 3. IDE Selection
@@ -70,7 +70,7 @@ export default defineCommand({
     // 4. Config Generation & Patching
     for (const ide of selectedIdes as SupportedIDE[]) {
       const configPath = ConfigLocator.getConfigPath(ide)
-      
+
       if (!configPath) {
         consola.warn(`Configuration path for ${ide} could not be resolved on this OS.`)
         continue
@@ -83,9 +83,9 @@ export default defineCommand({
       try {
         ConfigLocator.ensureConfigDir(configPath)
         backupPath = BackupManager.backup(configPath)
-        
+
         ConfigPatcher.patch(configPath)
-        
+
         const isValid = InstallationValidator.validate(configPath)
         if (isValid) {
           s3.stop(colorize('green', `Successfully configured ${ide} MCP integration.`))
@@ -96,7 +96,7 @@ export default defineCommand({
         s3.stop(colorize('red', `Failed to configure ${ide}.`))
         const msg = e instanceof Error ? e.message : String(e)
         consola.error(msg)
-        
+
         consola.info(`Rolling back ${ide} configuration...`)
         RollbackManager.rollback(configPath, backupPath)
         consola.success(`Rollback successful for ${ide}. Config was not modified.`)

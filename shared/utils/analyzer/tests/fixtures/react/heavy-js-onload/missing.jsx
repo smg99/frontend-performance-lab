@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 
 export default function Dashboard() {
   useEffect(() => {
@@ -8,13 +8,13 @@ export default function Dashboard() {
         for (let k = 0; k < 10; k++) {
           for (let l = 0; l < 10; l++) {
             if (i + j + k + l > 20) {
-              console.log(i, j, k, l);
+              console.log(i, j, k, l)
             }
           }
         }
       }
     }
-  }, []);
+  }, [])
 
-  return <div>Dashboard</div>;
+  return <div>Dashboard</div>
 }

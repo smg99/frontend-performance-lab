@@ -5,7 +5,8 @@
         <div>
           <h1 class="text-3xl font-bold">Interactive AST Playground</h1>
           <p class="text-muted-foreground mt-2">
-            Paste your React, Vue, or Vanilla JS code to instantly detect performance bottlenecks before they hit production.
+            Paste your React, Vue, or Vanilla JS code to instantly detect performance bottlenecks
+            before they hit production.
           </p>
         </div>
         <div class="controls">
@@ -40,27 +41,34 @@
         <div class="pane-header">
           <h2>Analysis Results</h2>
         </div>
-        
+
         <div class="results-content" :class="{ 'has-issues': issues.length > 0 }">
-          <div v-if="error" class="error-banner">
-            <strong>Error:</strong> {{ error }}
-          </div>
-          
+          <div v-if="error" class="error-banner"><strong>Error:</strong> {{ error }}</div>
+
           <template v-else-if="hasAnalyzed">
             <div v-if="issues.length === 0" class="success-state">
               <div class="icon">✨</div>
               <h3>All Good!</h3>
               <p>No performance bottlenecks detected in this code block.</p>
             </div>
-            
+
             <div v-else class="issues-list">
               <div class="summary-banner">
-                Found {{ issues.length }} potential performance issue{{ issues.length > 1 ? 's' : '' }}
+                Found {{ issues.length }} potential performance issue{{
+                  issues.length > 1 ? 's' : ''
+                }}
               </div>
-              <div v-for="(issue, index) in issues" :key="index" class="issue-card" :class="issue.severity.toLowerCase()">
+              <div
+                v-for="(issue, index) in issues"
+                :key="index"
+                class="issue-card"
+                :class="issue.severity.toLowerCase()"
+              >
                 <div class="issue-header">
                   <h3>{{ issue.title }}</h3>
-                  <span class="severity-badge" :class="issue.severity.toLowerCase()">{{ issue.severity }}</span>
+                  <span class="severity-badge" :class="issue.severity.toLowerCase()">{{
+                    issue.severity
+                  }}</span>
                 </div>
                 <p class="description">{{ issue.description }}</p>
                 <div v-if="issue.lineNumbers && issue.lineNumbers.length > 0" class="lines">
@@ -75,7 +83,7 @@
               </div>
             </div>
           </template>
-          
+
           <div v-else class="empty-state">
             <p>Click "Analyze Code" to run the AST performance engine.</p>
           </div>
@@ -92,7 +100,7 @@ const framework = ref('react')
 const isAnalyzing = ref(false)
 const hasAnalyzed = ref(false)
 const error = ref<string | null>(null)
-const issues = ref<any[]>([])
+const issues = ref<Record<string, unknown>[]>([])
 
 const sourceCode = ref(`import React, { useMemo } from 'react'
 
@@ -105,7 +113,7 @@ const HeavyComponent = () => {
 
 const analyzeCode = async () => {
   if (!sourceCode.value.trim()) return
-  
+
   isAnalyzing.value = true
   error.value = null
   hasAnalyzed.value = false
@@ -131,17 +139,20 @@ const analyzeCode = async () => {
     })
 
     const data = await res.json()
-    
+
     if (data.error) {
       error.value = data.details || data.error
     } else {
       issues.value = data.issues || []
     }
-  } catch (err: any) {
-    error.value = err.message || 'Network error occurred during analysis.'
+  } catch (err: unknown) {
+    error.value = err instanceof Error ? err.message : 'Network error occurred during analysis.'
   } finally {
     isAnalyzing.value = true
-    setTimeout(() => { isAnalyzing.value = false; hasAnalyzed.value = true }, 500) // Fake small delay for UX
+    setTimeout(() => {
+      isAnalyzing.value = false
+      hasAnalyzed.value = true
+    }, 500) // Fake small delay for UX
   }
 }
 </script>
@@ -207,7 +218,8 @@ const analyzeCode = async () => {
   min-height: 0;
 }
 
-.editor-pane, .results-pane {
+.editor-pane,
+.results-pane {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -249,7 +261,7 @@ const analyzeCode = async () => {
   flex: 1;
   padding: 1.5rem;
   overflow-y: auto;
-  background: rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .empty-state {
@@ -299,10 +311,18 @@ const analyzeCode = async () => {
   border-left: 4px solid #333;
 }
 
-.issue-card.critical { border-left-color: #ef4444; }
-.issue-card.high { border-left-color: #f97316; }
-.issue-card.medium { border-left-color: #eab308; }
-.issue-card.low { border-left-color: #3b82f6; }
+.issue-card.critical {
+  border-left-color: #ef4444;
+}
+.issue-card.high {
+  border-left-color: #f97316;
+}
+.issue-card.medium {
+  border-left-color: #eab308;
+}
+.issue-card.low {
+  border-left-color: #3b82f6;
+}
 
 .issue-header {
   display: flex;
@@ -325,10 +345,22 @@ const analyzeCode = async () => {
   text-transform: uppercase;
 }
 
-.severity-badge.critical { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
-.severity-badge.high { background: rgba(249, 115, 22, 0.2); color: #fdba74; }
-.severity-badge.medium { background: rgba(234, 179, 8, 0.2); color: #fde047; }
-.severity-badge.low { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
+.severity-badge.critical {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+.severity-badge.high {
+  background: rgba(249, 115, 22, 0.2);
+  color: #fdba74;
+}
+.severity-badge.medium {
+  background: rgba(234, 179, 8, 0.2);
+  color: #fde047;
+}
+.severity-badge.low {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+}
 
 .description {
   color: #ccc;
@@ -336,12 +368,14 @@ const analyzeCode = async () => {
   line-height: 1.5;
 }
 
-.lines, .fix, .impact {
+.lines,
+.fix,
+.impact {
   font-size: 0.9rem;
   color: #aaa;
   margin-top: 0.5rem;
   padding: 0.5rem;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 4px;
 }
 

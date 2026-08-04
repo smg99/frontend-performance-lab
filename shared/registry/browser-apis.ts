@@ -4,6 +4,7 @@ import { intersectionObserverManifest } from '../content/browser-apis/intersecti
 import { webWorkersManifest } from '../content/browser-apis/web-workers/manifest'
 import { resizeObserverManifest } from '../content/browser-apis/resize-observer/manifest'
 import { requestIdleCallbackManifest } from '../content/browser-apis/request-idle-callback/manifest'
+import { beaconApiManifest } from '../content/browser-apis/beacon-api/manifest'
 import { mutationObserverManifest } from '../content/browser-apis/mutation-observer/manifest'
 import { performanceObserverManifest } from '../content/browser-apis/performance-observer/manifest'
 import { viewTransitionsManifest } from '../content/browser-apis/view-transitions/manifest'

@@ -1,4 +1,4 @@
-export type SectionType = 
+export type SectionType =
   | 'concept'
   | 'recommendation'
   | 'tradeoff'
@@ -21,7 +21,7 @@ export interface Section {
    * The actual content. This could be raw markdown or a structured object depending on the section type.
    * For strictness, if it's an example, it should map to ExampleSchema.
    */
-  content: unknown 
+  content: unknown
 }
 
 export interface ExampleSectionContent {

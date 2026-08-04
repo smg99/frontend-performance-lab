@@ -9,7 +9,7 @@ function walkDir(dir: string, fileList: string[] = []): string[] {
   const files = readdirSync(dir)
   for (const file of files) {
     if (file === 'node_modules' || file === '.git' || file === '.fpl' || file === 'dist') continue
-    
+
     const filePath = join(dir, file)
     let stat
     try {
@@ -45,7 +45,7 @@ function detectLanguage(filePath: string): 'js' | 'jsx' | 'ts' | 'tsx' | 'vue' |
 async function run() {
   const targetArg = process.argv[2] || '.'
   const targetPath = resolve(process.cwd(), targetArg)
-  
+
   if (!existsSync(targetPath)) {
     console.error(`Target path does not exist: ${targetPath}`)
     process.exit(1)
@@ -99,16 +99,16 @@ async function run() {
   report.issues.forEach(issue => {
     const isError = issue.severity === 'Critical' || issue.severity === 'High'
     const command = isError ? 'error' : 'warning'
-    
+
     if (isError) hasCritical = true
 
     const title = `[FPL ${issue.severity}] ${issue.title}`
     const message = `${issue.description}\nFix: ${issue.fix}`
     const file = issue.filename || ''
-    
+
     // Fallback to line 1 if no line numbers
     const lines = issue.lineNumbers && issue.lineNumbers.length > 0 ? issue.lineNumbers : [1]
-    
+
     lines.forEach(line => {
       // Escape newlines in message for GitHub Actions
       const escapedMessage = message.replace(/\n/g, '%0A').replace(/\r/g, '%0D')

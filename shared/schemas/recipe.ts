@@ -10,13 +10,13 @@ export interface Recipe {
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced'
   estimatedImplementationTime: string
   performanceImpact: 'Low' | 'Medium' | 'High'
-  
+
   prerequisites: {
     experiments: string[]
     browserAPIs: string[]
     concepts: string[]
   }
-  
+
   whenNotToUse: string[]
 
   decisionMatrix: {
@@ -30,33 +30,33 @@ export interface Recipe {
 
   recommendedApproaches: string[]
   approachesToAvoid: string[]
-  
+
   implementationSteps: {
     title: string
     description: string
   }[]
-  
+
   beforeAfterComparison: {
     beforeCode: string
     afterCode: string
     explanation: string
   }
-  
+
   productionChecklist: string[]
   commonMistakes: string[]
-  
+
   relatedExperiments: string[]
   relatedBrowserAPIs: string[]
   relatedAnalyzerRules: string[]
   relatedRecipes: string[]
-  
+
   interviewQuestions: {
     question: string
     answer: string
   }[]
-  
+
   references: ReferenceLink[]
-  
+
   searchMetadata: {
     keywords: string[]
     synonyms: string[]

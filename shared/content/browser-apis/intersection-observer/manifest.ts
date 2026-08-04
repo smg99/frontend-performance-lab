@@ -3,7 +3,8 @@ import type { BrowserAPI } from '../../../schemas/browser-api'
 export const intersectionObserverManifest: BrowserAPI = {
   id: 'intersection-observer',
   name: 'IntersectionObserver',
-  description: 'An API that provides a way to asynchronously observe changes in the intersection of a target element with an ancestor element or with a top-level document viewport.',
+  description:
+    'An API that provides a way to asynchronously observe changes in the intersection of a target element with an ancestor element or with a top-level document viewport.',
   category: 'Observers',
   browserSupport: 'Global 97%+',
   baseline: 'Widely available',
@@ -60,7 +61,8 @@ export const intersectionObserverManifest: BrowserAPI = {
 }, { rootMargin: '100px' });
 
 document.querySelectorAll('img.lazy').forEach(img => observer.observe(img));`,
-      explanation: 'This creates a single observer that tracks multiple images. As soon as an image is within 100px of the viewport, its actual source is loaded, and it is unobserved to free memory.'
+      explanation:
+        'This creates a single observer that tracks multiple images. As soon as an image is within 100px of the viewport, its actual source is loaded, and it is unobserved to free memory.'
     }
   ],
   relatedExperiments: ['virtualization', 'rendering'],
@@ -68,12 +70,17 @@ document.querySelectorAll('img.lazy').forEach(img => observer.observe(img));`,
   relatedBrowserAPIs: ['MutationObserver', 'ResizeObserver'],
   interviewQuestions: [
     {
-      question: 'Why is IntersectionObserver better for performance than listening to the "scroll" event?',
-      answer: 'Listening to the scroll event fires synchronously on the main thread multiple times per frame. To check visibility, developers had to call getBoundingClientRect(), forcing synchronous layout recalculations (thrashing). IntersectionObserver calculates this asynchronously off the main thread.'
+      question:
+        'Why is IntersectionObserver better for performance than listening to the "scroll" event?',
+      answer:
+        'Listening to the scroll event fires synchronously on the main thread multiple times per frame. To check visibility, developers had to call getBoundingClientRect(), forcing synchronous layout recalculations (thrashing). IntersectionObserver calculates this asynchronously off the main thread.'
     }
   ],
   references: [
-    { title: 'MDN: Intersection Observer API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API' },
+    {
+      title: 'MDN: Intersection Observer API',
+      url: 'https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API'
+    },
     { title: 'Trust is Good, Observation is Better', url: 'https://web.dev/intersectionobserver/' }
   ]
 }

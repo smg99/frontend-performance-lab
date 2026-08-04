@@ -1,1 +1,1 @@
-const ids = items.map(item => item.id);
+const ids = items.map(item => item.id)

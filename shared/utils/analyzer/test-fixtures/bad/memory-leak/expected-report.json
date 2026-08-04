@@ -5,7 +5,5 @@
     "framework": "react"
   },
   "expectedIssueCount": 1,
-  "expectedRuleIds": [
-    "memory-event-listener"
-  ]
+  "expectedRuleIds": ["memory-event-listener"]
 }

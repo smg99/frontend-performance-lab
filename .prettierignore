@@ -1,0 +1,10 @@
+# Intentionally malformed files used as AST analyzer error-handling fixtures
+test/fixtures/malformed/
+shared/utils/analyzer/test-fixtures/edge-cases/invalid-syntax/
+
+# Generated files
+.nuxt/
+.output/
+coverage/
+dist/
+node_modules/

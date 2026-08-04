@@ -66,7 +66,7 @@ export default {
         '180': '180ms',
         '220': '220ms',
         '300': '300ms',
-        '400': '400ms',
+        '400': '400ms'
       },
       animation: {
         'fade-in': 'fadeIn 0.2s ease-out forwards',

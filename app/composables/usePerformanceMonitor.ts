@@ -4,7 +4,7 @@ export const usePerformanceMonitor = () => {
   const fps = ref(60)
   const domNodes = ref(0)
   const memory = ref(0)
-  
+
   let animationFrameId: number
   let _lastTime = performance.now()
   let frameCount = 0
@@ -13,17 +13,17 @@ export const usePerformanceMonitor = () => {
   const updateMetrics = () => {
     const now = performance.now()
     frameCount++
-    
+
     // Update FPS once a second for stability
     if (now - lastFpsUpdateTime >= 1000) {
       fps.value = Math.round((frameCount * 1000) / (now - lastFpsUpdateTime))
       frameCount = 0
       lastFpsUpdateTime = now
-      
+
       // Update DOM nodes
       if (import.meta.client) {
         domNodes.value = document.getElementsByTagName('*').length
-        
+
         // Update memory if available (Chrome specific)
         const perf = performance as unknown as { memory?: { usedJSHeapSize: number } }
         if (perf.memory) {
@@ -33,7 +33,7 @@ export const usePerformanceMonitor = () => {
         }
       }
     }
-    
+
     _lastTime = now
     animationFrameId = requestAnimationFrame(updateMetrics)
   }

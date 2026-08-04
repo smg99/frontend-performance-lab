@@ -3,7 +3,8 @@ import type { BrowserAPI } from '../../../schemas/browser-api'
 export const performanceObserverManifest: BrowserAPI = {
   id: 'performance-observer',
   name: 'PerformanceObserver',
-  description: 'An interface to observe performance measurement events and receive notifications of new performance entries (like LCP, CLS, or Long Tasks).',
+  description:
+    'An interface to observe performance measurement events and receive notifications of new performance entries (like LCP, CLS, or Long Tasks).',
   category: 'Observers',
   browserSupport: '96%',
   baseline: 'Widely available',
@@ -56,8 +57,10 @@ observer.observe({ type: 'longtask', buffered: true });`,
   relatedBrowserAPIs: ['request-idle-callback'],
   interviewQuestions: [
     {
-      question: 'How do you retrieve performance events that happened before the JavaScript executed?',
-      answer: 'By passing `{ buffered: true }` in the `.observe()` options. The browser maintains a performance buffer of past events.'
+      question:
+        'How do you retrieve performance events that happened before the JavaScript executed?',
+      answer:
+        'By passing `{ buffered: true }` in the `.observe()` options. The browser maintains a performance buffer of past events.'
     }
   ],
   references: [

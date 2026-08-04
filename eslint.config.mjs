@@ -13,8 +13,8 @@ export default withNuxt(
       'dist/**',
       '.output/**',
       '.generated/**',
-      'ANALYZER_COVERAGE.md',
-    ],
+      'ANALYZER_COVERAGE.md'
+    ]
   },
   {
     files: ['**/*.{js,cjs,mjs,ts,vue}'],
@@ -29,12 +29,12 @@ export default withNuxt(
       'vue/require-v-for-key': 'off',
       'vue/no-unused-vars': 'off',
       'vue/v-slot-style': 'off',
-      'no-useless-assignment': 'off',
-    },
+      'no-useless-assignment': 'off'
+    }
   },
   {
     linterOptions: {
-      reportUnusedDisableDirectives: 'off',
-    },
+      reportUnusedDisableDirectives: 'off'
+    }
   }
-);
+)

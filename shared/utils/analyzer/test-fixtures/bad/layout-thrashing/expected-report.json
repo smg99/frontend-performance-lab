@@ -5,7 +5,5 @@
     "framework": "vanilla"
   },
   "expectedIssueCount": 1,
-  "expectedRuleIds": [
-    "dom-layout-thrashing"
-  ]
+  "expectedRuleIds": ["dom-layout-thrashing"]
 }

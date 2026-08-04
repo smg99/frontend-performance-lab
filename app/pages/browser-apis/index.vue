@@ -18,25 +18,7 @@
     </div>
 
     <div class="api-grid">
-      <NuxtLink
-        v-for="api in filteredApis"
-        :key="api.id"
-        :to="`/browser-apis/${api.id}`"
-        class="api-card"
-      >
-        <div class="api-header">
-          <h2>{{ api.name }}</h2>
-          <span class="category-badge">{{ api.category }}</span>
-        </div>
-        <p class="description">{{ api.description }}</p>
-        <div class="meta">
-          <span class="difficulty" :class="api.difficulty.toLowerCase()">{{ api.difficulty }}</span>
-          <span class="performance-impact" :class="api.performanceImpact.toLowerCase()">
-            Impact: {{ api.performanceImpact }}
-          </span>
-          <span class="popularity">🔥 Pop: {{ api.usageStats.popularity }}</span>
-        </div>
-      </NuxtLink>
+      <ApiCard v-for="api in filteredApis" :key="api.id" :api="api" />
     </div>
   </div>
 </template>
@@ -45,10 +27,13 @@
 import { ref, computed } from 'vue'
 import { searchPlatform } from '@shared/utils/search/index'
 import { getAllBrowserAPIs } from '@shared/registry/browser-apis'
+import ApiCard from '@/components/ApiCard.vue'
 
 const searchQuery = ref('')
 
-const allApis = getAllBrowserAPIs().sort((a, b) => b.usageStats.popularity - a.usageStats.popularity)
+const allApis = getAllBrowserAPIs().sort(
+  (a, b) => b.usageStats.popularity - a.usageStats.popularity
+)
 
 const filteredApis = computed(() => {
   if (!searchQuery.value.trim()) return allApis

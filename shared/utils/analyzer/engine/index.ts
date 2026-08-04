@@ -48,7 +48,7 @@ export class AnalyzerEngine {
     for (const ctx of contexts) {
       const { ast } = this.parseCode(ctx)
       if (!ast) continue
-      
+
       let fileMutated = false
 
       // Run applicable rules
@@ -83,14 +83,14 @@ export class AnalyzerEngine {
               lineNumbers: raw.lineNumbers
             })
           }
-          
+
           if (options?.autoFix && rule.fixer) {
             const ruleMutated = rule.fixer(ast, ctx, rawIssues as any)
             if (ruleMutated) fileMutated = true
           }
         }
       }
-      
+
       if (fileMutated && options?.autoFix) {
         try {
           const output = generate(ast, {}, ctx.code)

@@ -22,7 +22,9 @@
         </div>
         <div class="stat-card">
           <span class="label">Impact</span>
-          <span class="value" :class="api.performanceImpact.toLowerCase()">{{ api.performanceImpact }}</span>
+          <span class="value" :class="api.performanceImpact.toLowerCase()">{{
+            api.performanceImpact
+          }}</span>
         </div>
         <div class="stat-card">
           <span class="label">Popularity</span>
@@ -37,7 +39,7 @@
         <section class="section">
           <h2>When to Use</h2>
           <ul class="check-list">
-            <li v-for="(item, idx) in api.whenToUse" :key="'use-'+idx">
+            <li v-for="(item, idx) in api.whenToUse" :key="'use-' + idx">
               <LucideCheckCircle class="check-icon" /> {{ item }}
             </li>
           </ul>
@@ -46,7 +48,7 @@
         <section class="section">
           <h2>When NOT to Use</h2>
           <ul class="cross-list">
-            <li v-for="(item, idx) in api.whenNotToUse" :key="'nouse-'+idx">
+            <li v-for="(item, idx) in api.whenNotToUse" :key="'nouse-' + idx">
               <LucideXCircle class="cross-icon" /> {{ item }}
             </li>
           </ul>
@@ -54,7 +56,7 @@
 
         <section class="section">
           <h2>Code Examples</h2>
-          <div class="example-card" v-for="(example, idx) in api.examples" :key="'ex-'+idx">
+          <div class="example-card" v-for="(example, idx) in api.examples" :key="'ex-' + idx">
             <h3>{{ example.title }}</h3>
             <p>{{ example.explanation }}</p>
             <div class="code-wrapper">
@@ -69,30 +71,30 @@
         <section class="section">
           <h2>Advantages</h2>
           <ul class="bullet-list">
-            <li v-for="(item, idx) in api.advantages" :key="'adv-'+idx">{{ item }}</li>
+            <li v-for="(item, idx) in api.advantages" :key="'adv-' + idx">{{ item }}</li>
           </ul>
         </section>
 
         <section class="section">
           <h2>Limitations</h2>
           <ul class="bullet-list limitation">
-            <li v-for="(item, idx) in api.limitations" :key="'lim-'+idx">{{ item }}</li>
+            <li v-for="(item, idx) in api.limitations" :key="'lim-' + idx">{{ item }}</li>
           </ul>
         </section>
 
         <section class="section">
           <h2>Common Mistakes</h2>
           <ul class="bullet-list mistake">
-            <li v-for="(item, idx) in api.commonMistakes" :key="'mistake-'+idx">{{ item }}</li>
+            <li v-for="(item, idx) in api.commonMistakes" :key="'mistake-' + idx">{{ item }}</li>
           </ul>
         </section>
-        
+
         <section class="section">
           <h2>References</h2>
           <ul class="link-list">
-            <li v-for="(ref, idx) in api.references" :key="'ref-'+idx">
+            <li v-for="(ref, idx) in api.references" :key="'ref-' + idx">
               <a :href="ref.url" target="_blank" rel="noopener noreferrer">
-                {{ ref.title }} <LucideExternalLink class="ext-icon"/>
+                {{ ref.title }} <LucideExternalLink class="ext-icon" />
               </a>
             </li>
           </ul>
@@ -110,11 +112,11 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { getBrowserAPI } from '@shared/registry/browser-apis'
-import { 
-  ArrowLeft as LucideArrowLeft, 
-  CheckCircle as LucideCheckCircle, 
+import {
+  ArrowLeft as LucideArrowLeft,
+  CheckCircle as LucideCheckCircle,
   XCircle as LucideXCircle,
-  ExternalLink as LucideExternalLink 
+  ExternalLink as LucideExternalLink
 } from 'lucide-vue-next'
 
 const route = useRoute()
@@ -211,10 +213,18 @@ const api = computed(() => getBrowserAPI(apiId))
   font-weight: 600;
   color: #fff;
 }
-.value.high { color: #f87171; }
-.value.medium { color: #facc15; }
-.value.low { color: #4ade80; }
-.value.popularity { color: #fb923c; }
+.value.high {
+  color: #f87171;
+}
+.value.medium {
+  color: #facc15;
+}
+.value.low {
+  color: #4ade80;
+}
+.value.popularity {
+  color: #fb923c;
+}
 
 .content-grid {
   display: grid;
@@ -238,12 +248,14 @@ const api = computed(() => getBrowserAPI(apiId))
   border-bottom: 1px solid var(--border-color, #333);
 }
 
-.check-list, .cross-list {
+.check-list,
+.cross-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.check-list li, .cross-list li {
+.check-list li,
+.cross-list li {
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
@@ -270,8 +282,12 @@ const api = computed(() => getBrowserAPI(apiId))
 .bullet-list li {
   margin-bottom: 0.75rem;
 }
-.bullet-list.limitation li { color: #fca5a5; }
-.bullet-list.mistake li { color: #f87171; }
+.bullet-list.limitation li {
+  color: #fca5a5;
+}
+.bullet-list.mistake li {
+  color: #f87171;
+}
 
 .link-list {
   list-style: none;

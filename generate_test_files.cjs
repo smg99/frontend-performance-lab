@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
 
-const RULES_ROOT = path.join(__dirname, 'shared/utils/analyzer/rules');
+const RULES_ROOT = path.join(__dirname, 'shared/utils/analyzer/rules')
 
 const tests = {
   'vue-large-v-for.test.ts': `
@@ -119,9 +119,9 @@ describe('Rule: memory-event-listener', () => {
   })
 })
   `
-};
+}
 
 for (const [filename, content] of Object.entries(tests)) {
-  fs.writeFileSync(path.join(RULES_ROOT, filename), content.trim());
+  fs.writeFileSync(path.join(RULES_ROOT, filename), content.trim())
 }
-console.log("Test files generated.");
+console.log('Test files generated.')

@@ -1,12 +1,13 @@
 <template>
-  <div ref="container" class="h-full w-full absolute inset-0 bg-background overflow-y-auto" @scroll.passive="onScroll">
+  <div
+    ref="container"
+    class="h-full w-full absolute inset-0 bg-background overflow-y-auto"
+    @scroll.passive="onScroll"
+  >
     <!-- The scrollable ghost element to maintain scrollbar height -->
     <div :style="{ height: totalHeight + 'px' }" class="relative w-full">
       <!-- The inner positioned elements -->
-      <div 
-        class="absolute left-0 right-0"
-        :style="{ transform: `translateY(${offsetY}px)` }"
-      >
+      <div class="absolute left-0 right-0" :style="{ transform: `translateY(${offsetY}px)` }">
         <div v-for="item in visibleItems" :key="item.id">
           <VirtualListItem :item="item" />
         </div>
@@ -54,7 +55,7 @@ const startIndex = computed(() => {
 
 const endIndex = computed(() => {
   const visibleCount = Math.ceil(containerHeight.value / itemHeight)
-  const end = startIndex.value + visibleCount + (overscan * 2)
+  const end = startIndex.value + visibleCount + overscan * 2
   return Math.min(props.items.length - 1, end)
 })
 
@@ -71,8 +72,8 @@ let resizeObserver: ResizeObserver | null = null
 onMounted(() => {
   if (container.value) {
     containerHeight.value = container.value.clientHeight
-    
-    resizeObserver = new ResizeObserver((entries) => {
+
+    resizeObserver = new ResizeObserver(entries => {
       for (const entry of entries) {
         containerHeight.value = entry.contentRect.height
       }
@@ -88,11 +89,14 @@ onBeforeUnmount(() => {
 })
 
 // Reset scroll on item change
-watch(() => props.items, () => {
-  if (container.value) {
-    container.value.scrollTop = 0
+watch(
+  () => props.items,
+  () => {
+    if (container.value) {
+      container.value.scrollTop = 0
+    }
   }
-})
+)
 </script>
 
 <style scoped>

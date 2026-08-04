@@ -11,7 +11,12 @@ describe('React Inline Props Rule', () => {
       }
     `
     const { ast } = parseBabel(code, true)
-    const issues = reactInlineProps.visitor(ast, { filename: 'test.tsx', code, language: 'tsx', framework: 'react' })
+    const issues = reactInlineProps.visitor(ast, {
+      filename: 'test.tsx',
+      code,
+      language: 'tsx',
+      framework: 'react'
+    })
     expect(issues.length).toBe(1)
   })
 
@@ -23,7 +28,12 @@ describe('React Inline Props Rule', () => {
       }
     `
     const { ast } = parseBabel(code, true)
-    const issues = reactInlineProps.visitor(ast, { filename: 'test.tsx', code, language: 'tsx', framework: 'react' })
+    const issues = reactInlineProps.visitor(ast, {
+      filename: 'test.tsx',
+      code,
+      language: 'tsx',
+      framework: 'react'
+    })
     expect(issues.length).toBe(1)
   })
 
@@ -35,7 +45,12 @@ describe('React Inline Props Rule', () => {
       }
     `
     const { ast } = parseBabel(code, true)
-    const issues = reactInlineProps.visitor(ast, { filename: 'test.tsx', code, language: 'tsx', framework: 'react' })
+    const issues = reactInlineProps.visitor(ast, {
+      filename: 'test.tsx',
+      code,
+      language: 'tsx',
+      framework: 'react'
+    })
     expect(issues.length).toBe(0)
   })
 
@@ -48,7 +63,12 @@ describe('React Inline Props Rule', () => {
       }
     `
     const { ast } = parseBabel(code, true)
-    const issues = reactInlineProps.visitor(ast, { filename: 'test.tsx', code, language: 'tsx', framework: 'react' })
+    const issues = reactInlineProps.visitor(ast, {
+      filename: 'test.tsx',
+      code,
+      language: 'tsx',
+      framework: 'react'
+    })
     expect(issues.length).toBe(0)
   })
 })

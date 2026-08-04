@@ -1,1 +1,3 @@
-function mount() { window.addEventListener("resize", onResize); }
+function mount() {
+  window.addEventListener('resize', onResize)
+}

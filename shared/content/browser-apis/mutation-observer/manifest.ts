@@ -61,7 +61,8 @@ observer.observe(target, { childList: true });`,
   interviewQuestions: [
     {
       question: 'Why are MutationEvents deprecated in favor of MutationObserver?',
-      answer: 'MutationEvents were synchronous, firing for every single change and causing massive performance degradation. MutationObserver batches DOM changes and fires asynchronously via microtasks, avoiding layout thrashing.'
+      answer:
+        'MutationEvents were synchronous, firing for every single change and causing massive performance degradation. MutationObserver batches DOM changes and fires asynchronously via microtasks, avoiding layout thrashing.'
     }
   ],
   references: [

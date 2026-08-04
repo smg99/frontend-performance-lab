@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
 const [state, setState] = useState({
   a: 1,
@@ -32,4 +32,4 @@ const [state, setState] = useState({
   cc: 29,
   dd: 30,
   ee: 31
-});
+})

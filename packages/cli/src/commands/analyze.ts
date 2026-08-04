@@ -12,7 +12,7 @@ function walkDir(dir: string, fileList: string[] = []): string[] {
   const files = readdirSync(dir)
   for (const file of files) {
     if (file === 'node_modules' || file === '.git' || file === '.fpl' || file === 'dist') continue
-    
+
     const filePath = join(dir, file)
     let stat
     try {
@@ -34,9 +34,9 @@ function detectFramework(filePath: string, content: string): 'react' | 'vue' | '
   if (filePath.endsWith('.vue')) return 'vue'
   if (filePath.endsWith('.svelte')) return 'svelte'
   if (filePath.endsWith('.jsx') || filePath.endsWith('.tsx')) return 'react'
-  if (content.includes('import React') || content.includes('from \'react\'')) return 'react'
-  if (content.includes('from \'vue\'')) return 'vue'
-  if (content.includes('from \'svelte\'')) return 'svelte'
+  if (content.includes('import React') || content.includes("from 'react'")) return 'react'
+  if (content.includes("from 'vue'")) return 'vue'
+  if (content.includes("from 'svelte'")) return 'svelte'
   return 'js'
 }
 
@@ -64,7 +64,7 @@ export default defineCommand({
   },
   async run({ args }) {
     const targetPath = resolve(process.cwd(), args.target || '.')
-    
+
     if (!existsSync(targetPath)) {
       consola.error(`Target path does not exist: ${targetPath}`)
       process.exit(1)
@@ -86,7 +86,9 @@ export default defineCommand({
     } else if (stat.isFile() && SUPPORTED_EXTENSIONS.includes(extname(targetPath))) {
       filesToAnalyze = [targetPath]
     } else {
-      consola.error(`Unsupported target. Please provide a directory or a supported file (${SUPPORTED_EXTENSIONS.join(', ')}).`)
+      consola.error(
+        `Unsupported target. Please provide a directory or a supported file (${SUPPORTED_EXTENSIONS.join(', ')}).`
+      )
       process.exit(1)
     }
 
@@ -96,9 +98,9 @@ export default defineCommand({
     }
 
     consola.info(`Found ${filesToAnalyze.length} file(s). Running Performance Analyzer...`)
-    
+
     const engine = getConfiguredEngine()
-    
+
     if (config?.plugins && Array.isArray(config.plugins)) {
       for (const plugin of config.plugins) {
         engine.registerPlugin(plugin)
@@ -139,7 +141,7 @@ export default defineCommand({
           try {
             import('fs').then(fs => fs.writeFileSync(ctx.filename, ctx.code))
             fixedCount++
-          } catch(e) {
+          } catch (e) {
             consola.warn(`Failed to auto-fix ${ctx.filename}:`, e)
           }
         }
@@ -150,14 +152,17 @@ export default defineCommand({
     }
 
     console.log('\n--- Frontend Performance Lab Report ---\n')
-    
+
     // Print Score
-    const scoreColor = report.performanceScore >= 90 ? 'green' : report.performanceScore >= 70 ? 'yellow' : 'red'
+    const scoreColor =
+      report.performanceScore >= 90 ? 'green' : report.performanceScore >= 70 ? 'yellow' : 'red'
     consola.box(`Overall Grade: ${report.overallScore} (${report.performanceScore}/100)`)
-    
+
     // Print Estimates
-    consola.info(`Estimated Impact: ${report.estimates.performanceGain} | TTR: ${report.estimates.timeToFix}`)
-    
+    consola.info(
+      `Estimated Impact: ${report.estimates.performanceGain} | TTR: ${report.estimates.timeToFix}`
+    )
+
     console.log('\n')
 
     if (report.issues.length === 0) {
@@ -166,10 +171,17 @@ export default defineCommand({
     }
 
     // Print Issues
-    consola.error(`Found ${report.issues.length} issue(s) across ${report.analyzedFiles} file(s):\n`)
-    
+    consola.error(
+      `Found ${report.issues.length} issue(s) across ${report.analyzedFiles} file(s):\n`
+    )
+
     report.issues.forEach((issue, index) => {
-      const severityStr = issue.severity === 'Critical' || issue.severity === 'High' ? '🔴' : issue.severity === 'Warning' ? '🟡' : '🔵'
+      const severityStr =
+        issue.severity === 'Critical' || issue.severity === 'High'
+          ? '🔴'
+          : issue.severity === 'Warning'
+            ? '🟡'
+            : '🔵'
       console.log(`${index + 1}. ${severityStr} [${issue.ruleId}] ${issue.title}`)
       console.log(`   Description: ${issue.description}`)
       console.log(`   Fix: ${issue.fix}`)

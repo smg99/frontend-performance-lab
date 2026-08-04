@@ -3,7 +3,8 @@ import type { BrowserAPI } from '../../../schemas/browser-api'
 export const requestAnimationFrameManifest: BrowserAPI = {
   id: 'request-animation-frame',
   name: 'requestAnimationFrame',
-  description: 'A method that tells the browser you wish to perform an animation and requests that the browser calls a specified function to update an animation before the next repaint.',
+  description:
+    'A method that tells the browser you wish to perform an animation and requests that the browser calls a specified function to update an animation before the next repaint.',
   category: 'Rendering',
   browserSupport: 'Global 98%+',
   baseline: 'Widely available',
@@ -58,7 +59,8 @@ const w = box.offsetWidth;
 requestAnimationFrame(() => {
   box.style.width = w + 10 + 'px';
 });`,
-      explanation: 'By deferring the style mutation to the next frame, the browser avoids recalculating the layout synchronously, preserving a smooth 60fps.'
+      explanation:
+        'By deferring the style mutation to the next frame, the browser avoids recalculating the layout synchronously, preserving a smooth 60fps.'
     }
   ],
   relatedExperiments: ['rendering', 'concurrency'],
@@ -66,12 +68,20 @@ requestAnimationFrame(() => {
   relatedBrowserAPIs: ['requestIdleCallback', 'PerformanceObserver'],
   interviewQuestions: [
     {
-      question: 'What is the primary difference between setTimeout and requestAnimationFrame for animations?',
-      answer: 'setTimeout executes arbitrarily based on the Event Loop timer, often falling out of sync with the monitor refresh rate, causing visual stutter. requestAnimationFrame is synchronized by the browser to execute immediately before the next repaint, guaranteeing smoothness and automatically pausing in inactive tabs.'
+      question:
+        'What is the primary difference between setTimeout and requestAnimationFrame for animations?',
+      answer:
+        'setTimeout executes arbitrarily based on the Event Loop timer, often falling out of sync with the monitor refresh rate, causing visual stutter. requestAnimationFrame is synchronized by the browser to execute immediately before the next repaint, guaranteeing smoothness and automatically pausing in inactive tabs.'
     }
   ],
   references: [
-    { title: 'MDN: window.requestAnimationFrame()', url: 'https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame' },
-    { title: 'Avoid Large, Complex Layouts and Layout Thrashing', url: 'https://web.dev/avoid-large-complex-layouts-and-layout-thrashing/' }
+    {
+      title: 'MDN: window.requestAnimationFrame()',
+      url: 'https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame'
+    },
+    {
+      title: 'Avoid Large, Complex Layouts and Layout Thrashing',
+      url: 'https://web.dev/avoid-large-complex-layouts-and-layout-thrashing/'
+    }
   ]
 }

@@ -4,7 +4,8 @@ import type { Benchmark } from './benchmark'
 export type ExperimentDifficulty = 'Beginner' | 'Intermediate' | 'Advanced'
 export type ExperimentStatus = 'draft' | 'experimental' | 'stable' | 'deprecated'
 
-export type RelationshipType = 'prerequisite' | 'alternative' | 'extends' | 'related' | 'dependsOn' | 'advancedTopic'
+export type RelationshipType =
+  'prerequisite' | 'alternative' | 'extends' | 'related' | 'dependsOn' | 'advancedTopic'
 
 export interface Relationship {
   targetId: string
