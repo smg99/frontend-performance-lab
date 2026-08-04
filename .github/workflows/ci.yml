@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [20.x, 22.x]
 
     steps:
       - uses: actions/checkout@v4
@@ -28,6 +28,9 @@ jobs:
       - name: Generate Nuxt types
         run: npx nuxt prepare
 
+      - name: Check Formatting
+        run: npx prettier --check .
+
       - name: Typecheck
         run: npm run typecheck || npx tsc --noEmit
 
@@ -35,7 +38,7 @@ jobs:
         run: npx eslint .
 
       - name: Run Unit Tests
-        run: npm run test
+        run: npm run test -- --coverage
 
       - name: Build
         run: npm run build
