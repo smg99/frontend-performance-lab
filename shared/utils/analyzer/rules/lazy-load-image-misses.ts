@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ASTRule, AnalyzerContext, Issue } from '../../../schemas/analyzer'
+import type { ASTRule, AnalyzerContext, Issue, RuleVisitorResult } from '../../../schemas/analyzer'
 import _traverse from '@babel/traverse'
 
 const traverse = typeof _traverse === 'function' ? _traverse : (_traverse as any).default
@@ -24,11 +24,11 @@ export const lazyLoadImageMisses: ASTRule = {
   fix: 'Add `loading="lazy"` to img tags or use <Image loading="lazy"/> in Next.js.',
   confidence: {
     score: 85,
-    reasoning: 'Detects JSX img or HTML img elements without loading attribute.',
+    reason: 'Detects JSX img or HTML img elements without loading attribute.',
     falsePositiveRisk: 'Low'
   },
   visitor: (ast: any, context: AnalyzerContext) => {
-    const issues: Omit<Issue, keyof any>[] = []
+    const issues: RuleVisitorResult[] = []
     let imgCount = 0
     const imgElements: any[] = []
     traverse(ast, {

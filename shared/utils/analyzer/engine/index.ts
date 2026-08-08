@@ -68,7 +68,7 @@ export class AnalyzerEngine {
               allIssues.push({
                 id: `${rule.id}-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
                 title: rule.title,
-                description: rule.description,
+                description: raw.description ?? rule.description,
                 ruleId: rule.id,
                 filename: ctx.filename,
                 severity: rule.severity,
@@ -78,7 +78,10 @@ export class AnalyzerEngine {
                 browserImpact: rule.browserImpact,
                 explanation: rule.explanation,
                 autoFix: rule.autoFix,
-                confidence: rule.confidence,
+                confidence: {
+                  ...rule.confidence,
+                  ...raw.confidence
+                },
                 estimatedImprovement: rule.estimatedImprovement || 'Unknown',
                 timeToFix: rule.timeToFix || '~5 mins',
                 relatedExperimentIds: rule.relatedExperiments,

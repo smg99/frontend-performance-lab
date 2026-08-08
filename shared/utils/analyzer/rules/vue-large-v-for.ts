@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
-import type { ASTRule, AnalyzerContext, Issue } from '../../../schemas/analyzer'
+import type { ASTRule, AnalyzerContext, Issue, RuleVisitorResult } from '../../../schemas/analyzer'
 
 export const vueLargeVFor: ASTRule = {
   id: 'vue-large-v-for',
@@ -38,30 +38,11 @@ export const vueLargeVFor: ASTRule = {
   },
   confidence: {
     score: 85,
-    reasoning: 'The AST clearly shows a v-for directive without a virtualization wrapper.',
-    limitations: 'Static analysis cannot determine the exact array length at runtime.',
+    reason: 'The AST clearly shows a v-for directive without a virtualization wrapper.',
     falsePositiveRisk: 'Medium'
   },
   visitor: (ast: any, context: AnalyzerContext) => {
-    const issues: Omit<
-      Issue,
-      | 'id'
-      | 'title'
-      | 'description'
-      | 'ruleId'
-      | 'severity'
-      | 'category'
-      | 'impact'
-      | 'fix'
-      | 'browserImpact'
-      | 'explanation'
-      | 'autoFix'
-      | 'confidence'
-      | 'relatedExperimentIds'
-      | 'browserAPIs'
-      | 'relatedRecipes'
-      | 'interviewQuestions'
-    >[] = []
+    const issues: RuleVisitorResult[] = []
 
     // Quick heuristic over AST template:
     // @vue/compiler-sfc provides descriptor.template.ast

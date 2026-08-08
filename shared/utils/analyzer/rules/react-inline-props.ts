@@ -1,5 +1,5 @@
 import _traverse, { type NodePath } from '@babel/traverse'
-import type { ASTRule, AnalyzerContext, Issue } from '../../../schemas/analyzer'
+import type { ASTRule, AnalyzerContext, Issue, RuleVisitorResult } from '../../../schemas/analyzer'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const traverse = typeof _traverse === 'function' ? _traverse : (_traverse as any).default
 
@@ -37,37 +37,15 @@ export const reactInlineProps: ASTRule = {
   },
   confidence: {
     score: 95,
-    reasoning:
+    reason:
       'AST definitively identifies inline objects, arrays, and functions inside JSX attributes.',
-    limitations:
-      'Cannot detect if the child component is actually wrapped in React.memo (unless analyzing cross-file).',
     falsePositiveRisk: 'Low'
   },
   relatedExperiments: [],
   browserAPIs: [],
   relatedRecipes: [],
   visitor: (ast: object, context: AnalyzerContext) => {
-    const issues: Omit<
-      Issue,
-      | 'id'
-      | 'title'
-      | 'description'
-      | 'ruleId'
-      | 'severity'
-      | 'category'
-      | 'impact'
-      | 'fix'
-      | 'estimatedImprovement'
-      | 'timeToFix'
-      | 'browserImpact'
-      | 'explanation'
-      | 'autoFix'
-      | 'confidence'
-      | 'relatedExperimentIds'
-      | 'browserAPIs'
-      | 'relatedRecipes'
-      | 'interviewQuestions'
-    >[] = []
+    const issues: RuleVisitorResult[] = []
 
     traverse(ast, {
       JSXOpeningElement(path: NodePath) {
@@ -98,8 +76,18 @@ export const reactInlineProps: ASTRule = {
             expr.type === 'ArrowFunctionExpression' ||
             expr.type === 'FunctionExpression'
           ) {
+            const propName = attr.name?.name || 'unknown'
+            let typeName = 'value'
+            if (expr.type === 'ObjectExpression') typeName = 'object'
+            else if (expr.type === 'ArrayExpression') typeName = 'array'
+            else typeName = 'function'
+
             issues.push({
-              lineNumbers: [attr.loc?.start.line].filter(Boolean) as number[]
+              lineNumbers: [attr.loc?.start.line].filter(Boolean) as number[],
+              description: `Inline ${typeName} passed to prop '${propName}' of component <${componentName} />`,
+              confidence: {
+                score: expr.type === 'ObjectExpression' ? 98 : 95
+              }
             })
           }
         })

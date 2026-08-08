@@ -1,5 +1,5 @@
 import _traverse, { type NodePath } from '@babel/traverse'
-import type { ASTRule, AnalyzerContext, Issue } from '../../../schemas/analyzer'
+import type { ASTRule, AnalyzerContext, Issue, RuleVisitorResult } from '../../../schemas/analyzer'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const traverse = typeof _traverse === 'function' ? _traverse : (_traverse as any).default
 
@@ -43,27 +43,7 @@ export const consolePerformance: ASTRule = {
   browserAPIs: [],
   relatedRecipes: [],
   visitor: (ast: object, context: AnalyzerContext) => {
-    const issues: Omit<
-      Issue,
-      | 'id'
-      | 'title'
-      | 'description'
-      | 'ruleId'
-      | 'severity'
-      | 'category'
-      | 'impact'
-      | 'fix'
-      | 'estimatedImprovement'
-      | 'timeToFix'
-      | 'browserImpact'
-      | 'explanation'
-      | 'autoFix'
-      | 'confidence'
-      | 'relatedExperimentIds'
-      | 'browserAPIs'
-      | 'relatedRecipes'
-      | 'interviewQuestions'
-    >[] = []
+    const issues: RuleVisitorResult[] = []
 
     traverse(ast, {
       CallExpression(path: NodePath) {

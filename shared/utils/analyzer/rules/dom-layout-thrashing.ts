@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
-import type { ASTRule, AnalyzerContext, Issue } from '../../../schemas/analyzer'
+import type { ASTRule, AnalyzerContext, Issue, RuleVisitorResult } from '../../../schemas/analyzer'
 import _traverse from '@babel/traverse'
 const traverse = typeof _traverse === 'function' ? _traverse : (_traverse as any).default
 
@@ -39,31 +39,12 @@ export const domLayoutThrashing: ASTRule = {
   },
   confidence: {
     score: 65,
-    reasoning:
+    reason:
       'Detected direct assignment to a .style property outside of a requestAnimationFrame callback.',
-    limitations: 'Static analysis cannot always determine if a layout read is interleaved nearby.',
     falsePositiveRisk: 'High'
   },
   visitor: (ast: any, context: AnalyzerContext) => {
-    const issues: Omit<
-      Issue,
-      | 'id'
-      | 'title'
-      | 'description'
-      | 'ruleId'
-      | 'severity'
-      | 'category'
-      | 'impact'
-      | 'fix'
-      | 'browserImpact'
-      | 'explanation'
-      | 'autoFix'
-      | 'confidence'
-      | 'relatedExperimentIds'
-      | 'browserAPIs'
-      | 'relatedRecipes'
-      | 'interviewQuestions'
-    >[] = []
+    const issues: RuleVisitorResult[] = []
     if (!ast) return []
 
     traverse(ast, {

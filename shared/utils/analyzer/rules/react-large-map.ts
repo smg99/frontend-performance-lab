@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
-import type { ASTRule, AnalyzerContext, Issue } from '../../../schemas/analyzer'
+import type { ASTRule, AnalyzerContext, Issue, RuleVisitorResult } from '../../../schemas/analyzer'
 import _traverse from '@babel/traverse'
 // Babel traverse needs to be accessed carefully depending on module format
 const traverse = typeof _traverse === 'function' ? _traverse : (_traverse as any).default
@@ -39,30 +39,11 @@ export const reactLargeMap: ASTRule = {
   },
   confidence: {
     score: 80,
-    reasoning: 'Detected an Array.map returning JSX inside a component render block.',
-    limitations: 'Cannot statically determine the size of the array.',
+    reason: 'Detected an Array.map returning JSX inside a component render block.',
     falsePositiveRisk: 'Medium'
   },
   visitor: (ast: any, context: AnalyzerContext) => {
-    const issues: Omit<
-      Issue,
-      | 'id'
-      | 'title'
-      | 'description'
-      | 'ruleId'
-      | 'severity'
-      | 'category'
-      | 'impact'
-      | 'fix'
-      | 'browserImpact'
-      | 'explanation'
-      | 'autoFix'
-      | 'confidence'
-      | 'relatedExperimentIds'
-      | 'browserAPIs'
-      | 'relatedRecipes'
-      | 'interviewQuestions'
-    >[] = []
+    const issues: RuleVisitorResult[] = []
     if (!ast) return []
 
     traverse(ast, {

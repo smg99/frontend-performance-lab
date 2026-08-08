@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ASTRule, AnalyzerContext, Issue } from '../../../schemas/analyzer'
+import type { ASTRule, AnalyzerContext, Issue, RuleVisitorResult } from '../../../schemas/analyzer'
 import _traverse from '@babel/traverse'
 
 const traverse = typeof _traverse === 'function' ? _traverse : (_traverse as any).default
@@ -24,12 +24,12 @@ export const blockingCss: ASTRule = {
   fix: 'Inline critical CSS and load non-critical CSS asynchronously (e.g. `media="print" onload="this.media=\'all\'"`).',
   confidence: {
     score: 80,
-    reasoning:
+    reason:
       'Detects link elements with rel="stylesheet" lacking media="print". Cannot determine if CSS is genuinely critical.',
     falsePositiveRisk: 'Medium'
   },
   visitor: (ast: any, context: AnalyzerContext) => {
-    const issues: Omit<Issue, keyof any>[] = []
+    const issues: RuleVisitorResult[] = []
     traverse(ast, {
       JSXOpeningElement(path: any) {
         const nameNode = path.node.name

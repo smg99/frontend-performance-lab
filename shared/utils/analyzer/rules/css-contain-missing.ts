@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ASTRule, AnalyzerContext, Issue } from '../../../schemas/analyzer'
+import type { ASTRule, AnalyzerContext, Issue, RuleVisitorResult } from '../../../schemas/analyzer'
 import _traverse from '@babel/traverse'
 
 const traverse = typeof _traverse === 'function' ? _traverse : (_traverse as any).default
@@ -25,12 +25,12 @@ export const cssContainMissing: ASTRule = {
   fix: 'Add `contain: content` (or strict/layout) to the parent element CSS or style attribute.',
   confidence: {
     score: 75,
-    reasoning:
+    reason:
       'Detects JSX elements with >30 children without inline contain styles. Cannot perfectly check external CSS.',
     falsePositiveRisk: 'Medium'
   },
   visitor: (ast: any, context: AnalyzerContext) => {
-    const issues: Omit<Issue, keyof any>[] = []
+    const issues: RuleVisitorResult[] = []
     traverse(ast, {
       JSXElement(path: any) {
         const children = path.node.children

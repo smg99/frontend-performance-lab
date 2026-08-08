@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
-import type { ASTRule, AnalyzerContext, Issue } from '../../../schemas/analyzer'
+import type { ASTRule, AnalyzerContext, Issue, RuleVisitorResult } from '../../../schemas/analyzer'
 import _traverse from '@babel/traverse'
 const traverse = typeof _traverse === 'function' ? _traverse : (_traverse as any).default
 
@@ -39,32 +39,12 @@ export const memoryEventListener: ASTRule = {
   },
   confidence: {
     score: 90,
-    reasoning:
+    reason:
       'Found an addEventListener on window/document without any removeEventListener in the same AST.',
-    limitations:
-      'The removeEventListener might be abstracted away in a custom hook or utility function.',
     falsePositiveRisk: 'Medium'
   },
   visitor: (ast: any, context: AnalyzerContext) => {
-    const issues: Omit<
-      Issue,
-      | 'id'
-      | 'title'
-      | 'description'
-      | 'ruleId'
-      | 'severity'
-      | 'category'
-      | 'impact'
-      | 'fix'
-      | 'browserImpact'
-      | 'explanation'
-      | 'autoFix'
-      | 'confidence'
-      | 'relatedExperimentIds'
-      | 'browserAPIs'
-      | 'relatedRecipes'
-      | 'interviewQuestions'
-    >[] = []
+    const issues: RuleVisitorResult[] = []
     if (!ast) return []
 
     // MVP Heuristic: Flag global addEventListener inside a component file if no removeEventListener is found

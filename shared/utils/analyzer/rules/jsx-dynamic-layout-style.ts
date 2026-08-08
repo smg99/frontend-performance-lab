@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
-import type { ASTRule, AnalyzerContext, Issue } from '../../../schemas/analyzer'
+import type { ASTRule, AnalyzerContext, Issue, RuleVisitorResult } from '../../../schemas/analyzer'
 import _traverse from '@babel/traverse'
 const traverse = typeof _traverse === 'function' ? _traverse : (_traverse as any).default
 
@@ -39,34 +39,12 @@ export const jsxDynamicLayoutStyle: ASTRule = {
   },
   confidence: {
     score: 85,
-    reasoning:
+    reason:
       'Detected a JSX inline style object where a layout-triggering property is assigned a dynamic value (Identifier, TemplateLiteral, or BinaryExpression).',
-    limitations:
-      'The dynamic variable might only be evaluated once on mount rather than changing continuously on scroll/animation.',
     falsePositiveRisk: 'Medium'
   },
   visitor: (ast: any, context: AnalyzerContext) => {
-    const issues: Omit<
-      Issue,
-      | 'id'
-      | 'title'
-      | 'description'
-      | 'ruleId'
-      | 'severity'
-      | 'category'
-      | 'impact'
-      | 'fix'
-      | 'browserImpact'
-      | 'explanation'
-      | 'autoFix'
-      | 'confidence'
-      | 'estimatedImprovement'
-      | 'timeToFix'
-      | 'relatedExperimentIds'
-      | 'browserAPIs'
-      | 'relatedRecipes'
-      | 'interviewQuestions'
-    >[] = []
+    const issues: RuleVisitorResult[] = []
 
     const layoutProperties = new Set([
       'width',

@@ -121,6 +121,12 @@ export interface AnalyzerContext {
   framework: string
 }
 
+export interface RuleVisitorResult {
+  lineNumbers?: number[]
+  description?: string
+  confidence?: Partial<RuleConfidence>
+}
+
 export interface ASTRule {
   id: string
   title: string
@@ -149,29 +155,7 @@ export interface ASTRule {
     ast: any,
     context: AnalyzerContext,
     projectGraph?: ProjectGraph // Phase 2 Extension
-  ) => Omit<
-    Issue,
-    | 'id'
-    | 'title'
-    | 'description'
-    | 'ruleId'
-    | 'severity'
-    | 'category'
-    | 'impact'
-    | 'fix'
-    | 'estimatedImprovement'
-    | 'timeToFix'
-    | 'estimatedImprovement'
-    | 'timeToFix'
-    | 'browserImpact'
-    | 'explanation'
-    | 'autoFix'
-    | 'confidence'
-    | 'relatedExperimentIds'
-    | 'browserAPIs'
-    | 'relatedRecipes'
-    | 'interviewQuestions'
-  >[]
+  ) => RuleVisitorResult[]
 
   fixer?: (ast: any, context: AnalyzerContext, issues: Issue[]) => boolean
 }

@@ -10,7 +10,8 @@ export type {
   BrowserImpact,
   BrowserExplanation,
   AutoFix,
-  RuleConfidence
+  RuleConfidence,
+  RuleVisitorResult
 } from '../../../shared/schemas/analyzer.js'
 
 /**

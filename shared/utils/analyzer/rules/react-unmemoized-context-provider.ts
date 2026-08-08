@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
-import type { ASTRule, AnalyzerContext, Issue } from '../../../schemas/analyzer'
+import type { ASTRule, AnalyzerContext, Issue, RuleVisitorResult } from '../../../schemas/analyzer'
 import _traverse from '@babel/traverse'
 const traverse = typeof _traverse === 'function' ? _traverse : (_traverse as any).default
 
@@ -40,34 +40,12 @@ export const reactUnmemoizedContextProvider: ASTRule = {
   },
   confidence: {
     score: 100,
-    reasoning:
+    reason:
       'Detected an inline Object, Array, or Function passed directly to the `value` prop of a JSX element ending in `.Provider`.',
-    limitations:
-      'Does not check if the value is derived from a custom hook that returns a new object.',
     falsePositiveRisk: 'Low'
   },
   visitor: (ast: any, context: AnalyzerContext) => {
-    const issues: Omit<
-      Issue,
-      | 'id'
-      | 'title'
-      | 'description'
-      | 'ruleId'
-      | 'severity'
-      | 'category'
-      | 'impact'
-      | 'fix'
-      | 'browserImpact'
-      | 'explanation'
-      | 'autoFix'
-      | 'confidence'
-      | 'estimatedImprovement'
-      | 'timeToFix'
-      | 'relatedExperimentIds'
-      | 'browserAPIs'
-      | 'relatedRecipes'
-      | 'interviewQuestions'
-    >[] = []
+    const issues: RuleVisitorResult[] = []
 
     traverse(ast, {
       JSXElement(path: any) {

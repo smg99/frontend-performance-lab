@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ASTRule, AnalyzerContext, Issue } from '../../../schemas/analyzer'
+import type { ASTRule, AnalyzerContext, Issue, RuleVisitorResult } from '../../../schemas/analyzer'
 import _traverse from '@babel/traverse'
 
 const traverse = typeof _traverse === 'function' ? _traverse : (_traverse as any).default
@@ -24,12 +24,12 @@ export const networkBatching: ASTRule = {
   fix: 'Use `Promise.all` to batch requests or combine them on the backend via GraphQL or a dedicated endpoint.',
   confidence: {
     score: 70,
-    reasoning:
+    reason:
       'Detects BlockStatements containing multiple CallExpressions for fetch or axios. False positives may occur if logically separate.',
     falsePositiveRisk: 'High'
   },
   visitor: (ast: any, context: AnalyzerContext) => {
-    const issues: Omit<Issue, keyof any>[] = []
+    const issues: RuleVisitorResult[] = []
     traverse(ast, {
       BlockStatement(path: any) {
         let fetchCount = 0

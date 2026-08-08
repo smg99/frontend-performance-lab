@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ASTRule, AnalyzerContext, Issue } from '../../../schemas/analyzer'
+import type { ASTRule, AnalyzerContext, Issue, RuleVisitorResult } from '../../../schemas/analyzer'
 import _traverse from '@babel/traverse'
 import fs from 'fs'
 import path from 'path'
@@ -78,33 +78,12 @@ export const largeReactiveStateObject: ASTRule = {
   fix: 'Wrap large immutable data with `shallowRef`/`shallowReactive` (Vue) or `useRef` (React), or mark it as raw with `markRaw`.',
   confidence: {
     score: 85,
-    reasoning:
+    reason:
       'Detects CallExpressions for ref/reactive/useState with large literals (recursive) or imported identifiers.',
-    limitations: 'Cannot statically evaluate dynamic imports or runtime‑generated large objects.',
     falsePositiveRisk: 'Medium'
   },
   visitor: (ast: any, context: AnalyzerContext) => {
-    const issues: Omit<
-      Issue,
-      | 'id'
-      | 'title'
-      | 'description'
-      | 'ruleId'
-      | 'severity'
-      | 'category'
-      | 'impact'
-      | 'fix'
-      | 'browserImpact'
-      | 'explanation'
-      | 'autoFix'
-      | 'confidence'
-      | 'estimatedImprovement'
-      | 'timeToFix'
-      | 'relatedExperimentIds'
-      | 'browserAPIs'
-      | 'relatedRecipes'
-      | 'interviewQuestions'
-    >[] = []
+    const issues: RuleVisitorResult[] = []
     const { maxProperties } = getConfig()
 
     traverse(ast, {
