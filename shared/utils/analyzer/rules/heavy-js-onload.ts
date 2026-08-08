@@ -4,10 +4,85 @@ import _traverse from '@babel/traverse'
 
 const traverse = typeof _traverse === 'function' ? _traverse : (_traverse as any).default
 
-/**
- * Main-Thread Heavy JS
- * Warns about functions with heavy logic (e.g. deep nesting > 4 or high statement count) running during load (like in useEffect or immediately invoked).
- */
+function isInsideDeferral(path: any): boolean {
+  let curr = path
+  while (curr) {
+    if (curr.node.type === 'CallExpression') {
+      const callee = curr.node.callee
+      if (callee.type === 'Identifier') {
+        if (
+          [
+            'setTimeout',
+            'setInterval',
+            'requestIdleCallback',
+            'requestAnimationFrame',
+            'setImmediate'
+          ].includes(callee.name)
+        ) {
+          return true
+        }
+      }
+      if (callee.type === 'MemberExpression') {
+        const propName = callee.property?.name || callee.property?.value
+        if (
+          ['setTimeout', 'requestIdleCallback', 'requestAnimationFrame', 'yield'].includes(propName)
+        ) {
+          return true
+        }
+      }
+    }
+    if (curr.node.type === 'NewExpression') {
+      const callee = curr.node.callee
+      if (callee.type === 'Identifier' && callee.name === 'Worker') {
+        return true
+      }
+    }
+    curr = curr.parentPath
+  }
+  return false
+}
+
+function isStartupHook(path: any): { isHook: boolean; fnArgIndex: number } {
+  const node = path.node
+
+  if (node.type === 'CallExpression') {
+    const callee = node.callee
+    if (
+      callee.type === 'Identifier' &&
+      ['useEffect', 'useLayoutEffect', 'onMounted', 'onBeforeMount'].includes(callee.name)
+    ) {
+      if (
+        node.arguments.length > 0 &&
+        (node.arguments[0].type === 'ArrowFunctionExpression' ||
+          node.arguments[0].type === 'FunctionExpression')
+      ) {
+        return { isHook: true, fnArgIndex: 0 }
+      }
+    }
+
+    if (
+      callee.type === 'MemberExpression' &&
+      callee.property &&
+      (callee.property.name === 'addEventListener' || callee.property.value === 'addEventListener')
+    ) {
+      const args = node.arguments
+      if (args.length >= 2) {
+        const eventName =
+          args[0].type === 'StringLiteral' || args[0].type === 'Literal' ? args[0].value : null
+        if (
+          eventName &&
+          ['load', 'DOMContentLoaded'].includes(eventName) &&
+          (args[1].type === 'ArrowFunctionExpression' || args[1].type === 'FunctionExpression')
+        ) {
+          return { isHook: true, fnArgIndex: 1 }
+        }
+      }
+    }
+  }
+
+  return { isHook: false, fnArgIndex: -1 }
+}
+
 export const heavyJsOnload: ASTRule = {
   id: 'heavy-js-onload',
   title: 'Main-Thread Heavy JS',
@@ -16,69 +91,117 @@ export const heavyJsOnload: ASTRule = {
   severity: 'Warning',
   browserImpact: { rendering: false, memory: true, cpu: true, cwv: false },
   category: 'Performance',
-  frameworks: ['react', 'vue', 'js'],
+  frameworks: ['vanilla', 'react', 'vue', 'js'],
   supportedLanguages: ['js', 'ts', 'jsx', 'tsx'],
   relatedExperiments: ['performance'],
   browserAPIs: [],
   impact: 'Increases Total Blocking Time and hurts Interaction to Next Paint.',
   fix: 'Offload heavy computation to a Web Worker, or yield to the main thread using `setTimeout` or `scheduler.yield()`.',
   confidence: {
-    score: 60,
+    score: 85,
     reason:
-      'Detects loops or deep nesting in functions called in useEffect or globally. Static analysis of execution cost is imprecise.',
-    falsePositiveRisk: 'High'
+      'Detects nested loops, heavy statement counts, or expensive APIs during startup hooks without deferral.',
+    falsePositiveRisk: 'Low'
   },
   visitor: (ast: any, context: AnalyzerContext) => {
     const issues: RuleVisitorResult[] = []
+    if (!ast) return []
+
+    const isLoopType = (type: string) =>
+      [
+        'ForStatement',
+        'ForOfStatement',
+        'ForInStatement',
+        'WhileStatement',
+        'DoWhileStatement'
+      ].includes(type)
+
     traverse(ast, {
       CallExpression(path: any) {
-        const callee = path.node.callee
-        // Specifically look for useEffect or onMounted hooks running heavy tasks
-        if (
-          callee.type === 'Identifier' &&
-          (callee.name === 'useEffect' || callee.name === 'onMounted')
-        ) {
-          const args = path.node.arguments
-          if (
-            args.length > 0 &&
-            (args[0].type === 'ArrowFunctionExpression' || args[0].type === 'FunctionExpression')
-          ) {
-            let statementCount = 0
-            let maxNesting = 0
-            let currentDepth = 0
+        const { isHook, fnArgIndex } = isStartupHook(path)
+        if (!isHook || fnArgIndex < 0) return
 
-            path.traverse({
-              enter(childPath: any) {
-                if (childPath.isStatement()) statementCount++
-                if (
-                  childPath.isBlockStatement() ||
-                  childPath.isIfStatement() ||
-                  childPath.isForStatement() ||
-                  childPath.isWhileStatement()
-                ) {
-                  currentDepth++
-                  if (currentDepth > maxNesting) maxNesting = currentDepth
-                }
-              },
-              exit(childPath: any) {
-                if (
-                  childPath.isBlockStatement() ||
-                  childPath.isIfStatement() ||
-                  childPath.isForStatement() ||
-                  childPath.isWhileStatement()
-                ) {
-                  currentDepth--
-                }
+        let statementCount = 0
+        let maxLoopDepth = 0
+        let currentLoopDepth = 0
+        let hasHeavyApiInLoop = false
+
+        const fnPath = path.get(`arguments.${fnArgIndex}`)
+        if (!fnPath || typeof fnPath.traverse !== 'function') return
+
+        fnPath.traverse({
+          Statement(childPath: any) {
+            if (isInsideDeferral(childPath)) return
+            statementCount++
+          },
+          CallExpression(childPath: any) {
+            if (isInsideDeferral(childPath)) return
+            const callee = childPath.node.callee
+            let isHeavyApi = false
+
+            if (callee.type === 'MemberExpression') {
+              const objName = callee.object?.name
+              const propName = callee.property?.name || callee.property?.value
+              if (
+                (objName === 'JSON' && (propName === 'parse' || propName === 'stringify')) ||
+                propName === 'sort'
+              ) {
+                isHeavyApi = true
               }
-            })
+            }
 
-            if (statementCount > 50 || maxNesting > 4) {
-              issues.push({ lineNumbers: [path.node.loc.start.line] })
+            if (isHeavyApi) {
+              let inLoop = false
+              let curr = childPath
+              while (curr) {
+                if (isLoopType(curr.node.type)) {
+                  inLoop = true
+                  break
+                }
+                curr = curr.parentPath
+              }
+              if (inLoop) {
+                hasHeavyApiInLoop = true
+              }
+            }
+          },
+          enter(childPath: any) {
+            if (isInsideDeferral(childPath)) return
+            if (isLoopType(childPath.node.type)) {
+              currentLoopDepth++
+              if (currentLoopDepth > maxLoopDepth) {
+                maxLoopDepth = currentLoopDepth
+              }
+            }
+          },
+          exit(childPath: any) {
+            if (isInsideDeferral(childPath)) return
+            if (isLoopType(childPath.node.type)) {
+              currentLoopDepth--
             }
           }
+        })
+
+        let reason: string | null = null
+
+        if (maxLoopDepth >= 2) {
+          reason = 'nested loops'
+        } else if (hasHeavyApiInLoop) {
+          reason = 'heavy API call in loop'
+        } else if (statementCount >= 35) {
+          reason = `high statement count (${statementCount})`
+        }
+
+        if (reason) {
+          const line = path.node.loc?.start.line || 1
+          issues.push({
+            lineNumbers: [line],
+            description: `Heavy synchronous JavaScript execution during startup (${reason}) blocks the main thread.`
+          })
         }
       }
     })
+
     return issues
   }
 }
