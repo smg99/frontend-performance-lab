@@ -3,6 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { getConfiguredEngine } from '../shared/utils/analyzer/rules/index.js'
+import prettier from 'prettier'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -68,5 +69,6 @@ md += `- Complete data-flow analysis across multiple files (Cross-file imports).
 md += `- Advanced hook/composable abstraction resolution.\n`
 md += `- Precise array size determination (requires runtime/dynamic analysis).\n`
 
-fs.writeFileSync(path.join(ROOT, 'ANALYZER_COVERAGE.md'), md)
+const formattedMarkdown = await prettier.format(md, { parser: 'markdown' })
+fs.writeFileSync(path.join(ROOT, 'ANALYZER_COVERAGE.md'), formattedMarkdown)
 console.log('Generated ANALYZER_COVERAGE.md')
