@@ -3,6 +3,53 @@ import type { ASTRule, AnalyzerContext, Issue, RuleVisitorResult } from '../../.
 import _traverse from '@babel/traverse'
 const traverse = typeof _traverse === 'function' ? _traverse : (_traverse as any).default
 
+function getTargetName(node: any): string | null {
+  if (!node) return null
+  if (node.type === 'Identifier') return node.name
+  if (node.type === 'MemberExpression') {
+    const obj = getTargetName(node.object)
+    const prop = getTargetName(node.property)
+    return obj && prop ? `${obj}.${prop}` : null
+  }
+  if (node.type === 'ThisExpression') return 'this'
+  return null
+}
+
+function getEventTypeName(node: any): string {
+  if (!node) return 'event'
+  if (node.type === 'StringLiteral') return node.value
+  if (node.type === 'Identifier') return node.name
+  return 'event'
+}
+
+function getHandlerKey(node: any): { key: string | null; isAnonymous: boolean } {
+  if (!node) return { key: null, isAnonymous: true }
+  if (node.type === 'Identifier') {
+    return { key: node.name, isAnonymous: false }
+  }
+  if (node.type === 'MemberExpression') {
+    const key = getTargetName(node)
+    return { key, isAnonymous: false }
+  }
+  return { key: null, isAnonymous: true }
+}
+
+function isAutoCleanedOptions(optionsNode: any): boolean {
+  if (!optionsNode || optionsNode.type !== 'ObjectExpression') return false
+  for (const prop of optionsNode.properties) {
+    if (prop.type === 'ObjectProperty') {
+      const propKey = prop.key.name || prop.key.value
+      if (propKey === 'once' && prop.value.type === 'BooleanLiteral' && prop.value.value === true) {
+        return true
+      }
+      if (propKey === 'signal') {
+        return true
+      }
+    }
+  }
+  return false
+}
+
 export const memoryEventListener: ASTRule = {
   id: 'memory-event-listener',
   title: 'Global Event Listener Leak',
@@ -40,40 +87,86 @@ export const memoryEventListener: ASTRule = {
   confidence: {
     score: 90,
     reason:
-      'Found an addEventListener on window/document without any removeEventListener in the same AST.',
-    falsePositiveRisk: 'Medium'
+      'Statically matches target, event type, and handler reference across add/removeEventListener calls.',
+    falsePositiveRisk: 'Low'
   },
   visitor: (ast: any, context: AnalyzerContext) => {
     const issues: RuleVisitorResult[] = []
     if (!ast) return []
 
-    // MVP Heuristic: Flag global addEventListener inside a component file if no removeEventListener is found
-    let hasAdd = false
-    let hasRemove = false
-    let line = 1
+    const addCalls: Array<{
+      target: string
+      eventType: string
+      handlerKey: string | null
+      isAnonymous: boolean
+      isAutoCleaned: boolean
+      line: number
+    }> = []
+
+    const removeCalls: Array<{
+      target: string
+      eventType: string
+      handlerKey: string | null
+    }> = []
 
     traverse(ast, {
       CallExpression(path: any) {
-        if (
-          path.node.callee.type === 'MemberExpression' &&
-          path.node.callee.property.type === 'Identifier'
-        ) {
-          if (path.node.callee.property.name === 'addEventListener') {
-            const obj = path.node.callee.object
-            if (obj.type === 'Identifier' && ['window', 'document', 'body'].includes(obj.name)) {
-              hasAdd = true
-              line = path.node.loc?.start.line || 1
+        const callee = path.node.callee
+        if (callee.type === 'MemberExpression' && callee.property.type === 'Identifier') {
+          const methodName = callee.property.name
+          const target = getTargetName(callee.object)
+
+          if (target && ['window', 'document', 'body'].includes(target)) {
+            const args = path.node.arguments
+            const eventType = getEventTypeName(args[0])
+            const { key: handlerKey, isAnonymous } = getHandlerKey(args[1])
+
+            if (methodName === 'addEventListener') {
+              const isAutoCleaned = isAutoCleanedOptions(args[2])
+              addCalls.push({
+                target,
+                eventType,
+                handlerKey,
+                isAnonymous,
+                isAutoCleaned,
+                line: path.node.loc?.start.line || 1
+              })
+            } else if (methodName === 'removeEventListener') {
+              removeCalls.push({
+                target,
+                eventType,
+                handlerKey
+              })
             }
-          }
-          if (path.node.callee.property.name === 'removeEventListener') {
-            hasRemove = true
           }
         }
       }
     })
 
-    if (hasAdd && !hasRemove) {
-      issues.push({ lineNumbers: [line] })
+    for (const add of addCalls) {
+      if (add.isAutoCleaned) continue
+
+      if (add.isAnonymous) {
+        issues.push({
+          lineNumbers: [add.line],
+          description: `Global '${add.eventType}' event listener on '${add.target}' may persist without cleanup.`
+        })
+        continue
+      }
+
+      const hasMatch = removeCalls.some(
+        rem =>
+          rem.target === add.target &&
+          rem.eventType === add.eventType &&
+          rem.handlerKey === add.handlerKey
+      )
+
+      if (!hasMatch) {
+        issues.push({
+          lineNumbers: [add.line],
+          description: `Global '${add.eventType}' event listener on '${add.target}' may persist without cleanup.`
+        })
+      }
     }
 
     return issues
