@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { getExperimentById } from '../shared/registry/index.js'
 import { getBrowserAPI } from '../shared/registry/browser-apis.js'
 import { getRecipe } from '../shared/registry/recipes.js'
-import { mcpCore } from '../shared/mcp/core.js'
+import { mcpCore, withMetadata } from '../shared/mcp/core.js'
 import { getConfiguredEngine } from '../shared/utils/analyzer/rules/index.js'
 
 const server = new McpServer({

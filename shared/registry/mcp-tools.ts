@@ -47,5 +47,11 @@ export const mcpTools = [
     name: 'system_diagnostics',
     description: 'Generate system health report.',
     schema: '{}'
+  },
+  {
+    id: 'performance_audit',
+    name: 'performance_audit',
+    description: 'Run an AST-based performance audit on a local file or source code string.',
+    schema: '{ path?: string, sourceCode?: string }'
   }
 ]
