@@ -13,6 +13,7 @@ import { memoryEventListener } from './memory-event-listener'
 import { blockingCss } from './blocking-css'
 import { reactInlineProps } from './react-inline-props'
 import { consolePerformance } from './console-performance'
+import { imgMissingDimensions } from './img-missing-dimensions'
 import { AnalyzerEngine } from '../engine/index'
 
 export const builtInRules = [
@@ -30,7 +31,8 @@ export const builtInRules = [
   memoryEventListener,
   blockingCss,
   reactInlineProps,
-  consolePerformance
+  consolePerformance,
+  imgMissingDimensions
 ]
 
 export const getConfiguredEngine = () => {
