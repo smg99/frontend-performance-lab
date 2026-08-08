@@ -1,0 +1,354 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] flags correct issues in layout-thrashing 1`] = `
+{
+  "analyzedFiles": 1,
+  "checklist": [
+    {
+      "completed": false,
+      "id": "mock-id",
+      "title": "Batch DOM reads together, and defer DOM writes using requestAnimationFrame.",
+    },
+  ],
+  "confidenceScore": 65,
+  "estimates": {
+    "memoryReduction": "Minimal",
+    "performanceGain": "Moderate (+15% FPS)",
+    "renderingImprovement": "Eliminates layout thrashing",
+    "timeToFix": "< 5 mins",
+  },
+  "issues": [
+    {
+      "autoFix": {
+        "badCode": "element.style.width = element.clientWidth + 10 + "px";",
+        "recommendedCode": "const width = element.clientWidth;
+requestAnimationFrame(() => {
+  element.style.width = width + 10 + "px";
+});",
+        "whyFaster": "requestAnimationFrame defers the style mutation until right before the browser's next paint cycle, preventing any interleaved reads from triggering synchronous recalculations.",
+      },
+      "browserAPIs": [
+        "request-animation-frame",
+      ],
+      "browserImpact": {
+        "cpu": true,
+        "cwv": true,
+        "memory": false,
+        "network": false,
+        "rendering": true,
+      },
+      "category": "Rendering",
+      "confidence": {
+        "falsePositiveRisk": "High",
+        "reason": "Detected direct assignment to a .style property outside of a requestAnimationFrame callback.",
+        "score": 65,
+      },
+      "description": "Interleaving DOM reads and writes forces synchronous layout recalculation.",
+      "estimatedImprovement": "Unknown",
+      "explanation": {
+        "pipelineInvolved": [
+          "Style",
+          "Layout",
+          "Paint",
+        ],
+        "whatHappened": "A style property is being mutated directly in the DOM, potentially interleaving with a DOM read.",
+        "whyBrowserBehavesThisWay": "When you read a layout property (like offsetHeight) after modifying styles, the browser is forced to pause JavaScript execution and recalculate the entire page layout synchronously to give you the correct value. This is called Forced Synchronous Layout.",
+      },
+      "filename": "app.js",
+      "fix": "Batch DOM reads together, and defer DOM writes using requestAnimationFrame.",
+      "id": "mock-id",
+      "impact": "Forces synchronous reflows, killing frame rates (jank).",
+      "interviewQuestions": undefined,
+      "lineNumbers": [
+        3,
+      ],
+      "relatedExperimentIds": [
+        "rendering",
+      ],
+      "relatedRecipes": [
+        "dashboard-rendering",
+      ],
+      "ruleId": "dom-layout-thrashing",
+      "severity": "Critical",
+      "timeToFix": "~5 mins",
+      "title": "Layout Thrashing",
+    },
+  ],
+  "metrics": {
+    "CPU": 70,
+    "CWV": 70,
+    "Memory": 100,
+    "Rendering": 70,
+  },
+  "overallScore": "C",
+  "performanceScore": 70,
+  "reportHash": "ZG9tLWxheW91dC10aHJhc2hpbmctMw==",
+  "suggestions": [],
+  "warnings": undefined,
+}
+`;
+
+exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] flags correct issues in memory-leak 1`] = `
+{
+  "analyzedFiles": 1,
+  "checklist": [
+    {
+      "completed": false,
+      "id": "mock-id",
+      "title": "Always call removeEventListener in the component unmount/destroy hook.",
+    },
+  ],
+  "confidenceScore": 90,
+  "estimates": {
+    "memoryReduction": "~25% footprint reduction",
+    "performanceGain": "Moderate (+15% FPS)",
+    "renderingImprovement": "Minimal",
+    "timeToFix": "< 5 mins",
+  },
+  "issues": [
+    {
+      "autoFix": {
+        "badCode": "window.addEventListener("resize", handleResize);",
+        "recommendedCode": "onMounted(() => window.addEventListener("resize", handleResize));
+onUnmounted(() => window.removeEventListener("resize", handleResize));",
+        "whyFaster": "Explicitly removing listeners breaks the reference cycle, allowing the V8 Garbage Collector to instantly free the memory associated with the destroyed component.",
+      },
+      "browserAPIs": [
+        "addEventListener",
+        "removeEventListener",
+      ],
+      "browserImpact": {
+        "cpu": false,
+        "cwv": false,
+        "memory": true,
+        "network": false,
+        "rendering": false,
+      },
+      "category": "Memory",
+      "confidence": {
+        "falsePositiveRisk": "Medium",
+        "reason": "Found an addEventListener on window/document without any removeEventListener in the same AST.",
+        "score": 90,
+      },
+      "description": "Adding listeners to global objects (window, document) without removing them causes memory leaks.",
+      "estimatedImprovement": "Unknown",
+      "explanation": {
+        "pipelineInvolved": [],
+        "whatHappened": "An event listener is attached to a global object (window or document) but no corresponding removeEventListener was found in the same file.",
+        "whyBrowserBehavesThisWay": "Global objects persist for the lifetime of the page. If a component attaches a listener to \`window\` and is unmounted, the \`window\` still holds a reference to the listener function (which often closes over the component scope), preventing Garbage Collection.",
+      },
+      "filename": "app.jsx",
+      "fix": "Always call removeEventListener in the component unmount/destroy hook.",
+      "id": "mock-id",
+      "impact": "Garbage collector cannot destroy the component, leading to OOM crashes over time.",
+      "interviewQuestions": undefined,
+      "lineNumbers": [
+        2,
+      ],
+      "relatedExperimentIds": [
+        "memory-vitals",
+      ],
+      "relatedRecipes": undefined,
+      "ruleId": "memory-event-listener",
+      "severity": "Critical",
+      "timeToFix": "~5 mins",
+      "title": "Global Event Listener Leak",
+    },
+  ],
+  "metrics": {
+    "CPU": 100,
+    "CWV": 100,
+    "Memory": 70,
+    "Rendering": 100,
+  },
+  "overallScore": "C",
+  "performanceScore": 70,
+  "reportHash": "bWVtb3J5LWV2ZW50LWxpc3RlbmVyLTI=",
+  "suggestions": [],
+  "warnings": undefined,
+}
+`;
+
+exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] flags correct issues in react-map 1`] = `
+{
+  "analyzedFiles": 1,
+  "checklist": [
+    {
+      "completed": false,
+      "id": "mock-id",
+      "title": "Implement a virtual list using react-window or react-virtualized.",
+    },
+  ],
+  "confidenceScore": 85,
+  "estimates": {
+    "memoryReduction": "~25% footprint reduction",
+    "performanceGain": "Moderate (+15% FPS)",
+    "renderingImprovement": "Eliminates layout thrashing",
+    "timeToFix": "< 5 mins",
+  },
+  "issues": [
+    {
+      "autoFix": {
+        "badCode": "items.map(item => <HeavyCard key={item.id} data={item} />)",
+        "recommendedCode": "<FixedSizeList height={400} itemCount={items.length} itemSize={100}>
+  {({ index, style }) => <div style={style}><HeavyCard data={items[index]} /></div>}
+</FixedSizeList>",
+        "whyFaster": "Virtualization drastically reduces the DOM node count to only what is visible, bypassing the massive memory allocation and Layout thrashing associated with large DOM trees.",
+      },
+      "browserAPIs": [
+        "intersection-observer",
+      ],
+      "browserImpact": {
+        "cpu": true,
+        "cwv": true,
+        "memory": true,
+        "network": false,
+        "rendering": true,
+      },
+      "category": "Rendering",
+      "confidence": {
+        "falsePositiveRisk": "Low",
+        "reason": "Detected an Array.map returning JSX on a dynamic or large array (ignoring small static lists <= 10 items).",
+        "score": 85,
+      },
+      "description": "Unvirtualized .map() on 'items' returning JSX",
+      "estimatedImprovement": "Unknown",
+      "explanation": {
+        "pipelineInvolved": [
+          "DOM",
+          "Style",
+          "Layout",
+          "Paint",
+          "Composite",
+        ],
+        "whatHappened": "A large or unbounded array is being mapped directly to JSX elements without virtualization.",
+        "whyBrowserBehavesThisWay": "React will create a Fiber node and a DOM node for every element. Mapping over thousands of items blocks the main thread during reconciliation and overwhelms the browser layout engine.",
+      },
+      "filename": "list.jsx",
+      "fix": "Implement a virtual list using react-window or react-virtualized.",
+      "id": "mock-id",
+      "impact": "High memory usage and main thread blocking during reconciliation.",
+      "interviewQuestions": undefined,
+      "lineNumbers": [
+        4,
+      ],
+      "relatedExperimentIds": [
+        "virtualization",
+        "rendering",
+      ],
+      "relatedRecipes": [
+        "large-data-table",
+        "dashboard-rendering",
+      ],
+      "ruleId": "react-large-map",
+      "severity": "Critical",
+      "timeToFix": "~5 mins",
+      "title": "Large .map() without Virtualization",
+    },
+  ],
+  "metrics": {
+    "CPU": 70,
+    "CWV": 70,
+    "Memory": 70,
+    "Rendering": 70,
+  },
+  "overallScore": "C",
+  "performanceScore": 70,
+  "reportHash": "cmVhY3QtbGFyZ2UtbWFwLTQ=",
+  "suggestions": [],
+  "warnings": undefined,
+}
+`;
+
+exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] flags correct issues in vue-v-for 1`] = `
+{
+  "analyzedFiles": 1,
+  "checklist": [
+    {
+      "completed": false,
+      "id": "mock-id",
+      "title": "Use a virtual scroller (e.g. vue-virtual-scroller) to only render visible items.",
+    },
+  ],
+  "confidenceScore": 85,
+  "estimates": {
+    "memoryReduction": "~25% footprint reduction",
+    "performanceGain": "Moderate (+15% FPS)",
+    "renderingImprovement": "Eliminates layout thrashing",
+    "timeToFix": "< 5 mins",
+  },
+  "issues": [
+    {
+      "autoFix": {
+        "badCode": "<div v-for="item in 10000" :key="item.id">
+  <HeavyCard :data="item" />
+</div>",
+        "recommendedCode": "<VirtualScroller :items="items" :item-size="100" v-slot="{ item }">
+  <HeavyCard :data="item" />
+</VirtualScroller>",
+        "whyFaster": "Virtualization only renders the ~10 nodes visible in the viewport, completely bypassing style and layout costs for the other 9,990 nodes.",
+      },
+      "browserAPIs": [
+        "intersection-observer",
+      ],
+      "browserImpact": {
+        "cpu": true,
+        "cwv": true,
+        "memory": true,
+        "network": false,
+        "rendering": true,
+      },
+      "category": "Rendering",
+      "confidence": {
+        "falsePositiveRisk": "Medium",
+        "reason": "The AST clearly shows a v-for directive without a virtualization wrapper.",
+        "score": 85,
+      },
+      "description": "Rendering large lists directly into the DOM can cause severe layout and rendering bottlenecks.",
+      "estimatedImprovement": "Unknown",
+      "explanation": {
+        "pipelineInvolved": [
+          "DOM",
+          "Style",
+          "Layout",
+          "Paint",
+          "Composite",
+        ],
+        "whatHappened": "A large number of DOM nodes are being generated simultaneously within a single v-for directive.",
+        "whyBrowserBehavesThisWay": "Browsers must recalculate styles, layout, and paint for every new DOM node. Thousands of nodes overwhelm the main thread, causing severe Frame Rate drops and memory pressure.",
+      },
+      "filename": "list.vue",
+      "fix": "Use a virtual scroller (e.g. vue-virtual-scroller) to only render visible items.",
+      "id": "mock-id",
+      "impact": "Freezes the main thread during initial render and updates.",
+      "interviewQuestions": undefined,
+      "lineNumbers": [
+        2,
+      ],
+      "relatedExperimentIds": [
+        "virtualization",
+        "rendering",
+      ],
+      "relatedRecipes": [
+        "large-data-table",
+        "infinite-scroll",
+      ],
+      "ruleId": "vue-large-v-for",
+      "severity": "Critical",
+      "timeToFix": "~5 mins",
+      "title": "Large v-for without Virtualization",
+    },
+  ],
+  "metrics": {
+    "CPU": 70,
+    "CWV": 70,
+    "Memory": 70,
+    "Rendering": 70,
+  },
+  "overallScore": "C",
+  "performanceScore": 70,
+  "reportHash": "dnVlLWxhcmdlLXYtZm9yLTI=",
+  "suggestions": [],
+  "warnings": undefined,
+}
+`;
