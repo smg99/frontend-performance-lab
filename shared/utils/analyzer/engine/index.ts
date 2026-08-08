@@ -19,6 +19,9 @@ export class AnalyzerEngine {
   private rules: ASTRule[] = []
 
   public registerRule(rule: ASTRule) {
+    if (this.rules.some(r => r.id === rule.id)) {
+      throw new Error(`Rule ID "${rule.id}" is already registered.`)
+    }
     this.rules.push(rule)
   }
 
@@ -44,6 +47,7 @@ export class AnalyzerEngine {
 
   public analyze(contexts: AnalyzerContext[], options?: { autoFix?: boolean }): ReviewReport {
     const allIssues: Issue[] = []
+    const warnings: string[] = []
 
     for (const ctx of contexts) {
       const { ast } = this.parseCode(ctx)
@@ -57,36 +61,43 @@ export class AnalyzerEngine {
           rule.supportedLanguages.includes(ctx.language) &&
           rule.frameworks.includes(ctx.framework)
         ) {
-          const rawIssues = rule.visitor(ast, ctx)
+          try {
+            const rawIssues = rule.visitor(ast, ctx)
 
-          for (const raw of rawIssues) {
-            allIssues.push({
-              id: `${rule.id}-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
-              title: rule.title,
-              description: rule.description,
-              ruleId: rule.id,
-              filename: ctx.filename,
-              severity: rule.severity,
-              category: rule.category,
-              impact: rule.impact,
-              fix: rule.fix,
-              browserImpact: rule.browserImpact,
-              explanation: rule.explanation,
-              autoFix: rule.autoFix,
-              confidence: rule.confidence,
-              estimatedImprovement: rule.estimatedImprovement || 'Unknown',
-              timeToFix: rule.timeToFix || '~5 mins',
-              relatedExperimentIds: rule.relatedExperiments,
-              browserAPIs: rule.browserAPIs,
-              relatedRecipes: rule.relatedRecipes,
-              interviewQuestions: rule.interviewQuestions,
-              lineNumbers: raw.lineNumbers
-            })
-          }
+            for (const raw of rawIssues) {
+              allIssues.push({
+                id: `${rule.id}-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+                title: rule.title,
+                description: rule.description,
+                ruleId: rule.id,
+                filename: ctx.filename,
+                severity: rule.severity,
+                category: rule.category,
+                impact: rule.impact,
+                fix: rule.fix,
+                browserImpact: rule.browserImpact,
+                explanation: rule.explanation,
+                autoFix: rule.autoFix,
+                confidence: rule.confidence,
+                estimatedImprovement: rule.estimatedImprovement || 'Unknown',
+                timeToFix: rule.timeToFix || '~5 mins',
+                relatedExperimentIds: rule.relatedExperiments,
+                browserAPIs: rule.browserAPIs,
+                relatedRecipes: rule.relatedRecipes,
+                interviewQuestions: rule.interviewQuestions,
+                lineNumbers: raw.lineNumbers
+              })
+            }
 
-          if (options?.autoFix && rule.fixer) {
-            const ruleMutated = rule.fixer(ast, ctx, rawIssues as any)
-            if (ruleMutated) fileMutated = true
+            if (options?.autoFix && rule.fixer) {
+              const ruleMutated = rule.fixer(ast, ctx, rawIssues as any)
+              if (ruleMutated) fileMutated = true
+            }
+          } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : String(error)
+            warnings.push(
+              `Rule execution failed: Rule '${rule.id}' crashed while analyzing ${ctx.filename} (${errorMessage})`
+            )
           }
         }
       }
@@ -193,6 +204,7 @@ export class AnalyzerEngine {
       estimates,
       issues: allIssues,
       suggestions: [],
+      warnings: warnings.length > 0 ? warnings : undefined,
       metrics: {
         Rendering: Math.max(0, rendering),
         Memory: Math.max(0, memory),
