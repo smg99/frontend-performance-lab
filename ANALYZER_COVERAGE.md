@@ -20,12 +20,13 @@ This report details the comprehensive regression test suite coverage for all Ana
 | `memory-event-listener`             | 1              | 2              | 0          | >95%       |
 | `blocking-css`                      | 1              | 0              | 0          | >95%       |
 | `react-inline-props`                | 1              | 0              | 0          | >95%       |
-| `console-performance`               | 0              | 0              | 0          | 0%         |
+| `console-performance`               | 2              | 1              | 0          | >95%       |
+| `img-missing-dimensions`            | 0              | 0              | 0          | 0%         |
 
-**Total Tests:** 25
+**Total Tests:** 28
 
-- **Positive Tests:** 17
-- **Negative Tests:** 7
+- **Positive Tests:** 19
+- **Negative Tests:** 8
 - **Edge Cases:** 1
 
 ## 2. Uncovered Scenarios Still Remaining
