@@ -165,8 +165,29 @@ export default defineCommand({
 
     console.log('\n')
 
+    if (report.warnings && report.warnings.length > 0) {
+      for (const warning of report.warnings) {
+        consola.warn(`[WARNING] ${warning}`)
+      }
+    }
+
+    if (report.suggestions.length) {
+      for (const suggestion of report.suggestions) {
+        consola.info(`[SUGGESTION] ${suggestion.title}: ${suggestion.description}`)
+      }
+    }
+
     if (report.issues.length === 0) {
-      consola.success('No performance issues detected! 🎉')
+      const hasWarnings = report.warnings && report.warnings.length > 0
+      const hasSuggestions = report.suggestions.length > 0
+
+      if (!hasWarnings && !hasSuggestions) {
+        consola.success('No performance issues detected! 🎉')
+      } else if (hasWarnings) {
+        consola.warn(
+          'Analysis completed with warnings. Some files may not have been fully analyzed.'
+        )
+      }
       return
     }
 

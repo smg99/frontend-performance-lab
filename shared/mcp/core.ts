@@ -170,7 +170,7 @@ export const mcpCore = {
         }
       ])
 
-      const summary = `${report.issues.length} performance issue(s) detected.`
+      // summary is declared below
       const enrichedIssues = DiagnosticsMapper.enrich(
         report.issues.map(i => ({
           id: i.ruleId,
@@ -184,10 +184,14 @@ export const mcpCore = {
         filename
       })
 
+      const summary = report.warnings?.length
+        ? report.warnings.join(' ')
+        : `${report.issues.length} performance issue(s) detected.`
       const data = {
         score: report.performanceScore,
         issues: enrichedIssues,
         summary,
+        ...(report.warnings?.length ? { warnings: report.warnings } : {}),
         markdownReport: reportMarkdown
       }
 

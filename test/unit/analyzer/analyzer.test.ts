@@ -2,8 +2,9 @@ import { describe, it, expect } from 'vitest'
 import fs from 'fs'
 import path from 'path'
 import { getConfiguredEngine } from '../../../shared/utils/analyzer/rules/index'
+import { detectFramework } from '../../../shared/core/src/detectFramework'
 
-const FIXTURE_ROOT = path.join(__dirname, 'test-fixtures')
+const FIXTURE_ROOT = path.join(__dirname, '../../../shared/utils/analyzer/test-fixtures')
 
 const engine = getConfiguredEngine()
 
@@ -26,6 +27,26 @@ function loadFixtures(category: string) {
 }
 
 describe('Analyzer Engine E2E Validation', () => {
+  it('recognizes Svelte but reports analysis as unsupported', () => {
+    const context = {
+      filename: 'Component.svelte',
+      code: '<script>let count = 0</script><button>{count}</button>',
+      language: 'svelte',
+      framework: 'svelte'
+    }
+    const detection = detectFramework(context)
+    const report = engine.analyze([context])
+
+    expect(detection.framework).toBe('svelte')
+    expect(detection.strategy).toBe('extension')
+    expect(report.issues).toEqual([])
+    expect(report.suggestions).toEqual([])
+    expect(report.warnings).toEqual([
+      'Svelte analysis is not currently supported. The file was recognized but not analyzed: Component.svelte'
+    ])
+    expect(report.analyzedFiles).toBe(0)
+  })
+
   describe('Good vs Bad Paired Assertions', () => {
     const badFixtures = loadFixtures('bad')
     const goodFixtures = loadFixtures('good')

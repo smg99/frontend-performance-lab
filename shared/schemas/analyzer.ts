@@ -93,6 +93,7 @@ export interface ReviewReport {
   estimates: PerformanceEstimates
   issues: Issue[]
   suggestions: Suggestion[]
+  warnings?: string[]
   metrics: PerformanceMetrics
   checklist: OptimizationChecklist[]
   analyzedFiles: number

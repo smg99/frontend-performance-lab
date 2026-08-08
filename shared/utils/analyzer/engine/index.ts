@@ -7,7 +7,8 @@ import type {
   ReviewReport,
   OptimizationChecklist,
   PerformanceMetrics,
-  PerformanceEstimates
+  PerformanceEstimates,
+  Suggestion
 } from '../../../schemas/analyzer'
 import { parseVue } from '../parsers/vue'
 import { parseBabel } from '../parsers/babel'
@@ -47,12 +48,22 @@ export class AnalyzerEngine {
 
   public analyze(contexts: AnalyzerContext[], options?: { autoFix?: boolean }): ReviewReport {
     const allIssues: Issue[] = []
+    const suggestions: Suggestion[] = []
     const warnings: string[] = []
+    let successfullyAnalyzedFiles = 0
 
     for (const ctx of contexts) {
+      if (ctx.language === 'svelte' || ctx.framework === 'svelte') {
+        warnings.push(
+          `Svelte analysis is not currently supported. The file was recognized but not analyzed: ${ctx.filename}`
+        )
+        continue
+      }
+
       const { ast } = this.parseCode(ctx)
       if (!ast) continue
 
+      successfullyAnalyzedFiles++
       let fileMutated = false
 
       // Run applicable rules
@@ -206,7 +217,7 @@ export class AnalyzerEngine {
       confidenceScore,
       estimates,
       issues: allIssues,
-      suggestions: [],
+      suggestions,
       warnings: warnings.length > 0 ? warnings : undefined,
       metrics: {
         Rendering: Math.max(0, rendering),
@@ -215,7 +226,7 @@ export class AnalyzerEngine {
         CWV: Math.max(0, cwv)
       },
       checklist,
-      analyzedFiles: contexts.length
+      analyzedFiles: successfullyAnalyzedFiles
     }
   }
 }
