@@ -1,4 +1,3 @@
 function resize() {
-  const w = document.getElementById('box').offsetWidth
-  document.getElementById('box').style.width = w + 10 + 'px'
+  document.getElementById('box').style.width = document.getElementById('box').offsetWidth + 10 + 'px'
 }

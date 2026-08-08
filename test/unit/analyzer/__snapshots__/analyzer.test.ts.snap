@@ -10,7 +10,7 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
       "title": "Batch DOM reads together, and defer DOM writes using requestAnimationFrame.",
     },
   ],
-  "confidenceScore": 65,
+  "confidenceScore": 90,
   "estimates": {
     "memoryReduction": "Minimal",
     "performanceGain": "Moderate (+15% FPS)",
@@ -39,11 +39,11 @@ requestAnimationFrame(() => {
       },
       "category": "Rendering",
       "confidence": {
-        "falsePositiveRisk": "High",
-        "reason": "Detected direct assignment to a .style property outside of a requestAnimationFrame callback.",
-        "score": 65,
+        "falsePositiveRisk": "Low",
+        "reason": "Statically matches interleaved DOM layout reads and style writes outside requestAnimationFrame.",
+        "score": 90,
       },
-      "description": "Interleaving DOM reads and writes forces synchronous layout recalculation.",
+      "description": "Layout thrashing: style assignment on ''#box'' interleaves layout read 'offsetWidth' outside requestAnimationFrame.",
       "estimatedImprovement": "Unknown",
       "explanation": {
         "pipelineInvolved": [
@@ -60,7 +60,7 @@ requestAnimationFrame(() => {
       "impact": "Forces synchronous reflows, killing frame rates (jank).",
       "interviewQuestions": undefined,
       "lineNumbers": [
-        3,
+        2,
       ],
       "relatedExperimentIds": [
         "rendering",
@@ -82,7 +82,7 @@ requestAnimationFrame(() => {
   },
   "overallScore": "C",
   "performanceScore": 70,
-  "reportHash": "ZG9tLWxheW91dC10aHJhc2hpbmctMw==",
+  "reportHash": "ZG9tLWxheW91dC10aHJhc2hpbmctMg==",
   "suggestions": [],
   "warnings": undefined,
 }
