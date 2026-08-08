@@ -1,5 +1,4 @@
-// shared/core/src/detectFramework.ts
-import type { AnalyzerContext } from '../../../shared/schemas/analyzer'
+import type { AnalyzerContext } from '../../schemas/analyzer'
 
 /**
  * Detection metadata returned by detectFramework.

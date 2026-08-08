@@ -1,49 +1,12 @@
 import { defineCommand } from 'citty'
 import consola from 'consola'
-import { resolve, extname, join, relative } from 'path'
-import { readFileSync, statSync, readdirSync, existsSync } from 'fs'
+import { resolve, extname } from 'path'
+import { readFileSync, writeFileSync, statSync, existsSync } from 'fs'
 import { loadConfig } from 'c12'
 import { getConfiguredEngine } from '../../../../shared/utils/analyzer/rules/index'
-import type { AnalyzerContext } from '../../../../shared/schemas/analyzer'
+import { buildProjectContext, discoverFiles } from '../../../../shared/core/src/index'
 
 const SUPPORTED_EXTENSIONS = ['.js', '.jsx', '.ts', '.tsx', '.vue', '.svelte']
-
-function walkDir(dir: string, fileList: string[] = []): string[] {
-  const files = readdirSync(dir)
-  for (const file of files) {
-    if (file === 'node_modules' || file === '.git' || file === '.fpl' || file === 'dist') continue
-
-    const filePath = join(dir, file)
-    let stat
-    try {
-      stat = statSync(filePath)
-    } catch {
-      continue
-    }
-
-    if (stat.isDirectory()) {
-      walkDir(filePath, fileList)
-    } else if (stat.isFile() && SUPPORTED_EXTENSIONS.includes(extname(filePath))) {
-      fileList.push(filePath)
-    }
-  }
-  return fileList
-}
-
-function detectFramework(filePath: string, content: string): 'react' | 'vue' | 'js' | 'svelte' {
-  if (filePath.endsWith('.vue')) return 'vue'
-  if (filePath.endsWith('.svelte')) return 'svelte'
-  if (filePath.endsWith('.jsx') || filePath.endsWith('.tsx')) return 'react'
-  if (content.includes('import React') || content.includes("from 'react'")) return 'react'
-  if (content.includes("from 'vue'")) return 'vue'
-  if (content.includes("from 'svelte'")) return 'svelte'
-  return 'js'
-}
-
-function detectLanguage(filePath: string): 'js' | 'jsx' | 'ts' | 'tsx' | 'vue' | 'svelte' {
-  const ext = extname(filePath).slice(1)
-  return ext as 'js' | 'jsx' | 'ts' | 'tsx' | 'vue' | 'svelte'
-}
 
 export default defineCommand({
   meta: {
@@ -82,7 +45,7 @@ export default defineCommand({
 
     if (stat.isDirectory()) {
       consola.start(`Scanning directory: ${targetPath}`)
-      filesToAnalyze = walkDir(targetPath)
+      filesToAnalyze = discoverFiles(targetPath, SUPPORTED_EXTENSIONS)
     } else if (stat.isFile() && SUPPORTED_EXTENSIONS.includes(extname(targetPath))) {
       filesToAnalyze = [targetPath]
     } else {
@@ -108,21 +71,7 @@ export default defineCommand({
       consola.info(`Loaded ${config.plugins.length} external plugins from fpl.config.ts`)
     }
 
-    const contexts: AnalyzerContext[] = []
-
-    for (const filePath of filesToAnalyze) {
-      try {
-        const content = readFileSync(filePath, 'utf8')
-        contexts.push({
-          filename: filePath,
-          code: content,
-          language: detectLanguage(filePath),
-          framework: detectFramework(filePath, content)
-        })
-      } catch (e) {
-        consola.warn(`Failed to read file ${filePath}: ${e}`)
-      }
-    }
+    const contexts = await buildProjectContext(filesToAnalyze)
 
     const autoFixEnabled = args['auto-fix'] === true
     if (autoFixEnabled) {
@@ -139,7 +88,7 @@ export default defineCommand({
         const original = readFileSync(ctx.filename, 'utf8')
         if (original !== ctx.code) {
           try {
-            import('fs').then(fs => fs.writeFileSync(ctx.filename, ctx.code))
+            writeFileSync(ctx.filename, ctx.code)
             fixedCount++
           } catch (e) {
             consola.warn(`Failed to auto-fix ${ctx.filename}:`, e)
