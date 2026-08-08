@@ -1,6 +1,6 @@
 function App() {
   useEffect(() => {
-    const handle = () => console.log('resizing')
+    const handle = () => doSomething('resizing')
     window.addEventListener('resize', handle)
     return () => window.removeEventListener('resize', handle)
   }, [])

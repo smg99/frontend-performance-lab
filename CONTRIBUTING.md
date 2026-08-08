@@ -25,7 +25,8 @@ git clone https://github.com/smg99/frontend-performance-lab.git
 cd frontend-performance-lab
 npm install
 npm run dev
-npm run validate
+npm run validate:mcp
+npm run validate:analyzer
 npm test
 npm run build
 ```

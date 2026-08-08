@@ -19,7 +19,7 @@ Configure AI assistants like **Cursor**, **Claude Desktop**, **VS Code (Roo/Cli
 npm install -g @smg99/frontend-performance-lab-cli
 ```
 
-Supported platforms: **Node 18+** on macOS, Windows, and Linux.
+Supported platforms: **Node 22+** on macOS, Windows, and Linux.
 
 ---
 
@@ -83,8 +83,9 @@ If any step fails, the message will point you to the missing prerequisite.
 | `fpl setup`   | Interactive wizard that configures supported IDEs and AI assistants |
 | `fpl doctor`  | Runs health checks and prints a concise status report               |
 | `fpl info`    | Shows environment details (Node version, installed plugins, etc.)   |
+| `fpl config`  | Manage CLI and MCP configuration settings                           |
 | `fpl mcp`     | Starts the MCP server (stdio transport)                             |
-| `fpl analyze` | Analyze code from the terminal _(coming soon)_                      |
+| `fpl analyze` | Analyze code from the terminal                                      |
 
 ---
 
@@ -124,8 +125,7 @@ If any step fails, the message will point you to the missing prerequisite.
 
 **Coming Soon**
 
-- `fpl analyze` – terminal‑based AST analyzer
-- VS Code extension
+- VS Code extension
 - ESLint plugin
 - Additional analyzer rules and performance metrics
 

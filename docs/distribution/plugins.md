@@ -44,7 +44,7 @@ const customRule = defineRule({
   },
   confidence: {
     score: 80,
-    reasoning: 'AST detected loop limit.',
+    reason: 'AST detected loop limit.',
     limitations: 'Cannot determine runtime data size.',
     falsePositiveRisk: 'Medium'
   },

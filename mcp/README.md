@@ -18,6 +18,7 @@ See the **[Full MCP Setup Guide →](../docs/mcp/getting-started.md)** for compl
 | `get_recipe`         | Fetch a specific recipe                      |
 | `search`             | Full-text search across the knowledge base   |
 | `system_diagnostics` | Health report of the MCP server and registry |
+| `performance_audit`  | Run AST-based performance analysis on code   |
 
 ## Available Resources
 

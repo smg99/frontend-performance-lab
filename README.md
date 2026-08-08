@@ -76,7 +76,7 @@ Frontend Performance Lab provides your AI assistant (via **MCP**) with a massive
 
 ### Built For:
 
-- **Vue, React, Nuxt, Next.js, Svelte, Angular**
+- **Vue, React, Nuxt, Next.js, Angular**
 - **Cursor, Claude Desktop, VS Code, Windsurf**
 
 ---

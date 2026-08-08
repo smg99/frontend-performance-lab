@@ -22,5 +22,5 @@
 <script setup lang="ts">
 import { CheckIcon } from 'lucide-vue-next'
 
-const frameworks = ['Vue', 'React', 'Nuxt', 'Next.js', 'Angular', 'Svelte']
+const frameworks = ['Vue', 'React', 'Nuxt', 'Next.js', 'Angular']
 </script>

@@ -1,4 +1,4 @@
 function App() {
-  window.addEventListener('resize', () => console.log('resizing'))
+  window.addEventListener('resize', () => doSomething('resizing'))
   return <div>App</div>
 }
