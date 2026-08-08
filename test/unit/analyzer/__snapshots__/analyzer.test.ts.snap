@@ -300,11 +300,11 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
       },
       "category": "Rendering",
       "confidence": {
-        "falsePositiveRisk": "Medium",
-        "reason": "The AST clearly shows a v-for directive without a virtualization wrapper.",
+        "falsePositiveRisk": "Low",
+        "reason": "Detected a v-for directive on a dynamic or large collection (ignoring small static lists <= 10 items).",
         "score": 85,
       },
-      "description": "Rendering large lists directly into the DOM can cause severe layout and rendering bottlenecks.",
+      "description": "Unvirtualized v-for on 'heavyItems'",
       "estimatedImprovement": "Unknown",
       "explanation": {
         "pipelineInvolved": [
@@ -314,7 +314,7 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
           "Paint",
           "Composite",
         ],
-        "whatHappened": "A large number of DOM nodes are being generated simultaneously within a single v-for directive.",
+        "whatHappened": "A large or unbounded array is being iterated over with v-for without virtualization.",
         "whyBrowserBehavesThisWay": "Browsers must recalculate styles, layout, and paint for every new DOM node. Thousands of nodes overwhelm the main thread, causing severe Frame Rate drops and memory pressure.",
       },
       "filename": "list.vue",

@@ -7,6 +7,7 @@ describe('Rule: vue-large-v-for', () => {
     const report = runAnalyzer(code, 'vue', 'vue')
     const issues = report.issues.filter(i => i.ruleId === 'vue-large-v-for')
     expect(issues.length).toBe(1)
+    expect(issues[0].description).toBe("Unvirtualized v-for on 'items'")
   })
 
   it('detects a nested v-for', () => {
@@ -35,5 +36,53 @@ describe('Rule: vue-large-v-for', () => {
     const report = runAnalyzer(code, 'vue', 'vue')
     const issues = report.issues.filter(i => i.ruleId === 'vue-large-v-for')
     expect(issues.length).toBe(1)
+  })
+
+  it('ignores small inline array literals (<= 10 items)', () => {
+    const code = `
+      <template>
+        <div v-for="item in ['Home', 'About', 'Contact']" :key="item">{{ item }}</div>
+      </template>
+    `
+    const report = runAnalyzer(code, 'vue', 'vue')
+    const issues = report.issues.filter(i => i.ruleId === 'vue-large-v-for')
+    expect(issues.length).toBe(0)
+  })
+
+  it('ignores small static numeric ranges (<= 10)', () => {
+    const code = `
+      <template>
+        <div v-for="n in 5" :key="n">{{ n }}</div>
+      </template>
+    `
+    const report = runAnalyzer(code, 'vue', 'vue')
+    const issues = report.issues.filter(i => i.ruleId === 'vue-large-v-for')
+    expect(issues.length).toBe(0)
+  })
+
+  it('flags large static numeric ranges (> 10)', () => {
+    const code = `
+      <template>
+        <div v-for="n in 1000" :key="n">{{ n }}</div>
+      </template>
+    `
+    const report = runAnalyzer(code, 'vue', 'vue')
+    const issues = report.issues.filter(i => i.ruleId === 'vue-large-v-for')
+    expect(issues.length).toBe(1)
+    expect(issues[0].description).toBe("Unvirtualized v-for on '1000'")
+  })
+
+  it('ignores static array variables defined in script setup', () => {
+    const code = `
+      <script setup>
+      const TABS = ['Overview', 'Details', 'Settings']
+      </script>
+      <template>
+        <button v-for="tab in TABS" :key="tab">{{ tab }}</button>
+      </template>
+    `
+    const report = runAnalyzer(code, 'vue', 'vue')
+    const issues = report.issues.filter(i => i.ruleId === 'vue-large-v-for')
+    expect(issues.length).toBe(0)
   })
 })
