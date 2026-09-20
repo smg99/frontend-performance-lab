@@ -79,6 +79,7 @@
     <!-- Educational Framework Integration -->
     <LearningSummaryCard :data="learningData" class="mx-auto mt-8" />
 
+    <KnowledgeProvenance kind="experiment" entity-id="memory-vitals" />
     <RelatedKnowledge entity-id="memory-vitals" entity-type="experiment" />
   </Container>
 </template>

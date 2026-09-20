@@ -95,6 +95,7 @@
     <!-- Educational Framework Integration -->
     <LearningSummaryCard :data="learningData" class="mx-auto mt-8" />
 
+    <KnowledgeProvenance kind="experiment" entity-id="concurrency" />
     <RelatedKnowledge entity-id="concurrency" entity-type="experiment" />
   </Container>
 </template>

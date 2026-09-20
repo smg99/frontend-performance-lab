@@ -120,23 +120,31 @@ Certification evidence (2026-09-20):
 - Typecheck, lint, production build and `git diff --check` passed.
 - Analyzer findings are deterministic for identical ordered input, and unbenchmarked impact values are explicitly labelled as unmeasured heuristics.
 
-### S1 — Provenance-ready knowledge model
+### S1 — Provenance-ready knowledge model (CERTIFIED)
 
 Goal: make every knowledge claim traceable and freshness-aware.
 
 Deliverables:
 
-- Typed provenance: canonical URL, publisher, retrieved date, verified date and evidence type.
-- Freshness policy by source and content class.
-- Relationship integrity and duplicate-ID validation.
-- Migration of existing manifests without weakening required fields.
-- Provenance and freshness surfaced in the UI and MCP responses.
+- [x] Typed provenance: canonical URL, publisher, retrieved date, verified date and evidence type.
+- [x] Freshness policy by evidence class.
+- [x] Relationship integrity, registry-key and orphan-provenance validation.
+- [x] Migration of every registered knowledge item without weakening content fields.
+- [x] Provenance surfaced in the UI and MCP detail responses.
 
 Certification gates:
 
 - Missing or invalid provenance blocks new autonomous content.
 - Broken relationships, duplicate IDs and stale required sources fail validation.
 - Existing content is migrated and remains renderable.
+
+Certification evidence (2026-09-20):
+
+- Runtime validation passed for all 18 registered knowledge items and rejects missing, malformed, orphaned and stale provenance.
+- A negative freshness test proves content older than its evidence policy is rejected.
+- MCP validation passed with provenance attached to experiment, browser API and recipe detail responses.
+- Typecheck, lint and production build passed.
+- Isolated production-server checks rendered publisher, verification label and canonical source link on an experiment, browser API and recipe route.
 
 ### S2 — Autonomous discovery at L0
 
@@ -298,17 +306,17 @@ Certification gates:
 
 ## Current repository audit
 
-| Capability                     | Status  | Evidence                                                                       |
-| ------------------------------ | ------- | ------------------------------------------------------------------------------ |
-| Structured knowledge manifests | PARTIAL | Typed interfaces exist; runtime validation and provenance are absent.          |
-| AST analyzer                   | PARTIAL | Sixteen registered rules; cross-file analysis remains planned.                 |
-| Analyzer fixtures              | PARTIAL | Fixtures exist, but the configured analyzer test suite does not execute them.  |
-| Analyzer coverage report       | BROKEN  | Fixture presence is currently presented as `>95%` code coverage.               |
-| Content validation             | BROKEN  | The script is a success-only placeholder.                                      |
-| CI                             | PARTIAL | Test, typecheck, lint and build run; autonomous certification is not wired in. |
-| Autonomous discovery           | PLANNED | No collector, source catalog or discovery artifact exists.                     |
-| Autonomous proposals           | PLANNED | No candidate schema, policy engine or PR evidence format exists.               |
-| Self-observability             | PARTIAL | CI exists; longitudinal quality and performance measurements do not.           |
+| Capability                     | Status   | Evidence                                                                       |
+| ------------------------------ | -------- | ------------------------------------------------------------------------------ |
+| Structured knowledge manifests | COMPLETE | Runtime schemas, graph validation, provenance and freshness enforcement pass.  |
+| AST analyzer                   | PARTIAL  | Sixteen registered rules; cross-file analysis remains planned.                 |
+| Analyzer fixtures              | PARTIAL  | Fixtures exist, but the configured analyzer test suite does not execute them.  |
+| Analyzer coverage report       | BROKEN   | Fixture presence is currently presented as `>95%` code coverage.               |
+| Content validation             | COMPLETE | Invalid schemas, links, provenance and freshness fail validation.              |
+| CI                             | PARTIAL  | Test, typecheck, lint and build run; autonomous certification is not wired in. |
+| Autonomous discovery           | PLANNED  | No collector, source catalog or discovery artifact exists.                     |
+| Autonomous proposals           | PLANNED  | No candidate schema, policy engine or PR evidence format exists.               |
+| Self-observability             | PARTIAL  | CI exists; longitudinal quality and performance measurements do not.           |
 
 ## Definition of done for every sprint
 

@@ -372,6 +372,7 @@ const recipe = getRecipe(id)
       </template>
     </SplitView>
 
+    <KnowledgeProvenance kind="recipe" :entity-id="id" class="mt-8" />
     <RelatedKnowledge :entity-id="id" entity-type="recipe" />
   </Container>
 

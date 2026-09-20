@@ -58,6 +58,7 @@
     <!-- Educational Framework Integration -->
     <LearningSummaryCard :data="learningData" class="mx-auto mt-8" />
 
+    <KnowledgeProvenance kind="experiment" entity-id="rendering" />
     <RelatedKnowledge entity-id="rendering" entity-type="experiment" />
   </Container>
 </template>

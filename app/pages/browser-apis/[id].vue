@@ -33,6 +33,8 @@
       </div>
     </header>
 
+    <KnowledgeProvenance kind="browser-api" :entity-id="api.id" />
+
     <div class="content-grid">
       <!-- Left Column -->
       <div class="main-column">

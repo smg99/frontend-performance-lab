@@ -96,6 +96,7 @@
     <!-- Educational Framework Integration -->
     <LearningSummaryCard :data="learningData" class="mx-auto mt-8" />
 
+    <KnowledgeProvenance kind="experiment" entity-id="reactivity" />
     <RelatedKnowledge entity-id="reactivity" entity-type="experiment" />
   </Container>
 </template>
