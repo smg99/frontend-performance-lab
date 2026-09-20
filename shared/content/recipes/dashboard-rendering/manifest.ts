@@ -120,8 +120,8 @@ requestAnimationFrame(() => {
 
   relatedExperiments: ['rendering', 'reactivity'],
   relatedBrowserAPIs: ['request-animation-frame', 'intersection-observer'],
-  relatedAnalyzerRules: ['layout-thrashing'],
-  relatedRecipes: ['large-data-table', 'lazy-image-gallery'],
+  relatedAnalyzerRules: ['dom-layout-thrashing'],
+  relatedRecipes: ['large-data-table'],
 
   interviewQuestions: [
     {

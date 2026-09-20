@@ -13,7 +13,7 @@ const manifest: ExperimentManifest = {
   estimatedReadingTime: 10,
   tags: ['rendering', 'virtualization', 'dom', 'performance'],
   topics: ['virtualization'],
-  browserAPIs: ['requestAnimationFrame'],
+  browserAPIs: ['request-animation-frame'],
   relationships: [],
   sections: [
     {

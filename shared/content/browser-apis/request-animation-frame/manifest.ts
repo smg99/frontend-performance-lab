@@ -65,7 +65,7 @@ requestAnimationFrame(() => {
   ],
   relatedExperiments: ['rendering', 'concurrency'],
   relatedRecipes: [],
-  relatedBrowserAPIs: ['requestIdleCallback', 'PerformanceObserver'],
+  relatedBrowserAPIs: ['request-idle-callback', 'performance-observer'],
   interviewQuestions: [
     {
       question:

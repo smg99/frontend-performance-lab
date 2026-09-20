@@ -67,7 +67,7 @@ document.querySelectorAll('img.lazy').forEach(img => observer.observe(img));`,
   ],
   relatedExperiments: ['virtualization', 'rendering'],
   relatedRecipes: [],
-  relatedBrowserAPIs: ['MutationObserver', 'ResizeObserver'],
+  relatedBrowserAPIs: ['mutation-observer', 'resize-observer'],
   interviewQuestions: [
     {
       question:

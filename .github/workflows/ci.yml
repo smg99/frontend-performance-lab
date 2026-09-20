@@ -40,5 +40,11 @@ jobs:
       - name: Run Unit Tests
         run: npm run test -- --coverage
 
+      - name: Validate Content Graph
+        run: npm run validate:content
+
+      - name: Validate Analyzer Evidence
+        run: npm run validate:analyzer
+
       - name: Build
         run: npm run build

@@ -22,6 +22,7 @@
     "typecheck": "vue-tsc --noEmit",
     "mcp:start": "tsx mcp/server.ts",
     "validate:mcp": "tsx scripts/validate-mcp.ts",
+    "validate:content": "tsx scripts/validate-content.ts",
     "validate:analyzer": "tsx scripts/validate-analyzer.ts",
     "prepare": "husky || true"
   },

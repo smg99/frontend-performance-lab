@@ -13,7 +13,7 @@ const manifest: ExperimentManifest = {
   estimatedReadingTime: 12,
   tags: ['vue', 'reactivity', 'proxy', 'performance'],
   topics: ['reactivity'],
-  browserAPIs: ['Proxy', 'Reflect', 'WeakMap'],
+  browserAPIs: [],
   relationships: [],
   sections: [
     {

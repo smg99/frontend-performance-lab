@@ -73,7 +73,7 @@ self.onmessage = (e) => {
   ],
   relatedExperiments: ['concurrency', 'memory-vitals'],
   relatedRecipes: [],
-  relatedBrowserAPIs: ['MessageChannel', 'OffscreenCanvas'],
+  relatedBrowserAPIs: [],
   interviewQuestions: [
     {
       question:

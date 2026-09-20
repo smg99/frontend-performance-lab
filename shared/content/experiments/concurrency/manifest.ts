@@ -13,7 +13,7 @@ const manifest: ExperimentManifest = {
   estimatedReadingTime: 15,
   tags: ['concurrency', 'event-loop', 'workers', 'performance'],
   topics: ['concurrency'],
-  browserAPIs: ['Worker', 'setTimeout', 'requestIdleCallback'],
+  browserAPIs: ['web-workers', 'request-idle-callback'],
   relationships: [],
   sections: [
     {

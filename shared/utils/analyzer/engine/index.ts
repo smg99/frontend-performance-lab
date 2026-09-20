@@ -75,9 +75,10 @@ export class AnalyzerEngine {
           try {
             const rawIssues = rule.visitor(ast, ctx)
 
-            for (const raw of rawIssues) {
+            for (const [rawIssueIndex, raw] of rawIssues.entries()) {
+              const location = raw.lineNumbers?.join(',') || 'unknown'
               allIssues.push({
-                id: `${rule.id}-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+                id: `${rule.id}:${ctx.filename}:${location}:${rawIssueIndex}`,
                 title: rule.title,
                 description: raw.description ?? rule.description,
                 ruleId: rule.id,
@@ -163,7 +164,7 @@ export class AnalyzerEngine {
       if (i.browserImpact?.cwv) cwv -= p
 
       totalConfidence += i.confidence.score
-      totalTime += 5 // ~5 mins per fix
+      totalTime += 5 // Heuristic only; no benchmark data is available yet.
       if (i.browserImpact.rendering) hasRendering = true
     })
 
@@ -195,12 +196,14 @@ export class AnalyzerEngine {
       performanceGain:
         allIssues.length > 0
           ? deduction > 40
-            ? 'High (+40% FPS)'
-            : 'Moderate (+15% FPS)'
+            ? 'Potentially high (unmeasured heuristic)'
+            : 'Potentially moderate (unmeasured heuristic)'
           : 'Optimal',
-      memoryReduction: hasMemory ? '~25% footprint reduction' : 'Minimal',
-      renderingImprovement: hasRendering ? 'Eliminates layout thrashing' : 'Minimal',
-      timeToFix: allIssues.length > 0 ? `< ${Math.max(5, totalTime)} mins` : '0 mins'
+      memoryReduction: hasMemory ? 'Potential reduction (unmeasured)' : 'No issue detected',
+      renderingImprovement: hasRendering
+        ? 'Potential rendering improvement (unmeasured)'
+        : 'No issue detected',
+      timeToFix: allIssues.length > 0 ? `Heuristic: ${Math.max(5, totalTime)} minutes` : '0 mins'
     }
 
     // Deterministic hash based on rule IDs and line numbers

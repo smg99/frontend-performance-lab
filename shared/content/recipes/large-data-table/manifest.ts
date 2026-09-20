@@ -137,7 +137,7 @@ const DataTable = ({ data }) => {
   relatedExperiments: ['virtualization'],
   relatedBrowserAPIs: ['intersection-observer'],
   relatedAnalyzerRules: ['react-large-map', 'vue-large-v-for'],
-  relatedRecipes: ['infinite-scroll', 'dashboard-rendering'],
+  relatedRecipes: ['dashboard-rendering'],
 
   interviewQuestions: [
     {

@@ -97,11 +97,12 @@ Deliverables:
 
 - [x] Inspect repository architecture, current roadmap, CI and Git state.
 - [x] Identify placeholder content validation and misleading fixture-based coverage claims.
-- [ ] Execute analyzer fixtures as tests and report fixture coverage truthfully.
-- [ ] Replace the content-validation stub with runtime schema and relationship validation.
-- [ ] Make analyzer reports deterministic for identical inputs.
-- [ ] Distinguish benchmark-derived estimates from unmeasured heuristics.
-- [ ] Add the complete certification command to CI.
+- [ ] Execute every analyzer fixture as an assertion-bearing test.
+- [x] Report executable coverage separately from fixture inventory.
+- [x] Replace the content-validation stub with runtime schema and relationship validation.
+- [x] Make analyzer reports deterministic for identical inputs.
+- [x] Distinguish benchmark-derived estimates from unmeasured heuristics.
+- [x] Add content and analyzer validation to CI.
 - [ ] Record baseline test, typecheck, lint and build evidence.
 
 Certification gates:

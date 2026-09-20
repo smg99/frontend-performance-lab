@@ -12,10 +12,10 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
   ],
   "confidenceScore": 90,
   "estimates": {
-    "memoryReduction": "Minimal",
-    "performanceGain": "Moderate (+15% FPS)",
-    "renderingImprovement": "Eliminates layout thrashing",
-    "timeToFix": "< 5 mins",
+    "memoryReduction": "No issue detected",
+    "performanceGain": "Potentially moderate (unmeasured heuristic)",
+    "renderingImprovement": "Potential rendering improvement (unmeasured)",
+    "timeToFix": "Heuristic: 5 minutes",
   },
   "issues": [
     {
@@ -100,10 +100,10 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
   ],
   "confidenceScore": 90,
   "estimates": {
-    "memoryReduction": "~25% footprint reduction",
-    "performanceGain": "Moderate (+15% FPS)",
-    "renderingImprovement": "Minimal",
-    "timeToFix": "< 5 mins",
+    "memoryReduction": "Potential reduction (unmeasured)",
+    "performanceGain": "Potentially moderate (unmeasured heuristic)",
+    "renderingImprovement": "No issue detected",
+    "timeToFix": "Heuristic: 5 minutes",
   },
   "issues": [
     {
@@ -181,10 +181,10 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
   ],
   "confidenceScore": 85,
   "estimates": {
-    "memoryReduction": "~25% footprint reduction",
-    "performanceGain": "Moderate (+15% FPS)",
-    "renderingImprovement": "Eliminates layout thrashing",
-    "timeToFix": "< 5 mins",
+    "memoryReduction": "Potential reduction (unmeasured)",
+    "performanceGain": "Potentially moderate (unmeasured heuristic)",
+    "renderingImprovement": "Potential rendering improvement (unmeasured)",
+    "timeToFix": "Heuristic: 5 minutes",
   },
   "issues": [
     {
@@ -272,10 +272,10 @@ exports[`Analyzer Engine E2E Validation > Good vs Bad Paired Assertions > [BAD] 
   ],
   "confidenceScore": 85,
   "estimates": {
-    "memoryReduction": "~25% footprint reduction",
-    "performanceGain": "Moderate (+15% FPS)",
-    "renderingImprovement": "Eliminates layout thrashing",
-    "timeToFix": "< 5 mins",
+    "memoryReduction": "Potential reduction (unmeasured)",
+    "performanceGain": "Potentially moderate (unmeasured heuristic)",
+    "renderingImprovement": "Potential rendering improvement (unmeasured)",
+    "timeToFix": "Heuristic: 5 minutes",
   },
   "issues": [
     {

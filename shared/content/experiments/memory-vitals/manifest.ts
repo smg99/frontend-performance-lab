@@ -13,7 +13,7 @@ const manifest: ExperimentManifest = {
   estimatedReadingTime: 5,
   tags: ['memory', 'vitals', 'performance'],
   topics: ['memory', 'vitals'],
-  browserAPIs: ['PerformanceObserver'],
+  browserAPIs: ['performance-observer'],
   relationships: [],
   sections: [
     {
