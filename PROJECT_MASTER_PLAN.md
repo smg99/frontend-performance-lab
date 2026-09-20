@@ -148,6 +148,8 @@ Certification evidence (2026-09-20):
 
 ### S2 — Autonomous discovery at L0
 
+Status: **CERTIFIED** (2026-09-20)
+
 Goal: discover useful changes without modifying product content.
 
 Deliverables:
@@ -163,6 +165,15 @@ Certification gates:
 - Re-running unchanged inputs creates no duplicate candidates.
 - A failed or compromised source cannot silently publish content.
 - Each candidate links to the exact evidence that caused its creation.
+
+Certification evidence (2026-09-20):
+
+- Three explicitly allowlisted HTTPS feeds include publisher, evidence type, topic, licensing and rate-limit policy metadata.
+- The scheduled read-only workflow has no write permission and persists only hashed discovery state and reports; it cannot modify or publish product content.
+- Entry-level RSS/Atom records include a canonical evidence URL, immutable evidence and source hashes, topic matches and a deterministic relevance score.
+- Six focused tests cover unchanged-input deduplication, updated evidence, bounded retry/backoff, source failure, insecure sources, unexpected content types and response-size limits.
+- A live run read 96 entry-level candidates from all three sources with zero source errors; an immediate rerun produced zero candidates and zero errors.
+- The 263-test suite, content and MCP validation, isolated analyzer validation, typecheck, lint and production build passed.
 
 ### S3 — Evidence-bearing content proposals at L1
 
@@ -314,7 +325,7 @@ Certification gates:
 | Analyzer coverage report       | BROKEN   | Fixture presence is currently presented as `>95%` code coverage.               |
 | Content validation             | COMPLETE | Invalid schemas, links, provenance and freshness fail validation.              |
 | CI                             | PARTIAL  | Test, typecheck, lint and build run; autonomous certification is not wired in. |
-| Autonomous discovery           | PLANNED  | No collector, source catalog or discovery artifact exists.                     |
+| Autonomous discovery           | COMPLETE | Allowlisted scheduled collectors produce hashed, scored, deduplicated reports. |
 | Autonomous proposals           | PLANNED  | No candidate schema, policy engine or PR evidence format exists.               |
 | Self-observability             | PARTIAL  | CI exists; longitudinal quality and performance measurements do not.           |
 

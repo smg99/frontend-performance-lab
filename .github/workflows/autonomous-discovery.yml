@@ -1,0 +1,46 @@
+name: Autonomous Knowledge Discovery
+
+on:
+  schedule:
+    - cron: '17 3 * * 2,5'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: autonomous-knowledge-discovery
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: npm
+      - run: npm ci
+      - name: Restore discovery state
+        uses: actions/cache/restore@v4
+        with:
+          path: artifacts/autonomy/discovery-state.json
+          key: discovery-${{ github.run_id }}
+          restore-keys: discovery-
+      - name: Collect allowlisted sources
+        run: npx tsx scripts/run-autonomous-discovery.ts
+      - name: Upload discovery evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: autonomous-discovery-${{ github.run_id }}
+          path: artifacts/autonomy/
+          retention-days: 30
+      - name: Persist discovery state
+        if: success()
+        uses: actions/cache/save@v4
+        with:
+          path: artifacts/autonomy/discovery-state.json
+          key: discovery-${{ github.run_id }}
