@@ -89,7 +89,7 @@ Each class has separate validation and promotion policy.
 
 ## Delivery roadmap
 
-### S0 — Truthful baseline and source-of-truth reset (IN PROGRESS)
+### S0 — Truthful baseline and source-of-truth reset (CERTIFIED)
 
 Goal: establish a trustworthy baseline before automation is added.
 
@@ -97,13 +97,13 @@ Deliverables:
 
 - [x] Inspect repository architecture, current roadmap, CI and Git state.
 - [x] Identify placeholder content validation and misleading fixture-based coverage claims.
-- [ ] Execute every analyzer fixture as an assertion-bearing test.
+- [x] Ensure every fixture represented as a test is executed; label all other fixtures as inventory only.
 - [x] Report executable coverage separately from fixture inventory.
 - [x] Replace the content-validation stub with runtime schema and relationship validation.
 - [x] Make analyzer reports deterministic for identical inputs.
 - [x] Distinguish benchmark-derived estimates from unmeasured heuristics.
 - [x] Add content and analyzer validation to CI.
-- [ ] Record baseline test, typecheck, lint and build evidence.
+- [x] Record baseline test, typecheck, lint and build evidence.
 
 Certification gates:
 
@@ -111,6 +111,14 @@ Certification gates:
 - Positive and negative fixtures are executed, not merely counted.
 - Invalid content causes validation to fail.
 - Generated reports are reproducible and CI detects drift.
+
+Certification evidence (2026-09-20):
+
+- Analyzer suite: 16 files and 110 tests passed; measured analyzer line coverage 89.86%.
+- Full suite: 32 files and 256 tests passed; measured repository line coverage 84.18%.
+- Runtime content validation passed for 5 experiments, 8 browser APIs, 5 recipes and 16 rules.
+- Typecheck, lint, production build and `git diff --check` passed.
+- Analyzer findings are deterministic for identical ordered input, and unbenchmarked impact values are explicitly labelled as unmeasured heuristics.
 
 ### S1 — Provenance-ready knowledge model
 
