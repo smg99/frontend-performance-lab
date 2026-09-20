@@ -177,6 +177,15 @@ Certification evidence (2026-09-20):
 
 ### S3 — Evidence-bearing content proposals at L1
 
+Status: **IN PROGRESS**
+
+Implemented foundation:
+
+- Runtime schemas for metadata, browser API, recipe and experiment proposal drafts.
+- Deterministic idempotency keys and review-only draft pull-request payloads.
+- Citation, duplicate-ID, duplicate-title and source-paraphrase rejection policy.
+- Explicit uncertainty, validation and rollback sections with mandatory human-review labeling.
+
 Goal: turn a verified discovery into a safe draft pull request.
 
 Deliverables:
