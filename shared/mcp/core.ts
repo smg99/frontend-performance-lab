@@ -1,6 +1,7 @@
 import { getAllExperiments, getExperimentById } from '../registry/index.js'
 import { getAllBrowserAPIs, getBrowserAPI } from '../registry/browser-apis.js'
 import { getAllRecipes, getRecipe } from '../registry/recipes.js'
+import { getKnowledgeProvenance } from '../content/provenance.js'
 import { mcpTools } from '../registry/mcp-tools.js'
 import { searchPlatform } from '../utils/search/index.js'
 import { getConfiguredEngine } from '../utils/analyzer/rules/index.js'
@@ -71,10 +72,36 @@ export const mcpCore = {
           break
       }
       return {
-        content: [{ type: 'text', text: JSON.stringify(withMetadata(filteredData, exp), null, 2) }]
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(
+              withMetadata(
+                {
+                  ...filteredData,
+                  provenance: getKnowledgeProvenance('experiment', id)
+                },
+                exp
+              ),
+              null,
+              2
+            )
+          }
+        ]
       }
     }
-    return { content: [{ type: 'text', text: JSON.stringify(withMetadata(exp, exp), null, 2) }] }
+    return {
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify(
+            withMetadata({ ...exp, provenance: getKnowledgeProvenance('experiment', id) }, exp),
+            null,
+            2
+          )
+        }
+      ]
+    }
   },
 
   async list_browser_apis() {
@@ -92,7 +119,18 @@ export const mcpCore = {
   async get_browser_api({ id }: { id: string }) {
     const api = getBrowserAPI(id)
     if (!api) return { content: [{ type: 'text', text: `Browser API ${id} not found.` }] }
-    return { content: [{ type: 'text', text: JSON.stringify(withMetadata(api), null, 2) }] }
+    return {
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify(
+            withMetadata({ ...api, provenance: getKnowledgeProvenance('browser-api', id) }),
+            null,
+            2
+          )
+        }
+      ]
+    }
   },
 
   async list_recipes() {
@@ -109,7 +147,18 @@ export const mcpCore = {
   async get_recipe({ id }: { id: string }) {
     const recipe = getRecipe(id)
     if (!recipe) return { content: [{ type: 'text', text: `Recipe ${id} not found.` }] }
-    return { content: [{ type: 'text', text: JSON.stringify(withMetadata(recipe), null, 2) }] }
+    return {
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify(
+            withMetadata({ ...recipe, provenance: getKnowledgeProvenance('recipe', id) }),
+            null,
+            2
+          )
+        }
+      ]
+    }
   },
 
   async search(filters: Record<string, unknown>) {

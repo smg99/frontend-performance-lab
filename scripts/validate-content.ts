@@ -3,12 +3,15 @@ import { experimentsRegistry } from '../shared/registry'
 import { recipesRegistry } from '../shared/registry/recipes'
 import { builtInRules } from '../shared/utils/analyzer/rules'
 import { validateContent } from '../shared/validation/content'
+import { freshnessPolicyDays, provenanceRegistry } from '../shared/content/provenance'
 
 const result = validateContent({
   analyzerRules: builtInRules,
   browserAPIs: browserAPIRegistry,
   experiments: experimentsRegistry,
-  recipes: recipesRegistry
+  recipes: recipesRegistry,
+  provenance: provenanceRegistry,
+  freshnessPolicy: freshnessPolicyDays
 })
 
 if (result.errors.length > 0) {

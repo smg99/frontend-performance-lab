@@ -3,6 +3,7 @@ import type { ASTRule } from '../schemas/analyzer'
 import type { BrowserAPI } from '../schemas/browser-api'
 import type { ExperimentManifest } from '../schemas/experiment'
 import type { Recipe } from '../schemas/recipe'
+import type { FreshnessPolicy, ProvenanceRegistry } from '../schemas/provenance'
 
 const nonEmptyString = z.string().trim().min(1)
 const stringList = z.array(nonEmptyString)
@@ -13,6 +14,23 @@ const referenceSchema = z.object({
     .string()
     .url()
     .refine(url => url.startsWith('https://'), 'reference URL must use HTTPS')
+})
+
+const provenanceSchema = z.object({
+  canonicalUrl: z
+    .string()
+    .url()
+    .refine(url => url.startsWith('https://')),
+  publisher: nonEmptyString,
+  evidenceType: z.enum([
+    'official-documentation',
+    'web-standard',
+    'vendor-guidance',
+    'maintainer-guidance',
+    'community-reference'
+  ]),
+  retrievedAt: z.string().datetime(),
+  verifiedAt: z.string().datetime()
 })
 
 const sectionSchema = z.object({
@@ -143,6 +161,8 @@ export interface ContentSnapshot {
   browserAPIs: Record<string, BrowserAPI>
   experiments: Record<string, ExperimentManifest>
   recipes: Record<string, Recipe>
+  provenance: ProvenanceRegistry
+  freshnessPolicy: FreshnessPolicy
 }
 
 export interface ValidationResult {
@@ -188,7 +208,7 @@ function checkReferences(
   }
 }
 
-export function validateContent(snapshot: ContentSnapshot): ValidationResult {
+export function validateContent(snapshot: ContentSnapshot, now = new Date()): ValidationResult {
   const errors: string[] = []
   validateRegistry('experiment', snapshot.experiments, experimentSchema, errors)
   validateRegistry('browser API', snapshot.browserAPIs, browserApiSchema, errors)
@@ -198,6 +218,35 @@ export function validateContent(snapshot: ContentSnapshot): ValidationResult {
   const browserApiIds = new Set(Object.keys(snapshot.browserAPIs))
   const recipeIds = new Set(Object.keys(snapshot.recipes))
   const analyzerRuleIds = new Set(snapshot.analyzerRules.map(rule => rule.id))
+
+  const expectedProvenanceKeys = [
+    ...[...experimentIds].map(id => `experiment:${id}`),
+    ...[...browserApiIds].map(id => `browser-api:${id}`),
+    ...[...recipeIds].map(id => `recipe:${id}`)
+  ]
+  for (const key of expectedProvenanceKeys) {
+    const entry = snapshot.provenance[key as keyof ProvenanceRegistry]
+    if (!entry) {
+      errors.push(`missing provenance for "${key}"`)
+      continue
+    }
+    const parsed = provenanceSchema.safeParse(entry)
+    if (!parsed.success) errors.push(...formatZodErrors('provenance', key, parsed.error))
+    else {
+      const maxAgeDays = snapshot.freshnessPolicy[entry.evidenceType]
+      const ageDays = (now.getTime() - new Date(entry.verifiedAt).getTime()) / 86_400_000
+      if (!Number.isFinite(maxAgeDays) || maxAgeDays <= 0) {
+        errors.push(`missing freshness policy for evidence type "${entry.evidenceType}"`)
+      } else if (ageDays > maxAgeDays) {
+        errors.push(
+          `stale provenance for "${key}": verified ${Math.floor(ageDays)} days ago, policy allows ${maxAgeDays}`
+        )
+      }
+    }
+  }
+  for (const key of Object.keys(snapshot.provenance)) {
+    if (!expectedProvenanceKeys.includes(key)) errors.push(`orphan provenance entry "${key}"`)
+  }
 
   for (const experiment of Object.values(snapshot.experiments)) {
     checkReferences(
