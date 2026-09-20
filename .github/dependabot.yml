@@ -7,14 +7,11 @@ updates:
       day: 'monday'
       time: '09:00'
       timezone: 'UTC'
-    open-pull-requests-limit: 5
+    # Keep each update independently reviewable; do not batch unrelated changes.
+    open-pull-requests-limit: 3
     ignore:
       - dependency-name: '*'
         update-types: ['version-update:semver-major']
-    groups:
-      npm-dependencies:
-        patterns:
-          - '*'
 
   - package-ecosystem: 'github-actions'
     directory: '/'
@@ -23,11 +20,8 @@ updates:
       day: 'monday'
       time: '09:00'
       timezone: 'UTC'
-    open-pull-requests-limit: 5
+    # Action updates can change CI behavior, so keep the review queue deliberately small.
+    open-pull-requests-limit: 3
     ignore:
       - dependency-name: '*'
         update-types: ['version-update:semver-major']
-    groups:
-      actions:
-        patterns:
-          - '*'
