@@ -102,4 +102,58 @@ describe('autonomous proposal policy', () => {
     expect(payloads[0].files[0].path).toBe('autonomy/proposals/experiment/rendering-metric.json')
     expect(payloads[0].draft).toBe(true)
   })
+
+  it('rejects duplicate IDs generated within the same discovery run', () => {
+    const secondCandidate = {
+      ...candidate,
+      id: 'vue-blog:entry:other',
+      evidenceUrl: 'https://blog.vuejs.org/entry',
+      evidenceTitle: 'Rendering measurements in Vue'
+    }
+    const discoveryRun: DiscoveryRun = {
+      checkedSources: 2,
+      candidates: [candidate, secondCandidate],
+      errors: [],
+      state: { sources: {}, seenCandidateIds: [candidate.id, secondCandidate.id] }
+    }
+
+    expect(() =>
+      createDraftPullRequestsFromDiscovery(
+        discoveryRun,
+        candidateItem => ({
+          ...draft,
+          citations: [{ ...draft.citations[0], evidenceUrl: candidateItem.evidenceUrl }]
+        }),
+        { existingIds: [], existingTitles: [] }
+      )
+    ).toThrow('duplicate content id')
+  })
+
+  it('rejects duplicate titles generated within the same discovery run', () => {
+    const secondCandidate = {
+      ...candidate,
+      id: 'vue-blog:entry:other',
+      evidenceUrl: 'https://blog.vuejs.org/entry',
+      evidenceTitle: 'Rendering measurements in Vue'
+    }
+    const discoveryRun: DiscoveryRun = {
+      checkedSources: 2,
+      candidates: [candidate, secondCandidate],
+      errors: [],
+      state: { sources: {}, seenCandidateIds: [candidate.id, secondCandidate.id] }
+    }
+
+    expect(() =>
+      createDraftPullRequestsFromDiscovery(
+        discoveryRun,
+        candidateItem => ({
+          ...draft,
+          id: candidateItem === candidate ? draft.id : 'another-rendering-metric',
+          title: candidateItem === candidate ? draft.title : '  RENDERING   METRIC MEASUREMENT  ',
+          citations: [{ ...draft.citations[0], evidenceUrl: candidateItem.evidenceUrl }]
+        }),
+        { existingIds: [], existingTitles: [] }
+      )
+    ).toThrow('duplicate content title')
+  })
 })

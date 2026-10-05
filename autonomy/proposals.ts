@@ -67,9 +67,17 @@ export function createDraftPullRequestsFromDiscovery(
 ): DraftPullRequestPayload[] {
   if (discoveryRun.candidates.length === 0) return []
 
-  return discoveryRun.candidates.map(candidate =>
-    createDraftPullRequest(candidate, buildDraft(candidate), context)
-  )
+  const batchContext: ProposalContext = {
+    existingIds: [...context.existingIds],
+    existingTitles: [...context.existingTitles]
+  }
+
+  return discoveryRun.candidates.map(candidate => {
+    const draft = validateDraft(candidate, buildDraft(candidate), batchContext)
+    batchContext.existingIds.push(draft.id)
+    batchContext.existingTitles.push(draft.title)
+    return createDraftPullRequestPayload(candidate, draft)
+  })
 }
 
 function digest(value: string) {
@@ -88,6 +96,17 @@ export function createDraftPullRequest(
   untrustedDraft: unknown,
   context: ProposalContext
 ): DraftPullRequestPayload {
+  return createDraftPullRequestPayload(
+    candidate,
+    validateDraft(candidate, untrustedDraft, context)
+  )
+}
+
+function validateDraft(
+  candidate: DiscoveryCandidate,
+  untrustedDraft: unknown,
+  context: ProposalContext
+): ProposalDraft {
   const kind = z.object({ kind: z.enum(proposalKinds) }).parse(untrustedDraft).kind
   const draft = draftSchemas[kind].parse(untrustedDraft) as ProposalDraft
   if (context.existingIds.includes(draft.id)) throw new Error(`duplicate content id: ${draft.id}`)
@@ -99,7 +118,14 @@ export function createDraftPullRequest(
     if (citation.evidenceUrl !== candidate.evidenceUrl)
       throw new Error(`unsupported claim without candidate evidence: ${citation.claim}`)
   }
+  return draft
+}
 
+function createDraftPullRequestPayload(
+  candidate: DiscoveryCandidate,
+  draft: ProposalDraft
+): DraftPullRequestPayload {
+  const kind = draft.kind
   const idempotencyKey = digest(`${candidate.id}:${kind}:${draft.id}`)
   const proposalPath = `autonomy/proposals/${kind}/${draft.id}.json`
   const content = `${JSON.stringify({ candidate, draft, idempotencyKey }, null, 2)}\n`
