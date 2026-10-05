@@ -185,8 +185,14 @@ Implemented foundation:
 - Deterministic idempotency keys and review-only draft pull-request payloads.
 - Citation, duplicate-ID, duplicate-title and source-paraphrase rejection policy.
 - Explicit uncertainty, validation and rollback sections with mandatory human-review labeling.
+- Discovery-to-draft conversion helper that creates one review-only payload per discovery candidate so a source change can flow into a validated PR draft.
 
 Goal: turn a verified discovery into a safe draft pull request.
+
+Progress evidence (2026-10-05):
+
+- Added a focused conversion helper and end-to-end candidate-to-draft unit fixture covering the discovery candidate -> draft PR path.
+- The targeted autonomy suite passes: 2 files, 9 tests, covering idempotency, duplicate rejection, unsupported claims and the review-only payload generation path.
 
 Deliverables:
 

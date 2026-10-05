@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import { z } from 'zod'
-import type { DiscoveryCandidate } from './discovery'
+import type { DiscoveryCandidate, DiscoveryRun } from './discovery'
 
 export const proposalKinds = ['metadata', 'browser-api', 'recipe', 'experiment'] as const
 export type ProposalKind = (typeof proposalKinds)[number]
@@ -58,6 +58,18 @@ export interface DraftPullRequestPayload {
   files: { path: string; content: string }[]
   labels: string[]
   draft: true
+}
+
+export function createDraftPullRequestsFromDiscovery(
+  discoveryRun: DiscoveryRun,
+  buildDraft: (candidate: DiscoveryCandidate) => unknown,
+  context: ProposalContext
+): DraftPullRequestPayload[] {
+  if (discoveryRun.candidates.length === 0) return []
+
+  return discoveryRun.candidates.map(candidate =>
+    createDraftPullRequest(candidate, buildDraft(candidate), context)
+  )
 }
 
 function digest(value: string) {

@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import type { DiscoveryCandidate } from '../../autonomy/discovery'
-import { createDraftPullRequest } from '../../autonomy/proposals'
+import type { DiscoveryCandidate, DiscoveryRun } from '../../autonomy/discovery'
+import {
+  createDraftPullRequest,
+  createDraftPullRequestsFromDiscovery
+} from '../../autonomy/proposals'
 
 const candidate: DiscoveryCandidate = {
   id: 'web-dev:entry:hash',
@@ -80,5 +83,23 @@ describe('autonomous proposal policy', () => {
         { existingIds: [], existingTitles: [] }
       )
     ).toThrow()
+  })
+
+  it('builds one review-only draft payload per discovery candidate', () => {
+    const discoveryRun: DiscoveryRun = {
+      checkedSources: 1,
+      candidates: [candidate],
+      errors: [],
+      state: { sources: {}, seenCandidateIds: [candidate.id] }
+    }
+
+    const payloads = createDraftPullRequestsFromDiscovery(discoveryRun, () => draft, {
+      existingIds: [],
+      existingTitles: []
+    })
+
+    expect(payloads).toHaveLength(1)
+    expect(payloads[0].files[0].path).toBe('autonomy/proposals/experiment/rendering-metric.json')
+    expect(payloads[0].draft).toBe(true)
   })
 })
