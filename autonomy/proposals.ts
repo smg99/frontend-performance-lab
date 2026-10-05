@@ -96,10 +96,7 @@ export function createDraftPullRequest(
   untrustedDraft: unknown,
   context: ProposalContext
 ): DraftPullRequestPayload {
-  return createDraftPullRequestPayload(
-    candidate,
-    validateDraft(candidate, untrustedDraft, context)
-  )
+  return createDraftPullRequestPayload(candidate, validateDraft(candidate, untrustedDraft, context))
 }
 
 function validateDraft(
