@@ -22,8 +22,7 @@ const candidate: DiscoveryCandidate = {
   reason: 'new-entry'
 }
 
-const draft = {
-  kind: 'experiment' as const,
+const commonDraft = {
   id: 'rendering-metric',
   title: 'Rendering metric measurement',
   summary:
@@ -36,7 +35,12 @@ const draft = {
       confidence: 'medium' as const
     }
   ],
-  uncertainty: ['Browser support and stable thresholds still require verification.'],
+  uncertainty: ['Browser support and stable thresholds still require verification.']
+}
+
+const draft = {
+  kind: 'experiment' as const,
+  ...commonDraft,
   hypothesis: 'The new metric identifies rendering delays that existing aggregate metrics obscure.',
   metrics: ['new rendering metric', 'LCP']
 }
@@ -70,6 +74,57 @@ describe('autonomous proposal policy', () => {
         { existingIds: [], existingTitles: [] }
       )
     ).toThrow('unsupported claim')
+  })
+
+  it('rejects fields that are not part of the proposal or citation schema', () => {
+    expect(() =>
+      createDraftPullRequest(
+        candidate,
+        { ...draft, confidenceScore: 0.99 },
+        { existingIds: [], existingTitles: [] }
+      )
+    ).toThrow()
+    expect(() =>
+      createDraftPullRequest(
+        candidate,
+        {
+          ...draft,
+          citations: [{ ...draft.citations[0], sourceExcerpt: 'unverified source text' }]
+        },
+        { existingIds: [], existingTitles: [] }
+      )
+    ).toThrow()
+  })
+
+  it.each([
+    {
+      ...commonDraft,
+      kind: 'metadata',
+      targetEntityId: 'existing-entity'
+    },
+    {
+      ...commonDraft,
+      kind: 'browser-api',
+      apiName: 'requestAnimationFrame',
+      compatibilityQuestions: ['Which browsers support this API?']
+    },
+    {
+      ...commonDraft,
+      kind: 'recipe',
+      prerequisites: [],
+      validationPlan: ['Run the provided measurement']
+    }
+  ])('rejects unknown fields on the $kind proposal schema', untrustedDraft => {
+    expect(() =>
+      createDraftPullRequest(candidate, untrustedDraft, { existingIds: [], existingTitles: [] })
+    ).not.toThrow()
+    expect(() =>
+      createDraftPullRequest(
+        candidate,
+        { ...untrustedDraft, unknownMetadata: true },
+        { existingIds: [], existingTitles: [] }
+      )
+    ).toThrow()
   })
 
   it('blocks duplicate and source-paraphrase-only drafts', () => {

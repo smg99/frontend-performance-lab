@@ -187,6 +187,7 @@ Implemented foundation:
 - Explicit uncertainty, validation and rollback sections with mandatory human-review labeling.
 - Discovery-to-draft conversion helper that creates one review-only payload per discovery candidate so a source change can flow into a validated PR draft.
 - Batch conversion rejects duplicate IDs and normalized titles across candidates in the same discovery run, preventing conflicting proposal paths and idempotency keys.
+- Proposal and citation schemas reject unrecognized fields instead of silently stripping content outside the reviewed schema.
 
 Goal: turn a verified discovery into a safe draft pull request.
 
@@ -194,6 +195,11 @@ Progress evidence (2026-10-05):
 
 - Added a focused conversion helper and end-to-end candidate-to-draft unit fixture covering the discovery candidate -> draft PR path.
 - The targeted autonomy suite passes: 2 files, 12 tests, covering idempotency, duplicate rejection, unsupported claims, review-only payload generation and intra-run duplicate prevention.
+
+Progress evidence (2026-10-06):
+
+- Proposal and citation schemas reject unknown fields for metadata, browser API, recipe and experiment drafts; focused tests verify valid fields remain accepted and unknown fields fail closed.
+- The targeted autonomy suite passes: 2 files, 16 tests; typecheck and lint pass.
 
 Deliverables:
 
@@ -333,17 +339,17 @@ Certification gates:
 
 ## Current repository audit
 
-| Capability                     | Status   | Evidence                                                                       |
-| ------------------------------ | -------- | ------------------------------------------------------------------------------ |
-| Structured knowledge manifests | COMPLETE | Runtime schemas, graph validation, provenance and freshness enforcement pass.  |
-| AST analyzer                   | PARTIAL  | Sixteen registered rules; cross-file analysis remains planned.                 |
-| Analyzer fixtures              | PARTIAL  | Fixtures exist, but the configured analyzer test suite does not execute them.  |
-| Analyzer coverage report       | BROKEN   | Fixture presence is currently presented as `>95%` code coverage.               |
-| Content validation             | COMPLETE | Invalid schemas, links, provenance and freshness fail validation.              |
-| CI                             | PARTIAL  | Test, typecheck, lint and build run; autonomous certification is not wired in. |
-| Autonomous discovery           | COMPLETE | Allowlisted scheduled collectors produce hashed, scored, deduplicated reports. |
-| Autonomous proposals           | PLANNED  | No candidate schema, policy engine or PR evidence format exists.               |
-| Self-observability             | PARTIAL  | CI exists; longitudinal quality and performance measurements do not.           |
+| Capability                     | Status   | Evidence                                                                                                                                        |
+| ------------------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Structured knowledge manifests | COMPLETE | Runtime schemas, graph validation, provenance and freshness enforcement pass.                                                                   |
+| AST analyzer                   | PARTIAL  | Sixteen registered rules; cross-file analysis remains planned.                                                                                  |
+| Analyzer fixtures              | PARTIAL  | Fixtures exist, but the configured analyzer test suite does not execute them.                                                                   |
+| Analyzer coverage report       | BROKEN   | Fixture presence is currently presented as `>95%` code coverage.                                                                                |
+| Content validation             | COMPLETE | Invalid schemas, links, provenance and freshness fail validation.                                                                               |
+| CI                             | PARTIAL  | Test, typecheck, lint and build run; autonomous certification is not wired in.                                                                  |
+| Autonomous discovery           | COMPLETE | Allowlisted scheduled collectors produce hashed, scored, deduplicated reports.                                                                  |
+| Autonomous proposals           | PARTIAL  | Typed draft schemas, validation policy and review-only PR payloads exist; draft authoring and GitHub PR workflow integration remain incomplete. |
+| Self-observability             | PARTIAL  | CI exists; longitudinal quality and performance measurements do not.                                                                            |
 
 ## Definition of done for every sprint
 

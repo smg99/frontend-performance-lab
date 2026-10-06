@@ -5,7 +5,7 @@ import type { DiscoveryCandidate, DiscoveryRun } from './discovery'
 export const proposalKinds = ['metadata', 'browser-api', 'recipe', 'experiment'] as const
 export type ProposalKind = (typeof proposalKinds)[number]
 
-const citationSchema = z.object({
+const citationSchema = z.strictObject({
   claim: z.string().min(12),
   evidenceUrl: z.string().url().startsWith('https://'),
   confidence: z.enum(['high', 'medium', 'low'])
@@ -22,25 +22,33 @@ const baseDraftSchema = z.object({
 })
 
 const draftSchemas = {
-  metadata: baseDraftSchema.extend({
-    kind: z.literal('metadata'),
-    targetEntityId: z.string().min(1)
-  }),
-  'browser-api': baseDraftSchema.extend({
-    kind: z.literal('browser-api'),
-    apiName: z.string().min(2),
-    compatibilityQuestions: z.array(z.string()).min(1)
-  }),
-  recipe: baseDraftSchema.extend({
-    kind: z.literal('recipe'),
-    prerequisites: z.array(z.string()),
-    validationPlan: z.array(z.string()).min(1)
-  }),
-  experiment: baseDraftSchema.extend({
-    kind: z.literal('experiment'),
-    hypothesis: z.string().min(20),
-    metrics: z.array(z.string()).min(1)
-  })
+  metadata: baseDraftSchema
+    .extend({
+      kind: z.literal('metadata'),
+      targetEntityId: z.string().min(1)
+    })
+    .strict(),
+  'browser-api': baseDraftSchema
+    .extend({
+      kind: z.literal('browser-api'),
+      apiName: z.string().min(2),
+      compatibilityQuestions: z.array(z.string()).min(1)
+    })
+    .strict(),
+  recipe: baseDraftSchema
+    .extend({
+      kind: z.literal('recipe'),
+      prerequisites: z.array(z.string()),
+      validationPlan: z.array(z.string()).min(1)
+    })
+    .strict(),
+  experiment: baseDraftSchema
+    .extend({
+      kind: z.literal('experiment'),
+      hypothesis: z.string().min(20),
+      metrics: z.array(z.string()).min(1)
+    })
+    .strict()
 } as const
 
 export type ProposalDraft = z.infer<(typeof draftSchemas)[ProposalKind]>
