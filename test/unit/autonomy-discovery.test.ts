@@ -6,6 +6,7 @@ const source: DiscoverySource = {
   id: 'test-source',
   name: 'Test',
   url: 'https://example.com/feed.xml',
+  evidenceHosts: ['example.com'],
   publisher: 'Example',
   evidenceType: 'official-documentation',
   topics: ['performance', 'core-web-vitals'],
@@ -76,6 +77,45 @@ describe('autonomous discovery', () => {
   it('rejects non-HTTPS sources before fetching', async () => {
     const result = await runDiscovery([{ ...source, url: 'http://example.com' }], empty)
     expect(result.errors[0].message).toContain('HTTPS')
+  })
+
+  it('rejects HTTPS evidence links outside the source evidence allowlist', async () => {
+    const untrustedFeed = feed().replace(
+      'https://example.com/post-1',
+      'https://untrusted.example/post-1'
+    )
+    const result = await runDiscovery([source], empty, {
+      fetchImpl: (async () => new Response(untrustedFeed)) as typeof fetch
+    })
+
+    expect(result.candidates).toEqual([])
+    expect(result.errors).toEqual([
+      {
+        sourceId: source.id,
+        message: 'entry evidence URL host is not allowlisted: untrusted.example'
+      }
+    ])
+  })
+
+  it('allows evidence hosted on an explicitly configured publisher domain', async () => {
+    const publisherSource = { ...source, evidenceHosts: ['docs.example.com'] }
+    const publisherFeed = feed().replace(
+      'https://example.com/post-1',
+      'https://docs.example.com/post-1'
+    )
+    const result = await runDiscovery([publisherSource], empty, {
+      fetchImpl: (async () => new Response(publisherFeed)) as typeof fetch
+    })
+
+    expect(result.errors).toEqual([])
+    expect(result.candidates[0].evidenceUrl).toBe('https://docs.example.com/post-1')
+  })
+
+  it('rejects sources without an evidence host allowlist', async () => {
+    const result = await runDiscovery([{ ...source, evidenceHosts: [] }], empty)
+
+    expect(result.errors[0].message).toBe('source evidence host allowlist is empty')
+    expect(result.candidates).toEqual([])
   })
 
   it('rejects non-feed content and oversized responses', async () => {

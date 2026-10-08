@@ -86,20 +86,23 @@ function entryLink(xml: string) {
   return atomLink ? decodeXml(atomLink) : tagValue(xml, ['link'])
 }
 
-function normalizeEvidenceUrl(value: string, sourceUrl: string) {
+function normalizeEvidenceUrl(value: string, sourceUrl: string, evidenceHosts: string[]) {
   const url = new URL(value, sourceUrl)
   if (url.protocol !== 'https:') throw new Error('entry evidence URL must use HTTPS')
+  if (!evidenceHosts.includes(url.hostname)) {
+    throw new Error(`entry evidence URL host is not allowlisted: ${url.hostname}`)
+  }
   url.hash = ''
   return url.toString()
 }
 
-function parseFeedEntries(body: string, sourceUrl: string): FeedEntry[] {
+function parseFeedEntries(body: string, sourceUrl: string, evidenceHosts: string[]): FeedEntry[] {
   const blocks = body.match(/<(?:item|entry)\b[\s\S]*?<\/(?:item|entry)>/gi) ?? []
   return blocks.map(block => {
     const title = tagValue(block, ['title'])
     const rawUrl = entryLink(block)
     if (!title || !rawUrl) throw new Error('feed entry is missing a title or link')
-    const url = normalizeEvidenceUrl(rawUrl, sourceUrl)
+    const url = normalizeEvidenceUrl(rawUrl, sourceUrl, evidenceHosts)
     const publishedAt = tagValue(block, ['published', 'updated', 'pubDate'])
     const stableId = tagValue(block, ['guid', 'id']) ?? url
     const summary = tagValue(block, ['summary', 'description', 'content']) ?? ''
@@ -129,6 +132,7 @@ function assertSource(source: DiscoverySource) {
   if (url.protocol !== 'https:') throw new Error('source URL must use HTTPS')
   if (!source.id || !source.publisher || source.topics.length === 0)
     throw new Error('source metadata is incomplete')
+  if (source.evidenceHosts.length === 0) throw new Error('source evidence host allowlist is empty')
 }
 
 function assertResponse(source: DiscoverySource, response: Response) {
@@ -206,7 +210,7 @@ export async function runDiscovery(
         nextState.sources[source.id] = { ...prior, checkedAt: now }
         continue
       }
-      const entries = parseFeedEntries(body, source.url)
+      const entries = parseFeedEntries(body, source.url, source.evidenceHosts)
       if (entries.length === 0) throw new Error('feed contains no RSS or Atom entries')
       for (const entry of entries) {
         const evidenceHash = sha256(

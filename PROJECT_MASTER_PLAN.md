@@ -201,6 +201,12 @@ Progress evidence (2026-10-06):
 - Proposal and citation schemas reject unknown fields for metadata, browser API, recipe and experiment drafts; focused tests verify valid fields remain accepted and unknown fields fail closed.
 - The targeted autonomy suite passes: 2 files, 16 tests; typecheck and lint pass.
 
+Progress evidence (2026-10-08):
+
+- Discovery candidates now require an HTTPS evidence URL whose exact hostname is explicitly allowlisted for the source; all three configured feeds declare their evidence hosts.
+- Focused tests cover rejection of an external HTTPS link, acceptance of a separately configured publisher evidence host, and rejection of an empty evidence-host allowlist.
+- The targeted discovery and proposal suites pass: 2 files, 19 tests; typecheck and lint pass.
+
 Deliverables:
 
 - Candidate schemas for metadata, browser APIs, recipes and experiments.
