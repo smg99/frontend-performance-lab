@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import { z } from 'zod'
-import type { DiscoveryCandidate, DiscoveryRun } from './discovery'
+import { discoveryCandidateSchema, type DiscoveryCandidate, type DiscoveryRun } from './discovery'
 
 export const proposalKinds = ['metadata', 'browser-api', 'recipe', 'experiment'] as const
 export type ProposalKind = (typeof proposalKinds)[number]
@@ -58,6 +58,11 @@ export interface ProposalContext {
   existingTitles: string[]
 }
 
+const authoredDraftSchema = z.strictObject({
+  candidateId: z.string().min(1),
+  draft: z.unknown()
+})
+
 export interface DraftPullRequestPayload {
   idempotencyKey: string
   branchName: string
@@ -73,19 +78,57 @@ export function createDraftPullRequestsFromDiscovery(
   buildDraft: (candidate: DiscoveryCandidate) => unknown,
   context: ProposalContext
 ): DraftPullRequestPayload[] {
-  if (discoveryRun.candidates.length === 0) return []
+  return createDraftPullRequestsFromCandidates(discoveryRun.candidates, buildDraft, context)
+}
 
+function createDraftPullRequestsFromCandidates(
+  candidates: DiscoveryCandidate[],
+  buildDraft: (candidate: DiscoveryCandidate) => unknown,
+  context: ProposalContext
+): DraftPullRequestPayload[] {
+  if (candidates.length === 0) return []
   const batchContext: ProposalContext = {
     existingIds: [...context.existingIds],
     existingTitles: [...context.existingTitles]
   }
 
-  return discoveryRun.candidates.map(candidate => {
-    const draft = validateDraft(candidate, buildDraft(candidate), batchContext)
+  return candidates.map(candidate => {
+    const draft = validateDraft(candidate, buildDraft(candidate), batchContext, context.existingIds)
     batchContext.existingIds.push(draft.id)
     batchContext.existingTitles.push(draft.title)
     return createDraftPullRequestPayload(candidate, draft)
   })
+}
+
+export function createDraftPullRequestsFromAuthoredDrafts(
+  candidates: DiscoveryCandidate[],
+  untrustedAuthoredDrafts: unknown,
+  context: ProposalContext
+): DraftPullRequestPayload[] {
+  const authoredDrafts = z.array(authoredDraftSchema).parse(untrustedAuthoredDrafts)
+  const candidatesById = new Map<string, DiscoveryCandidate>()
+  for (const candidate of candidates.map(candidate => discoveryCandidateSchema.parse(candidate))) {
+    if (candidatesById.has(candidate.id))
+      throw new Error(`duplicate discovery candidate id: ${candidate.id}`)
+    candidatesById.set(candidate.id, candidate)
+  }
+
+  const draftsByCandidateId = new Map<string, unknown>()
+  const selectedCandidates: DiscoveryCandidate[] = []
+  for (const authored of authoredDrafts) {
+    if (draftsByCandidateId.has(authored.candidateId))
+      throw new Error(`duplicate authored candidate: ${authored.candidateId}`)
+    const candidate = candidatesById.get(authored.candidateId)
+    if (!candidate) throw new Error(`unknown discovery candidate: ${authored.candidateId}`)
+    draftsByCandidateId.set(authored.candidateId, authored.draft)
+    selectedCandidates.push(candidate)
+  }
+
+  return createDraftPullRequestsFromCandidates(
+    selectedCandidates,
+    candidate => draftsByCandidateId.get(candidate.id),
+    context
+  )
 }
 
 function digest(value: string) {
@@ -110,13 +153,16 @@ export function createDraftPullRequest(
 function validateDraft(
   candidate: DiscoveryCandidate,
   untrustedDraft: unknown,
-  context: ProposalContext
+  context: ProposalContext,
+  registeredEntityIds: string[] = context.existingIds
 ): ProposalDraft {
   const kind = z.object({ kind: z.enum(proposalKinds) }).parse(untrustedDraft).kind
   const draft = draftSchemas[kind].parse(untrustedDraft) as ProposalDraft
   if (context.existingIds.includes(draft.id)) throw new Error(`duplicate content id: ${draft.id}`)
   if (context.existingTitles.some(title => normalized(title) === normalized(draft.title)))
     throw new Error(`duplicate content title: ${draft.title}`)
+  if (draft.kind === 'metadata' && !registeredEntityIds.includes(draft.targetEntityId))
+    throw new Error(`unknown metadata target: ${draft.targetEntityId}`)
   if (normalized(draft.summary) === normalized(candidate.evidenceTitle))
     throw new Error('draft summary is source-paraphrase-only')
   for (const citation of draft.citations) {

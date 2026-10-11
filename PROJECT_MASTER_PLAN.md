@@ -188,6 +188,10 @@ Implemented foundation:
 - Discovery-to-draft conversion helper that creates one review-only payload per discovery candidate so a source change can flow into a validated PR draft.
 - Batch conversion rejects duplicate IDs and normalized titles across candidates in the same discovery run, preventing conflicting proposal paths and idempotency keys.
 - Proposal and citation schemas reject unrecognized fields instead of silently stripping content outside the reviewed schema.
+- A proposal-preparation command matches explicitly authored drafts to discovery candidate IDs, checks the draft against existing registered content, and writes review-only payloads for human inspection.
+- Metadata proposals must target an existing registered entity.
+
+Proposal preparation usage: run `npm run autonomy:discover`, add authored `{ candidateId, draft }` records to `artifacts/autonomy/proposal-drafts.json`, then run `npm run autonomy:prepare-proposals`. The command writes `artifacts/autonomy/proposal-payloads.json`; it does not generate proposal prose or open pull requests.
 
 Goal: turn a verified discovery into a safe draft pull request.
 
@@ -206,6 +210,12 @@ Progress evidence (2026-10-08):
 - Discovery candidates now require an HTTPS evidence URL whose exact hostname is explicitly allowlisted for the source; all three configured feeds declare their evidence hosts.
 - Focused tests cover rejection of an external HTTPS link, acceptance of a separately configured publisher evidence host, and rejection of an empty evidence-host allowlist.
 - The targeted discovery and proposal suites pass: 2 files, 19 tests; typecheck and lint pass.
+
+Progress evidence (2026-10-11):
+
+- A local authoring-to-payload run consumed a controlled discovery report and explicitly authored draft, then emitted one validated, review-only proposal payload.
+- The focused autonomy suites pass: 2 files, 23 tests; the full suite passes: 34 files, 280 tests. Typecheck, lint for the changed TypeScript files, and the production build pass.
+- Pull-request creation, automated draft generation and S3 certification remain incomplete.
 
 Deliverables:
 

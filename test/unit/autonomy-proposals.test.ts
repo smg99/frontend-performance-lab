@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { DiscoveryCandidate, DiscoveryRun } from '../../autonomy/discovery'
 import {
   createDraftPullRequest,
+  createDraftPullRequestsFromAuthoredDrafts,
   createDraftPullRequestsFromDiscovery
 } from '../../autonomy/proposals'
 
@@ -116,13 +117,16 @@ describe('autonomous proposal policy', () => {
     }
   ])('rejects unknown fields on the $kind proposal schema', untrustedDraft => {
     expect(() =>
-      createDraftPullRequest(candidate, untrustedDraft, { existingIds: [], existingTitles: [] })
+      createDraftPullRequest(candidate, untrustedDraft, {
+        existingIds: ['existing-entity'],
+        existingTitles: []
+      })
     ).not.toThrow()
     expect(() =>
       createDraftPullRequest(
         candidate,
         { ...untrustedDraft, unknownMetadata: true },
-        { existingIds: [], existingTitles: [] }
+        { existingIds: ['existing-entity'], existingTitles: [] }
       )
     ).toThrow()
   })
@@ -138,6 +142,54 @@ describe('autonomous proposal policy', () => {
         { existingIds: [], existingTitles: [] }
       )
     ).toThrow()
+  })
+
+  it('requires metadata proposals to target a registered entity', () => {
+    const metadataDraft = {
+      ...commonDraft,
+      kind: 'metadata' as const,
+      targetEntityId: 'existing-entity'
+    }
+
+    expect(() =>
+      createDraftPullRequest(candidate, metadataDraft, { existingIds: [], existingTitles: [] })
+    ).toThrow('unknown metadata target')
+    expect(() =>
+      createDraftPullRequest(candidate, metadataDraft, {
+        existingIds: ['existing-entity'],
+        existingTitles: []
+      })
+    ).not.toThrow()
+  })
+
+  it('does not treat another draft from the same batch as a registered metadata target', () => {
+    const secondCandidate = {
+      ...candidate,
+      id: 'vue-blog:entry:other',
+      evidenceUrl: 'https://blog.vuejs.org/entry',
+      evidenceTitle: 'Rendering measurements in Vue'
+    }
+    const metadataDraft = {
+      ...commonDraft,
+      id: 'rendering-metadata-update',
+      kind: 'metadata' as const,
+      targetEntityId: draft.id,
+      title: 'Rendering metadata update',
+      citations: [{ ...draft.citations[0], evidenceUrl: secondCandidate.evidenceUrl }]
+    }
+
+    expect(() =>
+      createDraftPullRequestsFromDiscovery(
+        {
+          checkedSources: 2,
+          candidates: [candidate, secondCandidate],
+          errors: [],
+          state: { sources: {}, seenCandidateIds: [candidate.id, secondCandidate.id] }
+        },
+        candidateItem => (candidateItem === candidate ? draft : metadataDraft),
+        { existingIds: [], existingTitles: [] }
+      )
+    ).toThrow('unknown metadata target')
   })
 
   it('builds one review-only draft payload per discovery candidate', () => {
@@ -156,6 +208,66 @@ describe('autonomous proposal policy', () => {
     expect(payloads).toHaveLength(1)
     expect(payloads[0].files[0].path).toBe('autonomy/proposals/experiment/rendering-metric.json')
     expect(payloads[0].draft).toBe(true)
+  })
+
+  it('builds payloads only for explicitly authored candidates and matches each draft by candidate ID', () => {
+    const secondCandidate = {
+      ...candidate,
+      id: 'vue-blog:entry:other',
+      evidenceUrl: 'https://blog.vuejs.org/entry',
+      evidenceTitle: 'Rendering measurements in Vue'
+    }
+    const discoveryRun: DiscoveryRun = {
+      checkedSources: 2,
+      candidates: [candidate, secondCandidate],
+      errors: [],
+      state: { sources: {}, seenCandidateIds: [candidate.id, secondCandidate.id] }
+    }
+    const authoredDraft = {
+      ...draft,
+      id: 'vue-rendering-metric',
+      citations: [{ ...draft.citations[0], evidenceUrl: secondCandidate.evidenceUrl }]
+    }
+
+    const payloads = createDraftPullRequestsFromAuthoredDrafts(
+      discoveryRun.candidates,
+      [{ candidateId: secondCandidate.id, draft: authoredDraft }],
+      { existingIds: [], existingTitles: [] }
+    )
+
+    expect(payloads).toHaveLength(1)
+    expect(payloads[0].files[0].path).toBe(
+      'autonomy/proposals/experiment/vue-rendering-metric.json'
+    )
+    expect(payloads[0].files[0].content).toContain(secondCandidate.id)
+    expect(payloads[0].files[0].content).not.toContain(candidate.id)
+  })
+
+  it('rejects authored drafts that do not identify a discovered candidate exactly once', () => {
+    const discoveryRun: DiscoveryRun = {
+      checkedSources: 1,
+      candidates: [candidate],
+      errors: [],
+      state: { sources: {}, seenCandidateIds: [candidate.id] }
+    }
+
+    expect(() =>
+      createDraftPullRequestsFromAuthoredDrafts(
+        discoveryRun.candidates,
+        [{ candidateId: 'unknown:candidate', draft }],
+        { existingIds: [], existingTitles: [] }
+      )
+    ).toThrow('unknown discovery candidate')
+    expect(() =>
+      createDraftPullRequestsFromAuthoredDrafts(
+        discoveryRun.candidates,
+        [
+          { candidateId: candidate.id, draft },
+          { candidateId: candidate.id, draft }
+        ],
+        { existingIds: [], existingTitles: [] }
+      )
+    ).toThrow('duplicate authored candidate')
   })
 
   it('rejects duplicate IDs generated within the same discovery run', () => {

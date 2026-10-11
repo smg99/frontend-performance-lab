@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto'
+import { z } from 'zod'
 import type { DiscoverySource } from './sources'
 
 const MAX_RESPONSE_BYTES = 2_000_000
@@ -18,22 +19,24 @@ export interface DiscoveryState {
   seenCandidateIds: string[]
 }
 
-export interface DiscoveryCandidate {
-  id: string
-  sourceId: string
-  sourceFeedUrl: string
-  evidenceUrl: string
-  evidenceTitle: string
-  publisher: string
-  evidenceType: DiscoverySource['evidenceType']
-  publishedAt?: string
-  matchedTopics: string[]
-  relevanceScore: number
-  evidenceHash: string
-  sourceContentHash: string
-  discoveredAt: string
-  reason: 'new-entry' | 'entry-updated'
-}
+export const discoveryCandidateSchema = z.strictObject({
+  id: z.string().min(1),
+  sourceId: z.string().min(1),
+  sourceFeedUrl: z.string().url().startsWith('https://'),
+  evidenceUrl: z.string().url().startsWith('https://'),
+  evidenceTitle: z.string().min(1),
+  publisher: z.string().min(1),
+  evidenceType: z.enum(['official-documentation', 'vendor-guidance', 'maintainer-guidance']),
+  publishedAt: z.string().optional(),
+  matchedTopics: z.array(z.string()),
+  relevanceScore: z.number().min(0).max(100),
+  evidenceHash: z.string().min(1),
+  sourceContentHash: z.string().min(1),
+  discoveredAt: z.string().datetime(),
+  reason: z.enum(['new-entry', 'entry-updated'])
+})
+
+export type DiscoveryCandidate = z.infer<typeof discoveryCandidateSchema>
 
 export interface DiscoveryRun {
   candidates: DiscoveryCandidate[]
