@@ -26,6 +26,7 @@
     "validate:analyzer": "tsx scripts/validate-analyzer.ts",
     "autonomy:discover": "tsx scripts/run-autonomous-discovery.ts",
     "autonomy:prepare-proposals": "tsx scripts/prepare-autonomous-proposals.ts",
+    "autonomy:open-proposals": "tsx scripts/open-autonomous-proposals.ts",
     "prepare": "husky || true"
   },
   "dependencies": {

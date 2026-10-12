@@ -190,8 +190,10 @@ Implemented foundation:
 - Proposal and citation schemas reject unrecognized fields instead of silently stripping content outside the reviewed schema.
 - A proposal-preparation command matches explicitly authored drafts to discovery candidate IDs, checks the draft against existing registered content, and writes review-only payloads for human inspection.
 - Metadata proposals must target an existing registered entity.
+- An explicitly invoked publisher revalidates allowlisted evidence before creating GitHub draft PRs, applies review labels, reuses matching PRs/branches on retry, and refuses branches with different content or unrelated commits.
+- Generated proposal PR bodies preserve the repository PR template and add discovery evidence, uncertainty, validation and rollback details.
 
-Proposal preparation usage: run `npm run autonomy:discover`, add authored `{ candidateId, draft }` records to `artifacts/autonomy/proposal-drafts.json`, then run `npm run autonomy:prepare-proposals`. The command writes `artifacts/autonomy/proposal-payloads.json`; it does not generate proposal prose or open pull requests.
+Proposal usage: run `npm run autonomy:discover`, add authored `{ candidateId, draft }` records to `artifacts/autonomy/proposal-drafts.json`, then run `npm run autonomy:prepare-proposals`. This writes review-only payloads to `artifacts/autonomy/proposal-payloads.json` without generating proposal prose or opening pull requests. To explicitly publish those payloads as draft PRs, authenticate the GitHub CLI with repository contents and pull-request write access and run `npm run autonomy:open-proposals`. Existing open PRs are reused; invalid payloads or branches with different content are rejected. Scheduled discovery does not publish proposals.
 
 Goal: turn a verified discovery into a safe draft pull request.
 
@@ -216,6 +218,13 @@ Progress evidence (2026-10-11):
 - A local authoring-to-payload run consumed a controlled discovery report and explicitly authored draft, then emitted one validated, review-only proposal payload.
 - The focused autonomy suites pass: 2 files, 23 tests; the full suite passes: 34 files, 280 tests. Typecheck, lint for the changed TypeScript files, and the production build pass.
 - Pull-request creation, automated draft generation and S3 certification remain incomplete.
+
+Progress evidence (2026-10-12):
+
+- Added a separately invoked GitHub publisher that revalidates payloads and source-host allowlists before publishing, creates a single-file proposal commit and draft PR, applies review labels, and safely reuses matching PRs/branches on retry.
+- Generated PR descriptions retain the repository PR-template headings and checklist while adding proposal-specific evidence, uncertainty, validation and rollback sections.
+- The two focused autonomy test files pass: 21 tests, including draft creation, existing-PR reuse, interrupted-run recovery, source-host validation and mismatched-branch refusal. No live GitHub PR was created during validation.
+- Pull-request workflow certification, automated draft generation and S3 certification remain incomplete.
 
 Deliverables:
 

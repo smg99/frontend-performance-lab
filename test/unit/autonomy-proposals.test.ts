@@ -57,6 +57,26 @@ describe('autonomous proposal policy', () => {
     expect(first.files[0].path).toBe('autonomy/proposals/experiment/rendering-metric.json')
   })
 
+  it('preserves the repository pull request template in its proposal body', () => {
+    const body = createDraftPullRequest(candidate, draft, {
+      existingIds: [],
+      existingTitles: []
+    }).body
+
+    expect(body).toContain('## Description')
+    expect(body).toContain('Fixes # (none; autonomous proposal)')
+    expect(body).toContain('## Type of change')
+    expect(body).toContain('- [x] Documentation update')
+    expect(body).toContain('## How Has This Been Tested?')
+    expect(body).toContain('- [ ] `npm run test` passes completely.')
+    expect(body).toContain('## Checklist:')
+    expect(body).toContain(
+      '- [ ] My code follows the `PROJECT_PRINCIPLES.md` (no heuristic guessing).'
+    )
+    expect(body.indexOf('## Description')).toBeLessThan(body.indexOf('## Evidence'))
+    expect(body.indexOf('## Checklist:')).toBeLessThan(body.indexOf('## Evidence'))
+  })
+
   it('blocks unsupported claims and missing citations', () => {
     expect(() =>
       createDraftPullRequest(
