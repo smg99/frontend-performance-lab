@@ -57,6 +57,10 @@ export async function publishProposalPayloads(
     throw new Error(`unsupported default branch name: ${repository.defaultBranch}`)
 
   const payloads = z.array(proposalPayloadSchema).parse(untrustedPayloads)
+  const batchContext: ProposalContext = {
+    existingIds: [...context.existingIds],
+    existingTitles: [...context.existingTitles]
+  }
   const validatedPayloads = payloads.map(payload => {
     if (payload.branchName !== `autonomy/proposal-${payload.idempotencyKey.slice(0, 12)}`)
       throw new Error(`branch does not match idempotency key: ${payload.branchName}`)
@@ -80,9 +84,12 @@ export async function publishProposalPayloads(
       throw new Error(`proposal evidence is not allowlisted: ${candidate.id}`)
     if (content.idempotencyKey !== payload.idempotencyKey)
       throw new Error(`proposal content idempotency key mismatch: ${payload.branchName}`)
-    const expected = createDraftPullRequest(candidate, content.draft, context)
+    const expected = createDraftPullRequest(candidate, content.draft, batchContext)
     if (!isDeepStrictEqual(expected, payload))
       throw new Error(`proposal payload does not match validated content: ${payload.branchName}`)
+    const draftIdentity = z.object({ id: z.string(), title: z.string() }).parse(content.draft)
+    batchContext.existingIds.push(draftIdentity.id)
+    batchContext.existingTitles.push(draftIdentity.title)
     return payload
   })
 

@@ -226,6 +226,12 @@ Progress evidence (2026-10-12):
 - The two focused autonomy test files pass: 21 tests, including draft creation, existing-PR reuse, interrupted-run recovery, source-host validation and mismatched-branch refusal. No live GitHub PR was created during validation.
 - Pull-request workflow certification, automated draft generation and S3 certification remain incomplete.
 
+Progress evidence (2026-10-13):
+
+- The publisher now checks proposal IDs and normalized titles against both registered content and earlier proposals in the same batch, rejecting duplicates before making GitHub API calls.
+- Regression tests cover duplicate IDs and titles and verify that neither case produces GitHub requests. The two focused autonomy test files pass: 23 tests; typecheck and lint for the changed files pass.
+- Pull-request workflow certification, automated draft generation and S3 certification remain incomplete.
+
 Deliverables:
 
 - Candidate schemas for metadata, browser APIs, recipes and experiments.

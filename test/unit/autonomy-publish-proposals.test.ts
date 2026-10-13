@@ -154,6 +154,46 @@ describe('autonomous proposal publishing', () => {
     expect(client.calls).toHaveLength(0)
   })
 
+  it.each([
+    {
+      description: 'duplicate proposal IDs',
+      secondDraft: { ...draft },
+      expectedError: 'duplicate content id'
+    },
+    {
+      description: 'duplicate normalized proposal titles',
+      secondDraft: {
+        ...draft,
+        id: 'another-rendering-measurement',
+        title: '  RENDERING   MEASUREMENT  '
+      },
+      expectedError: 'duplicate content title'
+    }
+  ])(
+    'rejects batches with $description before making GitHub requests',
+    async ({ secondDraft, expectedError }) => {
+      const secondCandidate = {
+        ...candidate,
+        id: 'web-dev-feed:entry:another-hash',
+        evidenceUrl: 'https://web.dev/articles/another-example'
+      }
+      const secondPayload = createDraftPullRequest(
+        secondCandidate,
+        {
+          ...secondDraft,
+          citations: [{ ...draft.citations[0], evidenceUrl: secondCandidate.evidenceUrl }]
+        },
+        context
+      )
+      const client = githubClient()
+
+      await expect(
+        publishProposalPayloads([payload, secondPayload], repository, context, client)
+      ).rejects.toThrow(expectedError)
+      expect(client.calls).toHaveLength(0)
+    }
+  )
+
   it('refuses to reuse an idempotent branch if its content does not match the payload', async () => {
     const client = githubClient({
       request: async <T>(method: 'GET' | 'POST', endpoint: string, body?: unknown) => {
