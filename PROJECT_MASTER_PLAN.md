@@ -232,6 +232,12 @@ Progress evidence (2026-10-13):
 - Regression tests cover duplicate IDs and titles and verify that neither case produces GitHub requests. The two focused autonomy test files pass: 23 tests; typecheck and lint for the changed files pass.
 - Pull-request workflow certification, automated draft generation and S3 certification remain incomplete.
 
+Progress evidence (2026-10-14):
+
+- The discovery report now prints each exact candidate ID alongside its evidence URL, publisher, evidence type, relevance, matched topics, publication date, discovery reason and evidence hash, making candidate-to-authored-draft matching practical from the human-readable report.
+- Source-provided titles are escaped in Markdown so they cannot inject links or report entries. Three focused discovery/proposal suites pass: 27 tests; typecheck, lint and formatting checks pass.
+- Automated knowledge-prose generation and S3 certification remain incomplete; proposal content remains explicitly human-authored and review-only.
+
 Deliverables:
 
 - Candidate schemas for metadata, browser APIs, recipes and experiments.
