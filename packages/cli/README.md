@@ -139,4 +139,4 @@ We love contributions! If you’d like to help, please read our [contributing gu
 
 ## License
 
-MIT © [Sumit Gajjar](https://github.com/smg99)
+MIT © [Sumit G](https://github.com/smg99)
