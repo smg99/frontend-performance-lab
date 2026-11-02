@@ -140,6 +140,34 @@ describe('autonomous proposal publishing', () => {
     })
   })
 
+  it('reports a closed pull request without creating a duplicate proposal', async () => {
+    const client = githubClient({
+      request: async <T>(method: 'GET' | 'POST', endpoint: string, body?: unknown) => {
+        client.calls.push({ method, endpoint, body })
+        if (endpoint.includes('/pulls?state=all&head='))
+          return [
+            {
+              number: 42,
+              html_url: 'https://github.com/smg99/frontend-performance-lab/pull/42',
+              state: 'closed'
+            }
+          ] as T
+        throw new Error(`unexpected GitHub request: ${method} ${endpoint}`)
+      }
+    })
+
+    const results = await publishProposalPayloads([payload], repository, context, client)
+
+    expect(results).toEqual([
+      {
+        branchName: payload.branchName,
+        pullRequestUrl: 'https://github.com/smg99/frontend-performance-lab/pull/42',
+        status: 'closed'
+      }
+    ])
+    expect(client.calls).toHaveLength(1)
+  })
+
   it('rejects malformed payloads before making GitHub requests', async () => {
     const client = githubClient()
 

@@ -45,6 +45,12 @@ const client: ProposalGitHubClient = {
 const results = await publishProposalPayloads(payloads, repository, context, client)
 for (const result of results)
   console.log(
-    `${result.status === 'created' ? 'Created draft pull request' : 'Reused existing pull request'}: ${result.pullRequestUrl}`
+    `${
+      result.status === 'created'
+        ? 'Created draft pull request'
+        : result.status === 'already-exists'
+          ? 'Reused existing pull request'
+          : 'Found closed pull request; no duplicate was created'
+    }: ${result.pullRequestUrl}`
   )
 if (results.length === 0) console.log('No autonomous proposal payloads to publish.')

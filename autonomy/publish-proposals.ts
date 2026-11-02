@@ -33,7 +33,7 @@ export interface ProposalRepository {
 export interface PublishedProposal {
   branchName: string
   pullRequestUrl: string
-  status: 'created' | 'already-exists'
+  status: 'created' | 'already-exists' | 'closed'
 }
 
 const shaSchema = z.string().min(1)
@@ -124,7 +124,7 @@ export async function publishProposalPayloads(
       results.push({
         branchName: payload.branchName,
         pullRequestUrl: existingPullRequest.html_url,
-        status: 'already-exists'
+        status: existingPullRequest.state === 'open' ? 'already-exists' : 'closed'
       })
       continue
     }

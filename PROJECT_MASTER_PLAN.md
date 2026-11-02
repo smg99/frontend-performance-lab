@@ -238,6 +238,12 @@ Progress evidence (2026-10-14):
 - Source-provided titles are escaped in Markdown so they cannot inject links or report entries. Three focused discovery/proposal suites pass: 27 tests; typecheck, lint and formatting checks pass.
 - Automated knowledge-prose generation and S3 certification remain incomplete; proposal content remains explicitly human-authored and review-only.
 
+Progress evidence (2026-11-02):
+
+- The proposal publisher now distinguishes a previously closed pull request from an open PR it can reuse, and its CLI reports the closed PR URL while confirming that no duplicate was created.
+- A regression test verifies the closed-PR status and that publication makes no further GitHub requests. The focused publisher suite passes: 9 tests; typecheck and lint for the changed files pass.
+- Automated knowledge-prose generation and S3 certification remain incomplete; proposal content remains explicitly human-authored and review-only.
+
 Deliverables:
 
 - Candidate schemas for metadata, browser APIs, recipes and experiments.
