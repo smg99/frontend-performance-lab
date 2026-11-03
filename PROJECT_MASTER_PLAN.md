@@ -244,6 +244,12 @@ Progress evidence (2026-11-02):
 - A regression test verifies the closed-PR status and that publication makes no further GitHub requests. The focused publisher suite passes: 9 tests; typecheck and lint for the changed files pass.
 - Automated knowledge-prose generation and S3 certification remain incomplete; proposal content remains explicitly human-authored and review-only.
 
+Progress evidence (2026-11-03):
+
+- Generated proposal PR bodies now escape author-authored and source-provided text, including titles, summaries, evidence titles and hashes, claims and uncertainty; line breaks are flattened so Markdown cannot introduce headings, checklist items or substitute links into the review template.
+- A regression test covers forged headings, checklist entries, link text and evidence hashes. The focused proposal and publisher suites pass: 2 files, 25 tests; ESLint passes for the changed TypeScript files.
+- Automated knowledge-prose generation and S3 certification remain incomplete; proposal content remains explicitly human-authored and review-only.
+
 Deliverables:
 
 - Candidate schemas for metadata, browser APIs, recipes and experiments.

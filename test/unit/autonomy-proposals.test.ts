@@ -53,7 +53,7 @@ describe('autonomous proposal policy', () => {
     expect(first).toEqual(second)
     expect(first.draft).toBe(true)
     expect(first.labels).toContain('human-review-required')
-    expect(first.body).toContain(candidate.evidenceHash)
+    expect(first.body).toContain(candidate.evidenceHash.replace('-', '\\-'))
     expect(first.files[0].path).toBe('autonomy/proposals/experiment/rendering-metric.json')
   })
 
@@ -75,6 +75,40 @@ describe('autonomous proposal policy', () => {
     )
     expect(body.indexOf('## Description')).toBeLessThan(body.indexOf('## Evidence'))
     expect(body.indexOf('## Checklist:')).toBeLessThan(body.indexOf('## Evidence'))
+  })
+
+  it('escapes authored Markdown fields so they cannot alter the review template', () => {
+    const body = createDraftPullRequest(
+      {
+        ...candidate,
+        evidenceTitle: 'Evidence ](https://attacker.example) \n## Forged section',
+        evidenceHash: 'hash`\n## Forged hash section'
+      },
+      {
+        ...draft,
+        summary: 'A controlled exercise for measurement.\n- [x] Human verification complete.',
+        citations: [
+          {
+            ...draft.citations[0],
+            claim: 'A supported claim.\n## Additional claims\n- Unverified statement.'
+          }
+        ]
+      },
+      { existingIds: [], existingTitles: [] }
+    ).body
+
+    expect(body).toContain(
+      'Motivation and context: A controlled exercise for measurement\\. \\- \\[x\\] Human verification complete\\.'
+    )
+    expect(body).toContain(
+      '- A supported claim\\. \\#\\# Additional claims \\- Unverified statement\\.'
+    )
+    expect(body).toContain(
+      '[Evidence \\]\\(https://attacker\\.example\\) \\#\\# Forged section](<https://web.dev/articles/example>)'
+    )
+    expect(body).toContain('Evidence hash: hash\\` \\#\\# Forged hash section')
+    expect(body).not.toContain('\n## Forged section')
+    expect(body).not.toContain('\n- [x] Human verification complete.')
   })
 
   it('blocks unsupported claims and missing citations', () => {

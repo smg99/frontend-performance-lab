@@ -142,6 +142,10 @@ function normalized(value: string) {
     .trim()
 }
 
+function escapeMarkdown(value: string) {
+  return value.replace(/\s+/g, ' ').replace(/[\\`*_{}[\]()#+.!|~>-]/g, '\\$&')
+}
+
 export function createDraftPullRequest(
   candidate: DiscoveryCandidate,
   untrustedDraft: unknown,
@@ -182,8 +186,8 @@ function createDraftPullRequestPayload(
   const content = `${JSON.stringify({ candidate, draft, idempotencyKey }, null, 2)}\n`
   const body = [
     '## Description',
-    `This draft proposes ${draft.title} as a review-only ${kind} knowledge update.`,
-    `Motivation and context: ${draft.summary}`,
+    `This draft proposes ${escapeMarkdown(draft.title)} as a review-only ${kind} knowledge update.`,
+    `Motivation and context: ${escapeMarkdown(draft.summary)}`,
     'Fixes # (none; autonomous proposal)',
     'Dependencies: none.',
     '',
@@ -208,16 +212,17 @@ function createDraftPullRequestPayload(
     '- [ ] My changes generate no new ESLint warnings.',
     '',
     '## Evidence',
-    `- [${candidate.evidenceTitle}](${candidate.evidenceUrl})`,
-    `- Evidence hash: \`${candidate.evidenceHash}\``,
+    `- [${escapeMarkdown(candidate.evidenceTitle)}](<${new URL(candidate.evidenceUrl).href}>)`,
+    `- Evidence hash: ${escapeMarkdown(candidate.evidenceHash)}`,
     '',
     '## Claims',
     ...draft.citations.map(
-      item => `- ${item.claim} (${item.confidence}; [source](${item.evidenceUrl}))`
+      item =>
+        `- ${escapeMarkdown(item.claim)} (${item.confidence}; [source](<${new URL(item.evidenceUrl).href}>))`
     ),
     '',
     '## Uncertainty',
-    ...draft.uncertainty.map(item => `- ${item}`),
+    ...draft.uncertainty.map(item => `- ${escapeMarkdown(item)}`),
     '',
     '## Validation',
     '- [ ] Human verifies every claim against the cited evidence.',
@@ -231,7 +236,7 @@ function createDraftPullRequestPayload(
   return {
     idempotencyKey,
     branchName: `autonomy/proposal-${idempotencyKey.slice(0, 12)}`,
-    title: `draft(${kind}): ${draft.title}`,
+    title: `draft(${kind}): ${draft.title.replace(/[\r\n]+/g, ' ')}`,
     body,
     files: [{ path: proposalPath, content }],
     labels: ['autonomy', 'human-review-required'],
