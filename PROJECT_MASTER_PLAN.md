@@ -250,6 +250,12 @@ Progress evidence (2026-11-03):
 - A regression test covers forged headings, checklist entries, link text and evidence hashes. The focused proposal and publisher suites pass: 2 files, 25 tests; ESLint passes for the changed TypeScript files.
 - Automated knowledge-prose generation and S3 certification remain incomplete; proposal content remains explicitly human-authored and review-only.
 
+Progress evidence (2026-11-05):
+
+- Proposal preparation now removes any previous payload before reading or validating the current discovery report and authored drafts, preventing failed preparation from leaving an earlier payload available for publication.
+- Tests cover successful payload writing and stale-payload invalidation on invalid draft content. The focused preparation, proposal and publisher suites pass: 3 files, 27 tests; typecheck, ESLint and formatting checks pass.
+- Automated knowledge-prose generation and S3 certification remain incomplete; proposal content remains explicitly human-authored and review-only.
+
 Deliverables:
 
 - Candidate schemas for metadata, browser APIs, recipes and experiments.
