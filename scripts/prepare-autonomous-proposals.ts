@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { prepareProposalPayloads } from '../autonomy/prepare-proposals'
+import { formatProposalPayloadReport } from '../autonomy/proposal-report'
 import { getAllBrowserAPIs, getAllExperiments, getAllRecipes } from '../shared/registry'
 
 const outputDirectory = path.resolve('artifacts/autonomy')
@@ -9,4 +10,5 @@ const payloads = prepareProposalPayloads(outputDirectory, {
   existingIds: existingContent.map(item => item.id),
   existingTitles: existingContent.map(item => ('title' in item ? item.title : item.name))
 })
-console.log(`Prepared ${payloads.length} review-only proposal payload(s): ${payloadsPath}`)
+console.log(formatProposalPayloadReport(payloads))
+console.log(`Payload file: ${payloadsPath}`)
