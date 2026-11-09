@@ -72,7 +72,7 @@
     "lint-staged": "^16.4.0",
     "pinia": "^4.0.2",
     "playwright": "^1.62.1",
-    "playwright-core": "^1.62.1",
+    "playwright-core": "^1.65.0",
     "png-to-ico": "^3.0.2",
     "postcss": "^8.5.25",
     "prettier": "^3.9.6",
