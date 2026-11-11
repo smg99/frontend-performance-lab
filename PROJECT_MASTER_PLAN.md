@@ -262,6 +262,12 @@ Progress evidence (2026-11-07):
 - The focused proposal report, preparation and proposal suites pass: 3 files, 20 tests. The full suite passes: 38 files, 298 tests; typecheck, ESLint, formatting and `git diff --check` pass. No GitHub publication was performed.
 - Automated knowledge-prose generation and S3 certification remain incomplete; proposal content remains explicitly human-authored and review-only.
 
+Progress evidence (2026-11-11):
+
+- The pre-publication proposal report now includes each validated draft's summary, claims with confidence and evidence URL, and uncertainty alongside its candidate/evidence identifiers and payload path. Author-supplied report text is flattened and Markdown-escaped to prevent injected headings or list items.
+- The focused proposal report suite passes: 1 file, 3 tests. The full suite passes: 38 files, 299 tests; typecheck and ESLint for the changed TypeScript files pass. No GitHub publication was performed.
+- Automated knowledge-prose generation and S3 certification remain incomplete; proposal content remains explicitly human-authored and review-only.
+
 Deliverables:
 
 - Candidate schemas for metadata, browser APIs, recipes and experiments.

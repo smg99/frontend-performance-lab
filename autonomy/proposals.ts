@@ -142,7 +142,7 @@ function normalized(value: string) {
     .trim()
 }
 
-function escapeMarkdown(value: string) {
+export function escapeMarkdown(value: string) {
   return value.replace(/\s+/g, ' ').replace(/[\\`*_{}[\]()#+.!|~>-]/g, '\\$&')
 }
 

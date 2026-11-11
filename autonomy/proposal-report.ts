@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import type { DraftPullRequestPayload } from './proposals'
+import { escapeMarkdown, type DraftPullRequestPayload } from './proposals'
 
 const proposalContentSchema = z.object({
   candidate: z.object({
@@ -7,12 +7,21 @@ const proposalContentSchema = z.object({
     evidenceUrl: z.string().url(),
     evidenceHash: z.string().min(1)
   }),
-  draft: z.object({ title: z.string().min(1) })
+  draft: z.object({
+    title: z.string().min(1),
+    summary: z.string().min(1),
+    citations: z
+      .array(
+        z.object({
+          claim: z.string().min(1),
+          evidenceUrl: z.string().url(),
+          confidence: z.enum(['high', 'medium', 'low'])
+        })
+      )
+      .min(1),
+    uncertainty: z.array(z.string().min(1)).min(1)
+  })
 })
-
-function oneLine(value: string) {
-  return value.replace(/\s+/g, ' ').trim()
-}
 
 export function formatProposalPayloadReport(payloads: DraftPullRequestPayload[]) {
   const lines = [
@@ -26,9 +35,17 @@ export function formatProposalPayloadReport(payloads: DraftPullRequestPayload[])
       ? payloads.flatMap(payload => {
           const file = payload.files[0]
           if (!file) throw new Error(`proposal payload has no content file: ${payload.title}`)
-          const { candidate } = proposalContentSchema.parse(JSON.parse(file.content))
+          const { candidate, draft } = proposalContentSchema.parse(JSON.parse(file.content))
           return [
-            `- ${oneLine(payload.title)}`,
+            `- ${escapeMarkdown(payload.title)}`,
+            `  - Summary: ${escapeMarkdown(draft.summary)}`,
+            '  - Claims:',
+            ...draft.citations.map(
+              citation =>
+                `    - [${citation.confidence}] ${escapeMarkdown(citation.claim)} (evidence: ${citation.evidenceUrl})`
+            ),
+            '  - Uncertainty:',
+            ...draft.uncertainty.map(item => `    - ${escapeMarkdown(item)}`),
             `  - Candidate: ${candidate.id}`,
             `  - Evidence: ${candidate.evidenceUrl}`,
             `  - Evidence hash: ${candidate.evidenceHash}`,

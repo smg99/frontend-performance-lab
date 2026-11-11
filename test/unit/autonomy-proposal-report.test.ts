@@ -52,7 +52,12 @@ describe('autonomous proposal report', () => {
         '',
         '## Review before publishing',
         '',
-        `- ${payload.title}`,
+        '- draft\\(experiment\\): Rendering measurement',
+        `  - Summary: ${draft.summary.replace('.', '\\.')}`,
+        '  - Claims:',
+        `    - [medium] ${draft.citations[0].claim.replace('.', '\\.')} (evidence: ${candidate.evidenceUrl})`,
+        '  - Uncertainty:',
+        `    - ${draft.uncertainty[0].replace('.', '\\.')}`,
         `  - Candidate: ${candidate.id}`,
         `  - Evidence: ${candidate.evidenceUrl}`,
         `  - Evidence hash: ${candidate.evidenceHash}`,
@@ -60,6 +65,38 @@ describe('autonomous proposal report', () => {
         ''
       ].join('\n')
     )
+  })
+
+  it('keeps author-supplied review text on safe, single Markdown lines', () => {
+    const unsafeDraft = {
+      ...draft,
+      title: 'Rendering [guide](https://example.com)',
+      summary: 'A controlled summary.\n\n## Forged section',
+      citations: [
+        {
+          ...draft.citations[0],
+          claim: 'This claim has **emphasis** and a\nforged list item.'
+        }
+      ],
+      uncertainty: ['Needs checking.\n- Forged checklist item']
+    }
+    const payload = createDraftPullRequest(candidate, unsafeDraft, {
+      existingIds: [],
+      existingTitles: []
+    })
+
+    const report = formatProposalPayloadReport([payload])
+
+    expect(report).toContain(
+      '- draft\\(experiment\\): Rendering \\[guide\\]\\(https://example\\.com\\)'
+    )
+    expect(report).toContain('  - Summary: A controlled summary\\. \\#\\# Forged section')
+    expect(report).toContain(
+      `    - [medium] This claim has \\*\\*emphasis\\*\\* and a forged list item\\. (evidence: ${candidate.evidenceUrl})`
+    )
+    expect(report).toContain('    - Needs checking\\. \\- Forged checklist item')
+    expect(report).not.toContain('\n## Forged section')
+    expect(report).not.toContain('\n- Forged checklist item')
   })
 
   it('clearly reports an empty preparation result', () => {
