@@ -54,6 +54,10 @@ describe('autonomous proposal policy', () => {
     expect(first.draft).toBe(true)
     expect(first.labels).toContain('human-review-required')
     expect(first.body).toContain(candidate.evidenceHash.replace('-', '\\-'))
+    expect(first.body).toContain(`- Publisher: ${candidate.publisher.replace('.', '\\.')}`)
+    expect(first.body).toContain(`- Evidence type: ${candidate.evidenceType}`)
+    expect(first.body).toContain(`- Published: ${candidate.publishedAt.replace(/-/g, '\\-')}`)
+    expect(first.body).toContain(`- Discovered: ${candidate.discoveredAt}`)
     expect(first.files[0].path).toBe('autonomy/proposals/experiment/rendering-metric.json')
   })
 
@@ -109,6 +113,31 @@ describe('autonomous proposal policy', () => {
     expect(body).toContain('Evidence hash: hash\\` \\#\\# Forged hash section')
     expect(body).not.toContain('\n## Forged section')
     expect(body).not.toContain('\n- [x] Human verification complete.')
+  })
+
+  it('escapes publisher provenance before adding it to the review body', () => {
+    const body = createDraftPullRequest(
+      {
+        ...candidate,
+        publisher: 'Vendor **publisher**\n- forged checklist item',
+        publishedAt: '2026-09-20\n- forged publication'
+      },
+      draft,
+      { existingIds: [], existingTitles: [] }
+    ).body
+
+    expect(body).toContain('- Publisher: Vendor \\*\\*publisher\\*\\* \\- forged checklist item')
+    expect(body).toContain('- Published: 2026\\-09\\-20 \\- forged publication')
+    expect(body).not.toContain('\n- forged checklist item')
+  })
+
+  it('marks a missing source publication date instead of implying one', () => {
+    const body = createDraftPullRequest({ ...candidate, publishedAt: undefined }, draft, {
+      existingIds: [],
+      existingTitles: []
+    }).body
+
+    expect(body).toContain('- Published: not provided')
   })
 
   it('blocks unsupported claims and missing citations', () => {

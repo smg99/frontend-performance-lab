@@ -59,6 +59,10 @@ describe('autonomous proposal report', () => {
         '  - Uncertainty:',
         `    - ${draft.uncertainty[0].replace('.', '\\.')}`,
         `  - Candidate: ${candidate.id}`,
+        `  - Publisher: ${candidate.publisher.replace('.', '\\.')}`,
+        `  - Evidence type: ${candidate.evidenceType}`,
+        `  - Published: ${candidate.publishedAt.replace(/-/g, '\\-')}`,
+        `  - Discovered: ${candidate.discoveredAt}`,
         `  - Evidence: ${candidate.evidenceUrl}`,
         `  - Evidence hash: ${candidate.evidenceHash}`,
         `  - Payload: ${payload.files[0].path}`,
@@ -80,7 +84,12 @@ describe('autonomous proposal report', () => {
       ],
       uncertainty: ['Needs checking.\n- Forged checklist item']
     }
-    const payload = createDraftPullRequest(candidate, unsafeDraft, {
+    const unsafeCandidate = {
+      ...candidate,
+      publisher: 'Vendor **publisher**\n- forged detail',
+      publishedAt: '2026-09-20\n- forged publication'
+    }
+    const payload = createDraftPullRequest(unsafeCandidate, unsafeDraft, {
       existingIds: [],
       existingTitles: []
     })
@@ -95,11 +104,26 @@ describe('autonomous proposal report', () => {
       `    - [medium] This claim has \\*\\*emphasis\\*\\* and a forged list item\\. (evidence: ${candidate.evidenceUrl})`
     )
     expect(report).toContain('    - Needs checking\\. \\- Forged checklist item')
+    expect(report).toContain('  - Publisher: Vendor \\*\\*publisher\\*\\* \\- forged detail')
+    expect(report).toContain(`  - Evidence type: ${candidate.evidenceType}`)
+    expect(report).toContain('  - Published: 2026\\-09\\-20 \\- forged publication')
+    expect(report).toContain(`  - Discovered: ${candidate.discoveredAt}`)
     expect(report).not.toContain('\n## Forged section')
     expect(report).not.toContain('\n- Forged checklist item')
+    expect(report).not.toContain('\n- forged detail')
   })
 
   it('clearly reports an empty preparation result', () => {
     expect(formatProposalPayloadReport([])).toContain('- No review-only proposals were prepared.')
+  })
+
+  it('identifies when the source has no publication date', () => {
+    const candidateWithoutPublicationDate = { ...candidate, publishedAt: undefined }
+    const payload = createDraftPullRequest(candidateWithoutPublicationDate, draft, {
+      existingIds: [],
+      existingTitles: []
+    })
+
+    expect(formatProposalPayloadReport([payload])).toContain('  - Published: not provided')
   })
 })

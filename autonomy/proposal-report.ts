@@ -5,6 +5,10 @@ const proposalContentSchema = z.object({
   candidate: z.object({
     id: z.string().min(1),
     evidenceUrl: z.string().url(),
+    publisher: z.string().min(1),
+    evidenceType: z.enum(['official-documentation', 'vendor-guidance', 'maintainer-guidance']),
+    publishedAt: z.string().optional(),
+    discoveredAt: z.string().datetime(),
     evidenceHash: z.string().min(1)
   }),
   draft: z.object({
@@ -47,6 +51,10 @@ export function formatProposalPayloadReport(payloads: DraftPullRequestPayload[])
             '  - Uncertainty:',
             ...draft.uncertainty.map(item => `    - ${escapeMarkdown(item)}`),
             `  - Candidate: ${candidate.id}`,
+            `  - Publisher: ${escapeMarkdown(candidate.publisher)}`,
+            `  - Evidence type: ${candidate.evidenceType}`,
+            `  - Published: ${escapeMarkdown(candidate.publishedAt ?? 'not provided')}`,
+            `  - Discovered: ${candidate.discoveredAt}`,
             `  - Evidence: ${candidate.evidenceUrl}`,
             `  - Evidence hash: ${candidate.evidenceHash}`,
             `  - Payload: ${file.path}`
