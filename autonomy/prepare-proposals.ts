@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
@@ -37,6 +38,28 @@ export function prepareProposalPayloads(
   )
 
   fs.mkdirSync(outputDirectory, { recursive: true })
-  fs.writeFileSync(payloadsPath, `${JSON.stringify(payloads, null, 2)}\n`)
+  const temporaryPayloadsPath = path.join(outputDirectory, `.proposal-payloads-${randomUUID()}.tmp`)
+  try {
+    fs.writeFileSync(temporaryPayloadsPath, `${JSON.stringify(payloads, null, 2)}\n`, {
+      flag: 'wx'
+    })
+    fs.renameSync(temporaryPayloadsPath, payloadsPath)
+  } catch (error) {
+    try {
+      fs.unlinkSync(temporaryPayloadsPath)
+    } catch (cleanupError) {
+      if (!(
+        cleanupError instanceof Error &&
+        'code' in cleanupError &&
+        cleanupError.code === 'ENOENT'
+      ))
+        throw new AggregateError(
+          [error, cleanupError],
+          'failed to clean up temporary proposal payload',
+          { cause: cleanupError }
+        )
+    }
+    throw new Error('failed to finalize proposal payload', { cause: error })
+  }
   return payloads
 }

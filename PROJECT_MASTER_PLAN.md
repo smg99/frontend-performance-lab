@@ -274,6 +274,12 @@ Progress evidence (2026-11-12):
 - All autonomy unit tests pass: 6 files, 45 tests. Typecheck, ESLint, Prettier checks and `git diff --check` pass. No GitHub publication was performed.
 - Automated knowledge-prose generation and S3 certification remain incomplete; proposal content remains explicitly human-authored and review-only.
 
+Progress evidence (2026-11-13):
+
+- Proposal preparation now writes the validated payload to a unique same-directory temporary file and atomically renames it into place. A failed finalization removes the temporary file and surfaces the error, preventing a partial payload from being left available to the publisher.
+- All autonomy unit tests pass: 6 files, 46 tests; the full suite passes: 38 files, 303 tests. Typecheck, ESLint and Prettier checks for the changed TypeScript files pass. No GitHub publication was performed.
+- Automated knowledge-prose generation and S3 certification remain incomplete; proposal content remains explicitly human-authored and review-only.
+
 Deliverables:
 
 - Candidate schemas for metadata, browser APIs, recipes and experiments.

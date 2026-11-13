@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { prepareProposalPayloads } from '../../autonomy/prepare-proposals'
 
 const candidate = {
@@ -49,6 +49,7 @@ describe('autonomous proposal preparation', () => {
   })
 
   afterEach(() => {
+    vi.restoreAllMocks()
     fs.rmSync(outputDirectory, { recursive: true, force: true })
   })
 
@@ -82,5 +83,21 @@ describe('autonomous proposal preparation', () => {
 
     expect(() => prepareProposalPayloads(outputDirectory, context)).toThrow()
     expect(fs.existsSync(payloadsPath)).toBe(false)
+  })
+
+  it('does not leave a partial payload or temporary file when finalizing the payload fails', () => {
+    writeInputs(draft)
+    vi.spyOn(fs, 'renameSync').mockImplementation(() => {
+      throw new Error('simulated finalization failure')
+    })
+
+    expect(() => prepareProposalPayloads(outputDirectory, context)).toThrow(
+      'failed to finalize proposal payload'
+    )
+    expect(fs.existsSync(path.join(outputDirectory, 'proposal-payloads.json'))).toBe(false)
+    expect(fs.readdirSync(outputDirectory).sort()).toEqual([
+      'discovery-report.json',
+      'proposal-drafts.json'
+    ])
   })
 })
