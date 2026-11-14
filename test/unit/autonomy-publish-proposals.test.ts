@@ -85,7 +85,10 @@ describe('autonomous proposal publishing', () => {
       {
         branchName: payload.branchName,
         pullRequestUrl: 'https://github.com/smg99/frontend-performance-lab/pull/42',
-        status: 'created'
+        status: 'created',
+        candidateId: candidate.id,
+        evidenceUrl: candidate.evidenceUrl,
+        evidenceHash: candidate.evidenceHash
       }
     ])
     expect(client.calls).toContainEqual({
@@ -128,7 +131,12 @@ describe('autonomous proposal publishing', () => {
 
     const results = await publishProposalPayloads([payload], repository, context, client)
 
-    expect(results[0].status).toBe('already-exists')
+    expect(results[0]).toMatchObject({
+      status: 'already-exists',
+      candidateId: candidate.id,
+      evidenceUrl: candidate.evidenceUrl,
+      evidenceHash: candidate.evidenceHash
+    })
     expect(client.calls.some(call => call.endpoint.endsWith('/git/refs'))).toBe(false)
     expect(
       client.calls.some(call => call.endpoint.endsWith('/pulls') && call.method === 'POST')
@@ -162,7 +170,10 @@ describe('autonomous proposal publishing', () => {
       {
         branchName: payload.branchName,
         pullRequestUrl: 'https://github.com/smg99/frontend-performance-lab/pull/42',
-        status: 'closed'
+        status: 'closed',
+        candidateId: candidate.id,
+        evidenceUrl: candidate.evidenceUrl,
+        evidenceHash: candidate.evidenceHash
       }
     ])
     expect(client.calls).toHaveLength(1)

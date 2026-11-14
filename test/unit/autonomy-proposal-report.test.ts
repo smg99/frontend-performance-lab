@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest'
+import {
+  formatProposalPayloadReport,
+  formatPublishedProposalResult
+} from '../../autonomy/proposal-report'
 import { createDraftPullRequest } from '../../autonomy/proposals'
-import { formatProposalPayloadReport } from '../../autonomy/proposal-report'
 
 const candidate = {
   id: 'web-dev:entry:hash',
@@ -38,6 +41,25 @@ const draft = {
 }
 
 describe('autonomous proposal report', () => {
+  it.each([
+    ['created', 'Created draft pull request'],
+    ['already-exists', 'Reused existing pull request'],
+    ['closed', 'Found closed pull request; no duplicate was created']
+  ] as const)('includes provenance when formatting a %s publication result', (status, label) => {
+    expect(
+      formatPublishedProposalResult({
+        branchName: 'autonomy/proposal-123456789abc',
+        pullRequestUrl: 'https://github.com/smg99/frontend-performance-lab/pull/42',
+        status,
+        candidateId: candidate.id,
+        evidenceUrl: candidate.evidenceUrl,
+        evidenceHash: candidate.evidenceHash
+      })
+    ).toBe(
+      `${label}: https://github.com/smg99/frontend-performance-lab/pull/42 (candidate: ${candidate.id}; evidence: ${candidate.evidenceUrl}; SHA-256: ${candidate.evidenceHash})`
+    )
+  })
+
   it('prints every prepared draft with its exact candidate evidence and payload path', () => {
     const payload = createDraftPullRequest(candidate, draft, {
       existingIds: [],

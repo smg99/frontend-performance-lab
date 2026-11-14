@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
 import { publishProposalPayloads, type ProposalGitHubClient } from '../autonomy/publish-proposals'
+import { formatPublishedProposalResult } from '../autonomy/proposal-report'
 import { getAllBrowserAPIs, getAllExperiments, getAllRecipes } from '../shared/registry'
 
 const payloadsPath = path.resolve('artifacts/autonomy/proposal-payloads.json')
@@ -43,14 +44,5 @@ const client: ProposalGitHubClient = {
 }
 
 const results = await publishProposalPayloads(payloads, repository, context, client)
-for (const result of results)
-  console.log(
-    `${
-      result.status === 'created'
-        ? 'Created draft pull request'
-        : result.status === 'already-exists'
-          ? 'Reused existing pull request'
-          : 'Found closed pull request; no duplicate was created'
-    }: ${result.pullRequestUrl}`
-  )
+for (const result of results) console.log(formatPublishedProposalResult(result))
 if (results.length === 0) console.log('No autonomous proposal payloads to publish.')

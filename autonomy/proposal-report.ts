@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import type { PublishedProposal } from './publish-proposals'
 import { escapeMarkdown, type DraftPullRequestPayload } from './proposals'
 
 const proposalContentSchema = z.object({
@@ -65,4 +66,15 @@ export function formatProposalPayloadReport(payloads: DraftPullRequestPayload[])
   ]
 
   return lines.join('\n')
+}
+
+export function formatPublishedProposalResult(result: PublishedProposal) {
+  const status =
+    result.status === 'created'
+      ? 'Created draft pull request'
+      : result.status === 'already-exists'
+        ? 'Reused existing pull request'
+        : 'Found closed pull request; no duplicate was created'
+
+  return `${status}: ${result.pullRequestUrl} (candidate: ${result.candidateId}; evidence: ${result.evidenceUrl}; SHA-256: ${result.evidenceHash})`
 }

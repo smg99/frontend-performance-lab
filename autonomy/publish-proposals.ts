@@ -34,6 +34,9 @@ export interface PublishedProposal {
   branchName: string
   pullRequestUrl: string
   status: 'created' | 'already-exists' | 'closed'
+  candidateId: string
+  evidenceUrl: string
+  evidenceHash: string
 }
 
 const shaSchema = z.string().min(1)
@@ -90,11 +93,16 @@ export async function publishProposalPayloads(
     const draftIdentity = z.object({ id: z.string(), title: z.string() }).parse(content.draft)
     batchContext.existingIds.push(draftIdentity.id)
     batchContext.existingTitles.push(draftIdentity.title)
-    return payload
+    return {
+      payload,
+      candidateId: candidate.id,
+      evidenceUrl: candidate.evidenceUrl,
+      evidenceHash: candidate.evidenceHash
+    }
   })
 
   const results: PublishedProposal[] = []
-  for (const payload of validatedPayloads) {
+  for (const { payload, candidateId, evidenceUrl, evidenceHash } of validatedPayloads) {
     const existingPullRequests = z
       .array(
         z.object({
@@ -124,7 +132,10 @@ export async function publishProposalPayloads(
       results.push({
         branchName: payload.branchName,
         pullRequestUrl: existingPullRequest.html_url,
-        status: existingPullRequest.state === 'open' ? 'already-exists' : 'closed'
+        status: existingPullRequest.state === 'open' ? 'already-exists' : 'closed',
+        candidateId,
+        evidenceUrl,
+        evidenceHash
       })
       continue
     }
@@ -256,7 +267,10 @@ export async function publishProposalPayloads(
     results.push({
       branchName: payload.branchName,
       pullRequestUrl: pullRequest.html_url,
-      status: 'created'
+      status: 'created',
+      candidateId,
+      evidenceUrl,
+      evidenceHash
     })
   }
 
