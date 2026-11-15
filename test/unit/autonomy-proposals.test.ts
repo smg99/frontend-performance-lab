@@ -3,7 +3,8 @@ import type { DiscoveryCandidate, DiscoveryRun } from '../../autonomy/discovery'
 import {
   createDraftPullRequest,
   createDraftPullRequestsFromAuthoredDrafts,
-  createDraftPullRequestsFromDiscovery
+  createDraftPullRequestsFromDiscovery,
+  generateProposalDraft
 } from '../../autonomy/proposals'
 
 const candidate: DiscoveryCandidate = {
@@ -59,6 +60,25 @@ describe('autonomous proposal policy', () => {
     expect(first.body).toContain(`- Published: ${candidate.publishedAt.replace(/-/g, '\\-')}`)
     expect(first.body).toContain(`- Discovered: ${candidate.discoveredAt}`)
     expect(first.files[0].path).toBe('autonomy/proposals/experiment/rendering-metric.json')
+  })
+
+  it('generates a safe proposal draft from a discovery candidate without claiming unsupported edits', () => {
+    const generated = generateProposalDraft(candidate)
+
+    expect(generated.kind).toBe('experiment')
+    expect(generated.title).toContain('Rendering')
+    expect(generated.summary).toContain('follow-up')
+    expect(generated.citations).toEqual([
+      expect.objectContaining({
+        claim: expect.stringContaining('rendering metric'),
+        evidenceUrl: candidate.evidenceUrl,
+        confidence: 'medium'
+      })
+    ])
+    expect(generated.uncertainty).toEqual(
+      expect.arrayContaining([expect.stringContaining('verify')])
+    )
+    expect(generated.hypothesis).toContain(candidate.evidenceTitle)
   })
 
   it('preserves the repository pull request template in its proposal body', () => {

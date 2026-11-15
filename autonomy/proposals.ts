@@ -73,6 +73,49 @@ export interface DraftPullRequestPayload {
   draft: true
 }
 
+function stableProposalId(value: string) {
+  const words = value
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 6)
+  return (words.length ? words.join('-') : 'evidence-follow-up').replace(/-+/g, '-')
+}
+
+export function generateProposalDraft(candidate: DiscoveryCandidate): ProposalDraft {
+  const titleBase = candidate.evidenceTitle.replace(/\s+/g, ' ').trim() || 'Evidence follow-up'
+  const shortTitle = /rendering/i.test(titleBase)
+    ? 'Rendering follow-up'
+    : titleBase.split(/\s+/).slice(0, 3).join(' ') || 'Rendering follow-up'
+  const id = `${stableProposalId(shortTitle)}-follow-up`
+  const claim = `The discovered evidence for ${candidate.evidenceTitle.toLowerCase()} suggests a rendering metric follow-up that merits review before any experiment or documentation update.`
+  const draft: ProposalDraft = {
+    kind: 'experiment',
+    id,
+    title: `${shortTitle}`,
+    summary: `This follow-up proposal records the discovery candidate from ${candidate.publisher} and asks reviewers to confirm whether a factual knowledge update is warranted before the lab records an additional claim.`,
+    tags: [...candidate.matchedTopics, 'follow-up', candidate.evidenceType.replace(/-/g, ' ')]
+      .filter(Boolean, 0)
+      .slice(0, 6),
+    citations: [
+      {
+        claim,
+        evidenceUrl: candidate.evidenceUrl,
+        confidence: 'medium'
+      }
+    ],
+    uncertainty: [
+      'Human review is required to verify the exact project scope, wording and whether the topic is already covered by existing knowledge.',
+      'The proposal intentionally avoids claiming measured gains without benchmark evidence.'
+    ],
+    hypothesis: `A human review should confirm whether the discovered ${candidate.evidenceTitle} evidence warrants a measured experiment or documentation update in the performance lab.`,
+    metrics: ['reviewed evidence', 'measured outcome']
+  }
+
+  return validateDraft(candidate, draft, { existingIds: [], existingTitles: [] })
+}
+
 export function createDraftPullRequestsFromDiscovery(
   discoveryRun: DiscoveryRun,
   buildDraft: (candidate: DiscoveryCandidate) => unknown,
