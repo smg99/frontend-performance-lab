@@ -3,6 +3,7 @@ import os from 'node:os'
 import path from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { prepareProposalPayloads } from '../../autonomy/prepare-proposals'
+import { formatProposalPayloadReport } from '../../autonomy/proposal-report'
 
 const candidate = {
   id: 'web-dev-feed:entry:hash',
@@ -74,6 +75,47 @@ describe('autonomous proposal preparation', () => {
     expect(
       JSON.parse(fs.readFileSync(path.join(outputDirectory, 'proposal-payloads.json'), 'utf8'))
     ).toEqual(payloads)
+  })
+
+  it('prepares an evidence-bound generated draft for an explicitly selected candidate', () => {
+    fs.writeFileSync(
+      path.join(outputDirectory, 'discovery-report.json'),
+      JSON.stringify({ candidates: [candidate] })
+    )
+
+    const payloads = prepareProposalPayloads(outputDirectory, context, {
+      generatedCandidateId: candidate.id
+    })
+
+    expect(payloads).toHaveLength(1)
+    expect(payloads[0].draft).toBe(true)
+    expect(payloads[0].labels).toContain('human-review-required')
+    const payload = JSON.parse(payloads[0].files[0].content)
+    expect(payload.candidate.id).toBe(candidate.id)
+    expect(payload.draft.kind).toBe('experiment')
+    expect(payload.draft.citations[0].evidenceUrl).toBe(candidate.evidenceUrl)
+    const report = formatProposalPayloadReport(payloads)
+    expect(report).toContain(`- Candidate: ${candidate.id}`)
+    expect(report).toContain(`- Evidence: ${candidate.evidenceUrl}`)
+    expect(report).toContain(`- Evidence hash: ${candidate.evidenceHash}`)
+    expect(report).toContain(`- Payload: ${payloads[0].files[0].path}`)
+    expect(
+      JSON.parse(fs.readFileSync(path.join(outputDirectory, 'proposal-payloads.json'), 'utf8'))
+    ).toEqual(payloads)
+  })
+
+  it('rejects a generated draft request for a candidate absent from the discovery report', () => {
+    fs.writeFileSync(
+      path.join(outputDirectory, 'discovery-report.json'),
+      JSON.stringify({ candidates: [candidate] })
+    )
+
+    expect(() =>
+      prepareProposalPayloads(outputDirectory, context, {
+        generatedCandidateId: 'unknown-candidate'
+      })
+    ).toThrow('unknown discovery candidate: unknown-candidate')
+    expect(fs.existsSync(path.join(outputDirectory, 'proposal-payloads.json'))).toBe(false)
   })
 
   it('removes a previous payload before rejecting invalid authored content', () => {

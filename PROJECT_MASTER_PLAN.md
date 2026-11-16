@@ -193,7 +193,7 @@ Implemented foundation:
 - An explicitly invoked publisher revalidates allowlisted evidence before creating GitHub draft PRs, applies review labels, reuses matching PRs/branches on retry, and refuses branches with different content or unrelated commits.
 - Generated proposal PR bodies preserve the repository PR template and add discovery evidence, uncertainty, validation and rollback details.
 
-Proposal usage: run `npm run autonomy:discover`, add authored `{ candidateId, draft }` records to `artifacts/autonomy/proposal-drafts.json`, then run `npm run autonomy:prepare-proposals`. This writes review-only payloads to `artifacts/autonomy/proposal-payloads.json` without generating proposal prose or opening pull requests. To explicitly publish those payloads as draft PRs, authenticate the GitHub CLI with repository contents and pull-request write access and run `npm run autonomy:open-proposals`. Existing open PRs are reused; invalid payloads or branches with different content are rejected. Scheduled discovery does not publish proposals.
+Proposal usage: run `npm run autonomy:discover`, add authored `{ candidateId, draft }` records to `artifacts/autonomy/proposal-drafts.json`, then run `npm run autonomy:prepare-proposals`. This default mode writes validated review-only payloads to `artifacts/autonomy/proposal-payloads.json` without opening pull requests. To prepare a deterministic, evidence-bound experiment draft for one exact discovery candidate instead, run `npm run autonomy:prepare-proposals -- --generate <discovery-candidate-id>`; generated content still passes proposal validation and requires human review. To explicitly publish prepared payloads as draft PRs, authenticate the GitHub CLI with repository contents and pull-request write access and run `npm run autonomy:open-proposals`. Existing open PRs are reused; invalid payloads or branches with different content are rejected. Scheduled discovery does not publish proposals.
 
 Goal: turn a verified discovery into a safe draft pull request.
 
@@ -291,6 +291,12 @@ Progress evidence (2026-11-15):
 - Proposal generation now creates a deterministic review-safe experiment draft from a discovery candidate, preserving evidence provenance and explicitly avoiding unsupported claims while still requiring human review before publication.
 - The focused autonomy suite passes: 6 files, 50 tests. ESLint passes for the changed TypeScript files. No GitHub publication was performed.
 - Automated knowledge-prose generation and S3 certification remain incomplete; proposal content remains explicitly human-authored and review-only.
+
+Progress evidence (2026-11-16):
+
+- Proposal preparation can now generate a deterministic experiment draft for one exact discovery candidate through `npm run autonomy:prepare-proposals -- --generate <discovery-candidate-id>`. It uses the existing schema, citation, duplication and review-only payload path; unknown candidate IDs fail without leaving a payload. The CLI's existing report exposes the selected candidate, evidence URL and hash for review.
+- The autonomy suites pass: 6 files, 52 tests. Typecheck, ESLint, Prettier checks and `git diff --check` pass. No GitHub publication was performed.
+- Automated knowledge-prose generation and S3 certification remain incomplete; generated drafts are review-only and are not promoted content.
 
 Deliverables:
 

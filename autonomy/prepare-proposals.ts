@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { discoveryCandidateSchema } from './discovery'
 import {
   createDraftPullRequestsFromAuthoredDrafts,
+  generateProposalDraft,
   type DraftPullRequestPayload,
   type ProposalContext
 } from './proposals'
@@ -15,7 +16,8 @@ const discoveryReportSchema = z.object({
 
 export function prepareProposalPayloads(
   outputDirectory: string,
-  context: ProposalContext
+  context: ProposalContext,
+  options: { generatedCandidateId?: string } = {}
 ): DraftPullRequestPayload[] {
   const payloadsPath = path.join(outputDirectory, 'proposal-payloads.json')
 
@@ -26,11 +28,21 @@ export function prepareProposalPayloads(
   }
 
   const discoveryPath = path.join(outputDirectory, 'discovery-report.json')
-  const authoredDraftsPath = path.join(outputDirectory, 'proposal-drafts.json')
   const discoveryReport = discoveryReportSchema.parse(
     JSON.parse(fs.readFileSync(discoveryPath, 'utf8'))
   )
-  const authoredDrafts: unknown = JSON.parse(fs.readFileSync(authoredDraftsPath, 'utf8'))
+  let authoredDrafts: unknown
+  if (options.generatedCandidateId) {
+    const candidate = discoveryReport.candidates.find(
+      item => item.id === options.generatedCandidateId
+    )
+    if (!candidate) throw new Error(`unknown discovery candidate: ${options.generatedCandidateId}`)
+    authoredDrafts = [{ candidateId: candidate.id, draft: generateProposalDraft(candidate) }]
+  } else {
+    authoredDrafts = JSON.parse(
+      fs.readFileSync(path.join(outputDirectory, 'proposal-drafts.json'), 'utf8')
+    )
+  }
   const payloads = createDraftPullRequestsFromAuthoredDrafts(
     discoveryReport.candidates,
     authoredDrafts,
