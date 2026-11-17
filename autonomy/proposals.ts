@@ -85,22 +85,19 @@ function stableProposalId(value: string) {
 
 export function generateProposalDraft(candidate: DiscoveryCandidate): ProposalDraft {
   const titleBase = candidate.evidenceTitle.replace(/\s+/g, ' ').trim() || 'Evidence follow-up'
-  const shortTitle = /rendering/i.test(titleBase)
-    ? 'Rendering follow-up'
-    : titleBase.split(/\s+/).slice(0, 3).join(' ') || 'Rendering follow-up'
-  const id = `${stableProposalId(shortTitle)}-follow-up`
-  const claim = `The discovered evidence for ${candidate.evidenceTitle.toLowerCase()} suggests a rendering metric follow-up that merits review before any experiment or documentation update.`
+  const id = `${stableProposalId(titleBase)}-review`
   const draft: ProposalDraft = {
     kind: 'experiment',
     id,
-    title: `${shortTitle}`,
-    summary: `This follow-up proposal records the discovery candidate from ${candidate.publisher} and asks reviewers to confirm whether a factual knowledge update is warranted before the lab records an additional claim.`,
+    title: `Evidence review: ${titleBase}`,
+    summary: `This review-only follow-up records a discovery from ${candidate.publisher} and asks a human to assess the cited source before any knowledge update is accepted.`,
     tags: [...candidate.matchedTopics, 'follow-up', candidate.evidenceType.replace(/-/g, ' ')]
       .filter(Boolean, 0)
       .slice(0, 6),
     citations: [
       {
-        claim,
+        claim:
+          'This discovery candidate identifies source material for human review; its relevance and claims remain unverified.',
         evidenceUrl: candidate.evidenceUrl,
         confidence: 'medium'
       }
@@ -109,8 +106,9 @@ export function generateProposalDraft(candidate: DiscoveryCandidate): ProposalDr
       'Human review is required to verify the exact project scope, wording and whether the topic is already covered by existing knowledge.',
       'The proposal intentionally avoids claiming measured gains without benchmark evidence.'
     ],
-    hypothesis: `A human review should confirm whether the discovered ${candidate.evidenceTitle} evidence warrants a measured experiment or documentation update in the performance lab.`,
-    metrics: ['reviewed evidence', 'measured outcome']
+    hypothesis:
+      'A human reviewer should determine whether the cited source supports a verified performance knowledge update.',
+    metrics: ['source claim verification']
   }
 
   return validateDraft(candidate, draft, { existingIds: [], existingTitles: [] })

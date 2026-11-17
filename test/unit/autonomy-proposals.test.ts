@@ -66,11 +66,11 @@ describe('autonomous proposal policy', () => {
     const generated = generateProposalDraft(candidate)
 
     expect(generated.kind).toBe('experiment')
-    expect(generated.title).toContain('Rendering')
+    expect(generated.title).toContain(candidate.evidenceTitle)
     expect(generated.summary).toContain('follow-up')
     expect(generated.citations).toEqual([
       expect.objectContaining({
-        claim: expect.stringContaining('rendering metric'),
+        claim: expect.stringContaining('remain unverified'),
         evidenceUrl: candidate.evidenceUrl,
         confidence: 'medium'
       })
@@ -78,7 +78,26 @@ describe('autonomous proposal policy', () => {
     expect(generated.uncertainty).toEqual(
       expect.arrayContaining([expect.stringContaining('verify')])
     )
-    expect(generated.hypothesis).toContain(candidate.evidenceTitle)
+    expect(generated.hypothesis).toContain('human reviewer')
+  })
+
+  it('keeps generated drafts evidence-neutral for candidates outside rendering topics', () => {
+    const unrelatedCandidate = {
+      ...candidate,
+      evidenceTitle: 'Understanding browser cache partitioning',
+      publisher: 'Browser Standards Group',
+      evidenceType: 'official-documentation' as const,
+      matchedTopics: ['networking']
+    }
+
+    const generated = generateProposalDraft(unrelatedCandidate)
+
+    expect(generated.title).toBe('Evidence review: Understanding browser cache partitioning')
+    expect(generated.summary).toContain(unrelatedCandidate.publisher)
+    expect(generated.summary).not.toMatch(/rendering|metric/i)
+    expect(generated.citations[0].claim).toContain('remain unverified')
+    expect(generated.hypothesis).not.toMatch(/rendering|metric/i)
+    expect(generated.metrics).toEqual(['source claim verification'])
   })
 
   it('preserves the repository pull request template in its proposal body', () => {

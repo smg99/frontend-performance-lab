@@ -298,6 +298,12 @@ Progress evidence (2026-11-16):
 - The autonomy suites pass: 6 files, 52 tests. Typecheck, ESLint, Prettier checks and `git diff --check` pass. No GitHub publication was performed.
 - Automated knowledge-prose generation and S3 certification remain incomplete; generated drafts are review-only and are not promoted content.
 
+Progress evidence (2026-11-17):
+
+- Generated review drafts now retain the discovery title and use evidence-neutral wording rather than assuming every source concerns rendering or supports a performance metric. Their cited claim and metric describe human verification only; source relevance and claims remain explicitly unverified, and the existing review-only publication gate is unchanged.
+- The focused proposal-generation, preparation and review-report suites pass: 3 files, 32 tests. The full suite passes: 38 files, 310 tests; typecheck and ESLint for the changed files pass. No GitHub publication was performed.
+- Automated knowledge-prose generation and S3 certification remain incomplete; generated drafts are review-only and are not promoted content.
+
 Deliverables:
 
 - Candidate schemas for metadata, browser APIs, recipes and experiments.
