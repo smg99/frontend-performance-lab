@@ -304,6 +304,12 @@ Progress evidence (2026-11-17):
 - The focused proposal-generation, preparation and review-report suites pass: 3 files, 32 tests. The full suite passes: 38 files, 310 tests; typecheck and ESLint for the changed files pass. No GitHub publication was performed.
 - Automated knowledge-prose generation and S3 certification remain incomplete; generated drafts are review-only and are not promoted content.
 
+Progress evidence (2026-11-18):
+
+- The proposal publisher now rejects an existing proposal branch unless its parent commit is exactly aligned with the default branch: both ahead and behind counts must be zero. This prevents stale or unrelated commits from being reused or used to open a review-only pull request.
+- A focused regression test covers a stale parent branch and verifies that no branch or pull-request creation requests are made. The six autonomy unit suites pass: 54 tests; typecheck, ESLint and Prettier checks for the changed TypeScript files pass.
+- Pull-request workflow certification and S3 certification remain incomplete; no GitHub publication was performed.
+
 Deliverables:
 
 - Candidate schemas for metadata, browser APIs, recipes and experiments.

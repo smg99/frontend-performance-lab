@@ -247,7 +247,8 @@ describe('autonomous proposal publishing', () => {
           ] as T
         if (endpoint.endsWith('/git/commits/other-commit'))
           return { tree: { sha: 'different-tree' }, parents: [{ sha: 'parent-commit' }] } as T
-        if (endpoint.includes('/compare/main...parent-commit')) return { ahead_by: 0 } as T
+        if (endpoint.includes('/compare/main...parent-commit'))
+          return { ahead_by: 0, behind_by: 0 } as T
         if (endpoint.endsWith('/git/commits/parent-commit'))
           return { tree: { sha: 'parent-tree' } } as T
         if (endpoint.endsWith('/git/trees')) return { sha: 'proposal-tree' } as T
@@ -257,6 +258,35 @@ describe('autonomous proposal publishing', () => {
 
     await expect(publishProposalPayloads([payload], repository, context, client)).rejects.toThrow(
       'existing proposal branch has different content'
+    )
+    expect(client.calls.some(call => call.endpoint.endsWith('/git/refs'))).toBe(false)
+    expect(
+      client.calls.some(call => call.endpoint.endsWith('/pulls') && call.method === 'POST')
+    ).toBe(false)
+  })
+
+  it('refuses to reuse an idempotent branch with an unrelated or stale parent commit', async () => {
+    const client = githubClient({
+      request: async <T>(method: 'GET' | 'POST', endpoint: string, body?: unknown) => {
+        client.calls.push({ method, endpoint, body })
+        if (endpoint.includes('/pulls?state=all&head=')) return [] as T
+        if (endpoint.endsWith(`/git/matching-refs/heads/${payload.branchName}`))
+          return [
+            {
+              ref: `refs/heads/${payload.branchName}`,
+              object: { sha: 'existing-commit' }
+            }
+          ] as T
+        if (endpoint.endsWith('/git/commits/existing-commit'))
+          return { tree: { sha: 'proposal-tree' }, parents: [{ sha: 'parent-commit' }] } as T
+        if (endpoint.includes('/compare/main...parent-commit'))
+          return { ahead_by: 0, behind_by: 1 } as T
+        throw new Error(`unexpected GitHub request: ${method} ${endpoint}`)
+      }
+    })
+
+    await expect(publishProposalPayloads([payload], repository, context, client)).rejects.toThrow(
+      'existing proposal branch is not based on the default branch'
     )
     expect(client.calls.some(call => call.endpoint.endsWith('/git/refs'))).toBe(false)
     expect(
@@ -278,7 +308,8 @@ describe('autonomous proposal publishing', () => {
           ] as T
         if (endpoint.endsWith('/git/commits/existing-commit'))
           return { tree: { sha: 'proposal-tree' }, parents: [{ sha: 'parent-commit' }] } as T
-        if (endpoint.includes('/compare/main...parent-commit')) return { ahead_by: 0 } as T
+        if (endpoint.includes('/compare/main...parent-commit'))
+          return { ahead_by: 0, behind_by: 0 } as T
         if (endpoint.endsWith('/git/commits/parent-commit'))
           return { tree: { sha: 'parent-tree' } } as T
         if (endpoint.endsWith('/git/trees')) return { sha: 'proposal-tree' } as T

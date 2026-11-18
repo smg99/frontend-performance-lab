@@ -172,14 +172,17 @@ export async function publishProposalPayloads(
         throw new Error(`existing proposal branch has no parent: ${payload.branchName}`)
       const parentCommitSha = existingCommit.parents[0].sha
       const comparison = z
-        .object({ ahead_by: z.number().int().nonnegative() })
+        .object({
+          ahead_by: z.number().int().nonnegative(),
+          behind_by: z.number().int().nonnegative()
+        })
         .parse(
           await client.request(
             'GET',
             `repos/${repository.nameWithOwner}/compare/${encodeURIComponent(repository.defaultBranch)}...${parentCommitSha}`
           )
         )
-      if (comparison.ahead_by !== 0)
+      if (comparison.ahead_by !== 0 || comparison.behind_by !== 0)
         throw new Error(
           `existing proposal branch is not based on the default branch: ${payload.branchName}`
         )
