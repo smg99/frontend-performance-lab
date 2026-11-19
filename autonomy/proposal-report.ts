@@ -13,6 +13,8 @@ const proposalContentSchema = z.object({
     evidenceHash: z.string().min(1)
   }),
   draft: z.object({
+    kind: z.enum(['metadata', 'browser-api', 'recipe', 'experiment']),
+    id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
     title: z.string().min(1),
     summary: z.string().min(1),
     citations: z
@@ -43,6 +45,7 @@ export function formatProposalPayloadReport(payloads: DraftPullRequestPayload[])
           const { candidate, draft } = proposalContentSchema.parse(JSON.parse(file.content))
           return [
             `- ${escapeMarkdown(payload.title)}`,
+            `  - Draft ID: ${draft.id}`,
             `  - Summary: ${escapeMarkdown(draft.summary)}`,
             '  - Claims:',
             ...draft.citations.map(

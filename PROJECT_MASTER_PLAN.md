@@ -310,6 +310,11 @@ Progress evidence (2026-11-18):
 - A focused regression test covers a stale parent branch and verifies that no branch or pull-request creation requests are made. The six autonomy unit suites pass: 54 tests; typecheck, ESLint and Prettier checks for the changed TypeScript files pass.
 - Pull-request workflow certification and S3 certification remain incomplete; no GitHub publication was performed.
 
+Progress evidence (2026-11-19):
+
+- The prepared-payload review report now shows each draft's exact proposal ID alongside its kind, source evidence, candidate provenance and payload path, making review-only payload matching unambiguous before publication.
+- The three focused proposal report, preparation and publishing suites pass: 22 tests. No GitHub publication was performed; pull-request workflow certification and S3 certification remain incomplete.
+
 Deliverables:
 
 - Candidate schemas for metadata, browser APIs, recipes and experiments.

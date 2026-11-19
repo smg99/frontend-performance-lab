@@ -75,6 +75,7 @@ describe('autonomous proposal report', () => {
         '## Review before publishing',
         '',
         '- draft\\(experiment\\): Rendering measurement',
+        `  - Draft ID: ${draft.id}`,
         `  - Summary: ${draft.summary.replace('.', '\\.')}`,
         '  - Claims:',
         `    - [medium] ${draft.citations[0].claim.replace('.', '\\.')} (evidence: ${candidate.evidenceUrl})`,
