@@ -46,5 +46,8 @@ jobs:
       - name: Validate Analyzer Evidence
         run: npm run validate:analyzer
 
+      - name: Validate Autonomous Proposal Workflow
+        run: npm run validate:proposals
+
       - name: Build
         run: npm run build

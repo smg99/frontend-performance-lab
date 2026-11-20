@@ -177,7 +177,7 @@ Certification evidence (2026-09-20):
 
 ### S3 — Evidence-bearing content proposals at L1
 
-Status: **IN PROGRESS**
+Status: **CERTIFIED** (2026-11-20)
 
 Implemented foundation:
 
@@ -314,6 +314,12 @@ Progress evidence (2026-11-19):
 
 - The prepared-payload review report now shows each draft's exact proposal ID alongside its kind, source evidence, candidate provenance and payload path, making review-only payload matching unambiguous before publication.
 - The three focused proposal report, preparation and publishing suites pass: 22 tests. No GitHub publication was performed; pull-request workflow certification and S3 certification remain incomplete.
+
+Certification evidence (2026-11-20):
+
+- Added a dedicated CI validation command covering discovery, discovery reporting, proposal generation and validation, payload preparation and publishing behavior.
+- The six focused autonomy suites pass: 54 tests, including source-change-to-draft fixture coverage, unsupported claims, missing citations, allowlisted evidence, duplicate prevention, draft-PR payload reuse, stale-branch refusal and Markdown/field safety.
+- CI now runs the autonomous proposal suite after content and analyzer validation and before the production build. The workflow remains read-only until an explicitly invoked publisher creates a draft PR; no live GitHub publication was performed.
 
 Deliverables:
 
@@ -453,17 +459,17 @@ Certification gates:
 
 ## Current repository audit
 
-| Capability                     | Status   | Evidence                                                                                                                                        |
-| ------------------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| Structured knowledge manifests | COMPLETE | Runtime schemas, graph validation, provenance and freshness enforcement pass.                                                                   |
-| AST analyzer                   | PARTIAL  | Sixteen registered rules; cross-file analysis remains planned.                                                                                  |
-| Analyzer fixtures              | PARTIAL  | Fixtures exist, but the configured analyzer test suite does not execute them.                                                                   |
-| Analyzer coverage report       | BROKEN   | Fixture presence is currently presented as `>95%` code coverage.                                                                                |
-| Content validation             | COMPLETE | Invalid schemas, links, provenance and freshness fail validation.                                                                               |
-| CI                             | PARTIAL  | Test, typecheck, lint and build run; autonomous certification is not wired in.                                                                  |
-| Autonomous discovery           | COMPLETE | Allowlisted scheduled collectors produce hashed, scored, deduplicated reports.                                                                  |
-| Autonomous proposals           | PARTIAL  | Typed draft schemas, validation policy and review-only PR payloads exist; draft authoring and GitHub PR workflow integration remain incomplete. |
-| Self-observability             | PARTIAL  | CI exists; longitudinal quality and performance measurements do not.                                                                            |
+| Capability                     | Status   | Evidence                                                                                                                                     |
+| ------------------------------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Structured knowledge manifests | COMPLETE | Runtime schemas, graph validation, provenance and freshness enforcement pass.                                                                |
+| AST analyzer                   | PARTIAL  | Sixteen registered rules; cross-file analysis remains planned.                                                                               |
+| Analyzer fixtures              | PARTIAL  | Fixtures exist, but the configured analyzer test suite does not execute them.                                                                |
+| Analyzer coverage report       | BROKEN   | Fixture presence is currently presented as `>95%` code coverage.                                                                             |
+| Content validation             | COMPLETE | Invalid schemas, links, provenance and freshness fail validation.                                                                            |
+| CI                             | COMPLETE | Test, typecheck, lint, build and the six-suite autonomous proposal certification run are wired in.                                           |
+| Autonomous discovery           | COMPLETE | Allowlisted scheduled collectors produce hashed, scored, deduplicated reports.                                                               |
+| Autonomous proposals           | COMPLETE | Discovery-to-draft payloads, evidence validation, review reporting and idempotent draft-PR publishing are certified in unit fixtures and CI. |
+| Self-observability             | PARTIAL  | CI exists; longitudinal quality and performance measurements do not.                                                                         |
 
 ## Definition of done for every sprint
 
