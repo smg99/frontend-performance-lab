@@ -49,5 +49,8 @@ jobs:
       - name: Validate Autonomous Proposal Workflow
         run: npm run validate:proposals
 
+      - name: Audit Knowledge Links
+        run: npm run audit:links
+
       - name: Build
         run: npm run build

@@ -337,6 +337,12 @@ Certification gates:
 
 ### S4 — Continuous product self-audit
 
+Progress evidence (2026-11-21):
+
+- Replaced the broken-link-check placeholder with a deterministic deduplicated audit of registered provenance and manifest reference URLs, with unit coverage for deduplication, failure reporting and HEAD-to-GET fallback.
+- Added `npm run audit:links` to CI. The audit discovered and removed one stale `requestIdleCallback` reference; a live rerun confirmed all 24 remaining unique knowledge URLs are reachable.
+- S4 certification remains incomplete; Lighthouse, additional budgets, regression reports and stored trend data are not yet implemented.
+
 Goal: let FPL continuously measure its own quality.
 
 Deliverables:

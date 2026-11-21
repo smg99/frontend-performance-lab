@@ -134,10 +134,6 @@ const scheduleIdleWork = (callback, options) => {
     {
       title: 'requestIdleCallback — MDN Web Docs',
       url: 'https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback'
-    },
-    {
-      title: 'Using requestIdleCallback — web.dev',
-      url: 'https://web.dev/articles/using-requestidlecallback'
     }
   ]
 }

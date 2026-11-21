@@ -25,6 +25,7 @@
     "validate:content": "tsx scripts/validate-content.ts",
     "validate:analyzer": "tsx scripts/validate-analyzer.ts",
     "validate:proposals": "vitest run test/unit/autonomy-discovery.test.ts test/unit/autonomy-discovery-report.test.ts test/unit/autonomy-proposals.test.ts test/unit/autonomy-proposal-report.test.ts test/unit/autonomy-prepare-proposals.test.ts test/unit/autonomy-publish-proposals.test.ts --passWithNoTests",
+    "audit:links": "tsx scripts/check-links.ts",
     "autonomy:discover": "tsx scripts/run-autonomous-discovery.ts",
     "autonomy:prepare-proposals": "tsx scripts/prepare-autonomous-proposals.ts",
     "autonomy:open-proposals": "tsx scripts/open-autonomous-proposals.ts",
