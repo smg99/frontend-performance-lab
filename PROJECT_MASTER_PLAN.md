@@ -343,6 +343,12 @@ Progress evidence (2026-11-21):
 - Added `npm run audit:links` to CI. The audit discovered and removed one stale `requestIdleCallback` reference; a live rerun confirmed all 24 remaining unique knowledge URLs are reachable.
 - S4 certification remains incomplete; Lighthouse, additional budgets, regression reports and stored trend data are not yet implemented.
 
+Progress evidence (2026-11-22):
+
+- Added a production-bundle budget audit that measures raw and gzip JavaScript/CSS totals, records Node/platform/architecture/CI/commit metadata, fails CI on configured regressions and includes no Lighthouse or synthetic performance claims.
+- The focused build-budget unit suite passes 4 tests. A local production build is within the configured limits: 869,884 raw JavaScript bytes (290,848 gzip), 98,521 raw stylesheet bytes (33,894 gzip).
+- S4 certification remains incomplete; Lighthouse, accessibility, build-time budgets, regression reports and stored trend data are not yet implemented.
+
 Goal: let FPL continuously measure its own quality.
 
 Deliverables:

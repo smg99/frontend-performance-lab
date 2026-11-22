@@ -54,3 +54,6 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Audit Production Bundle
+        run: npm run audit:build
