@@ -349,6 +349,13 @@ Progress evidence (2026-11-22):
 - The focused build-budget unit suite passes 4 tests. A local production build is within the configured limits: 869,884 raw JavaScript bytes (290,848 gzip), 98,521 raw stylesheet bytes (33,894 gzip).
 - S4 certification remains incomplete; Lighthouse, accessibility, build-time budgets, regression reports and stored trend data are not yet implemented.
 
+Progress evidence (2026-11-23):
+
+- Added a deterministic static HTML accessibility smoke audit for built routes, covering document language/title, main and h1 landmarks, image alternatives, link and button names, and duplicate IDs.
+- The focused accessibility and build-budget suites pass 8 tests. A local production build passed the audit across 7 representative routes with no violations.
+- The audit runs in CI after the production build and includes environment and commit metadata without claiming Lighthouse or conformance certification.
+- S4 certification remains incomplete; Lighthouse, build-time budgets, regression reports and stored trend data are not yet implemented.
+
 Goal: let FPL continuously measure its own quality.
 
 Deliverables:

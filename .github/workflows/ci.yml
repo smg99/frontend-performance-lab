@@ -57,3 +57,6 @@ jobs:
 
       - name: Audit Production Bundle
         run: npm run audit:build
+
+      - name: Audit Static Accessibility Smoke Checks
+        run: npm run audit:accessibility

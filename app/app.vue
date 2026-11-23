@@ -19,6 +19,7 @@ useHead({
     return titleChunk ? `${titleChunk} - Frontend Performance Lab` : 'Frontend Performance Lab'
   },
   htmlAttrs: {
+    lang: 'en',
     // Start with dark mode by default for premium SaaS feel
     class: 'dark'
   }

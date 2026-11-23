@@ -57,7 +57,7 @@ const breadcrumbs = computed(() => {
       class="w-64 lg:w-72 flex-shrink-0 border-r border-border-subtle-subtle bg-background-surface flex-col hidden md:flex sticky top-0 h-screen overflow-y-auto"
     >
       <div class="h-16 flex items-center px-6 border-b border-border-subtle-subtle shrink-0">
-        <NuxtLink to="/" class="flex items-center">
+        <NuxtLink to="/" class="flex items-center" aria-label="Frontend Performance Lab home">
           <img
             v-if="isDark"
             src="/branding/logo-dark.svg"
@@ -289,6 +289,7 @@ const breadcrumbs = computed(() => {
 
           <button
             class="p-2 text-foreground-muted hover:text-foreground-primary hover:bg-background-hover rounded-full transition-colors focus-ring"
+            :aria-label="isDark ? 'Switch to light theme' : 'Switch to dark theme'"
             @click="toggleTheme"
           >
             <MoonIcon v-if="!isDark" class="w-5 h-5" />
@@ -298,6 +299,7 @@ const breadcrumbs = computed(() => {
           <a
             href="https://github.com/smg99/frontend-performance-lab"
             target="_blank"
+            aria-label="Visit Frontend Performance Lab on GitHub"
             class="p-2 text-foreground-muted hover:text-foreground-primary hover:bg-background-hover rounded-full transition-colors focus-ring"
           >
             <GithubIcon class="w-5 h-5" />

@@ -32,6 +32,7 @@
         <button
           class="text-foreground-muted hover:text-primary transition-colors p-1"
           title="New File"
+          aria-label="New file"
           @click="addFile"
         >
           <PlusIcon class="w-4 h-4" />

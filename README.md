@@ -16,7 +16,7 @@
 
   <p>
     <a href="https://github.com/smg99/frontend-performance-lab/actions"><img src="https://img.shields.io/github/actions/workflow/status/smg99/frontend-performance-lab/ci.yml?branch=main&label=CI&style=flat-square" alt="CI"></a>
-    <a href="./ANALYZER_COVERAGE.md"><img src="https://img.shields.io/badge/Coverage->94%25-22c55e?style=flat-square" alt="Coverage"></a>
+    <a href="./ANALYZER_COVERAGE.md"><img src="https://img.shields.io/badge/Coverage-%3E94%25-22c55e?style=flat-square" alt="Coverage"></a>
     <a href="./mcp"><img src="https://img.shields.io/badge/MCP-Ready-8b5cf6?style=flat-square" alt="MCP Ready"></a>
     <img src="https://img.shields.io/badge/Nuxt-4.x-00DC82?style=flat-square&logo=nuxt.js&logoColor=white" alt="Nuxt">
     <img src="https://img.shields.io/badge/License-MIT-64748b?style=flat-square" alt="License">
