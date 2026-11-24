@@ -28,6 +28,7 @@
     "audit:links": "tsx scripts/check-links.ts",
     "audit:build": "tsx scripts/audit-build.ts",
     "audit:accessibility": "tsx scripts/audit-accessibility.ts",
+    "audit:regression": "tsx scripts/audit-regression.ts",
     "autonomy:discover": "tsx scripts/run-autonomous-discovery.ts",
     "autonomy:prepare-proposals": "tsx scripts/prepare-autonomous-proposals.ts",
     "autonomy:open-proposals": "tsx scripts/open-autonomous-proposals.ts",

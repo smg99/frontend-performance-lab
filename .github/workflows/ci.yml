@@ -60,3 +60,17 @@ jobs:
 
       - name: Audit Static Accessibility Smoke Checks
         run: npm run audit:accessibility
+
+      - name: Prepare Audit Regression Report
+        run: |
+          mkdir -p .fpl
+          printf '[]\n' > .fpl/audit-findings.json
+          npm run audit:regression -- --current .fpl/audit-findings.json --out .fpl/audit-regression-report.json
+
+      - name: Upload Audit Regression Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpl-audit-regression-${{ github.sha }}
+          path: .fpl/audit-regression-report.json
+          if-no-files-found: warn

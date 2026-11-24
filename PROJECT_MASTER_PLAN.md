@@ -356,6 +356,12 @@ Progress evidence (2026-11-23):
 - The audit runs in CI after the production build and includes environment and commit metadata without claiming Lighthouse or conformance certification.
 - S4 certification remains incomplete; Lighthouse, build-time budgets, regression reports and stored trend data are not yet implemented.
 
+Progress evidence (2026-11-24):
+
+- Added deterministic audit-finding reconciliation for open, recovered and newly added findings, plus an environment-and-commit-aware JSON report and CI artifact upload.
+- The focused self-audit reconciliation suite passes 4 tests; the combined build-budget, accessibility, broken-link and reconciliation suites pass 15 tests.
+- S4 certification remains incomplete; Lighthouse, live seeded regression ownership, stored cross-run trends and additional build-time budgets are not yet implemented. This slice records the report format and recovered/open reconciliation only; it does not claim a live regression was seeded or closed.
+
 Goal: let FPL continuously measure its own quality.
 
 Deliverables:
