@@ -1,6 +1,7 @@
 import { spawn } from 'node:child_process'
 import { existsSync } from 'node:fs'
 import { auditHtmlAccessibility, type AccessibilityReport } from '../shared/audit/accessibility'
+import { AUDIT_ROUTES } from '../shared/audit/routes'
 
 const serverEntry = '.output/server/index.mjs'
 if (!existsSync(serverEntry)) {
@@ -16,15 +17,6 @@ const server = spawn(process.execPath, [serverEntry], {
   stdio: 'ignore'
 })
 
-const routes = [
-  '/',
-  '/about',
-  '/recipes',
-  '/browser-apis',
-  '/mcp',
-  '/playground',
-  '/tools/performance-review'
-]
 const reports: AccessibilityReport[] = []
 
 async function waitForServer(): Promise<void> {
@@ -44,7 +36,7 @@ async function waitForServer(): Promise<void> {
 
 try {
   await waitForServer()
-  for (const route of routes) {
+  for (const route of AUDIT_ROUTES) {
     const response = await fetch(`http://127.0.0.1:${port}${route}`, {
       signal: AbortSignal.timeout(5000)
     })
@@ -66,7 +58,7 @@ console.log(
     {
       passed: violations.length === 0,
       checked: reports.length,
-      routes,
+      routes: AUDIT_ROUTES,
       violations,
       environment: {
         node: process.version,

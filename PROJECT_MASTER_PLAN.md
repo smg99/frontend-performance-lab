@@ -362,6 +362,13 @@ Progress evidence (2026-11-24):
 - The focused self-audit reconciliation suite passes 4 tests; the combined build-budget, accessibility, broken-link and reconciliation suites pass 15 tests.
 - S4 certification remains incomplete; Lighthouse, live seeded regression ownership, stored cross-run trends and additional build-time budgets are not yet implemented. This slice records the report format and recovered/open reconciliation only; it does not claim a live regression was seeded or closed.
 
+Progress evidence (2026-11-25):
+
+- Added a scheduled, manually runnable Lighthouse workflow for the same seven production routes used by the static accessibility smoke audit. Each run builds the production app, measures real Lighthouse category scores and performance metrics using a fixed mobile/simulated-throttling configuration, and uploads Lighthouse and accessibility JSON reports with commit and runtime metadata.
+- Lighthouse results are recorded without invented values or unverified pass thresholds; absent measurements remain explicitly null. This adds measurement only and does not claim a certified performance score.
+- The focused audit tests pass (3 files, 10 tests); production build, typecheck, changed-file ESLint and formatting checks pass. A local built-site run measured all seven routes, and the static accessibility audit reported zero violations; those local measurements are environment-specific, not certification evidence.
+- S4 certification remains incomplete; cross-run trend storage, live seeded regression ownership, analyzer latency/crash-rate benchmarks and additional build-time budgets remain outstanding.
+
 Goal: let FPL continuously measure its own quality.
 
 Deliverables:
