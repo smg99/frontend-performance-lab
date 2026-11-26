@@ -369,6 +369,12 @@ Progress evidence (2026-11-25):
 - The focused audit tests pass (3 files, 10 tests); production build, typecheck, changed-file ESLint and formatting checks pass. A local built-site run measured all seven routes, and the static accessibility audit reported zero violations; those local measurements are environment-specific, not certification evidence.
 - S4 certification remains incomplete; cross-run trend storage, live seeded regression ownership, analyzer latency/crash-rate benchmarks and additional build-time budgets remain outstanding.
 
+Progress evidence (2026-11-26):
+
+- Lighthouse audit runs now restore the latest successful main-branch trend artifact and append the current measured report. History is chronological, retries replace the same workflow run, malformed reports fail visibly, and the artifact retains up to 90 reports with 90-day artifact retention.
+- The focused Lighthouse audit suite passes: 6 tests, including history initialization, ordering, retry deduplication, retention bounds and malformed-input rejection. Typecheck, changed-file ESLint, Prettier and `git diff --check` pass.
+- The workflow integration has not yet run on GitHub, so no live cross-run trend artifact is claimed. S4 remains incomplete; seeded regression ownership, analyzer latency/crash-rate benchmarks and additional build-time budgets remain outstanding.
+
 Goal: let FPL continuously measure its own quality.
 
 Deliverables:

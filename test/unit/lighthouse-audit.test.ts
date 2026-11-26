@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { summarizeLighthouseResult } from '../../shared/audit/lighthouse'
+import { mergeLighthouseTrend, type LighthouseTrendHistory } from '../../shared/audit/trends'
 
 describe('Lighthouse audit summary', () => {
   it('preserves measured route category scores and metric values', () => {
@@ -35,6 +36,100 @@ describe('Lighthouse audit summary', () => {
         'total-blocking-time': { value: 0, unit: 'millisecond' },
         'cumulative-layout-shift': { value: 0.01, unit: 'unitless' }
       }
+    })
+  })
+
+  describe('Lighthouse trend history', () => {
+    const report = (measuredAt: string, commit: string) => ({
+      measuredAt,
+      environment: { commit },
+      routes: [
+        {
+          path: '/',
+          url: 'https://example.test/',
+          categories: {
+            performance: null,
+            accessibility: null,
+            'best-practices': null,
+            seo: null
+          },
+          metrics: {
+            'first-contentful-paint': { value: null, unit: null },
+            'largest-contentful-paint': { value: null, unit: null },
+            'speed-index': { value: null, unit: null },
+            'total-blocking-time': { value: null, unit: null },
+            'cumulative-layout-shift': { value: null, unit: null }
+          }
+        }
+      ]
+    })
+
+    it('starts a history containing the measured report and run identifier', () => {
+      expect(
+        mergeLighthouseTrend(report('2026-11-26T01:00:00.000Z', 'abc123'), null, 'run-1')
+      ).toEqual({
+        version: 1,
+        reports: [
+          {
+            runId: 'run-1',
+            report: report('2026-11-26T01:00:00.000Z', 'abc123')
+          }
+        ]
+      })
+    })
+
+    it('keeps reports in chronological order and replaces a repeated workflow run', () => {
+      const previous: LighthouseTrendHistory = {
+        version: 1,
+        reports: [
+          { runId: 'run-2', report: report('2026-11-25T01:00:00.000Z', 'second') },
+          { runId: 'run-1', report: report('2026-11-24T01:00:00.000Z', 'first') }
+        ]
+      }
+
+      const history = mergeLighthouseTrend(
+        report('2026-11-26T01:00:00.000Z', 'retry'),
+        previous,
+        'run-2'
+      )
+
+      expect(history.reports.map(entry => entry.runId)).toEqual(['run-1', 'run-2'])
+      expect(history.reports[1].report.environment.commit).toBe('retry')
+    })
+
+    it('retains only the latest 90 unique measured runs', () => {
+      const previous: LighthouseTrendHistory = {
+        version: 1,
+        reports: Array.from({ length: 90 }, (_, index) => {
+          return {
+            runId: `run-${index}`,
+            report: report(new Date(Date.UTC(2026, 6, index + 1)).toISOString(), `commit-${index}`)
+          }
+        })
+      }
+
+      const history = mergeLighthouseTrend(
+        report('2026-11-26T00:00:00.000Z', 'new'),
+        previous,
+        'new-run'
+      )
+
+      expect(history.reports).toHaveLength(90)
+      expect(history.reports[0].runId).toBe('run-1')
+      expect(history.reports.at(-1)?.runId).toBe('new-run')
+    })
+
+    it('rejects malformed current reports and prior history rather than hiding gaps', () => {
+      expect(() => mergeLighthouseTrend({ measuredAt: 'invalid' }, null, 'run-1')).toThrow(
+        'Current Lighthouse report is malformed'
+      )
+      expect(() =>
+        mergeLighthouseTrend(
+          report('2026-11-26T00:00:00.000Z', 'new'),
+          { version: 2, reports: [] },
+          'run-1'
+        )
+      ).toThrow('Previous Lighthouse trend history is malformed')
     })
   })
 
