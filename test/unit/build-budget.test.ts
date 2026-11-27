@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  evaluateBuildTimeBudget,
   evaluateBuildBudget,
   sumBuildAssets,
   type BuildAsset
@@ -53,5 +54,26 @@ describe('build bundle budget', () => {
       actual: 1_000_000,
       limit: 900_000
     })
+  })
+
+  it('passes when the build duration is at the configured limit', () => {
+    expect(evaluateBuildTimeBudget(120_000, 120_000)).toEqual({
+      passed: true,
+      durationMs: 120_000,
+      limitMs: 120_000
+    })
+  })
+
+  it('fails when the build duration exceeds the configured limit', () => {
+    expect(evaluateBuildTimeBudget(120_001, 120_000)).toEqual({
+      passed: false,
+      durationMs: 120_001,
+      limitMs: 120_000
+    })
+  })
+
+  it('rejects invalid build duration values', () => {
+    expect(() => evaluateBuildTimeBudget(-1, 120_000)).toThrow(RangeError)
+    expect(() => evaluateBuildTimeBudget(1, Number.POSITIVE_INFINITY)).toThrow(RangeError)
   })
 })

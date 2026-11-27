@@ -26,6 +26,26 @@ export interface BuildBudgetReport {
   failures: BuildBudgetFailure[]
 }
 
+export interface BuildTimeBudgetReport {
+  passed: boolean
+  durationMs: number
+  limitMs: number
+}
+
+export function evaluateBuildTimeBudget(
+  durationMs: number,
+  limitMs: number
+): BuildTimeBudgetReport {
+  if (!Number.isFinite(durationMs) || durationMs < 0) {
+    throw new RangeError('Build duration must be a finite non-negative number.')
+  }
+  if (!Number.isFinite(limitMs) || limitMs < 0) {
+    throw new RangeError('Build time limit must be a finite non-negative number.')
+  }
+
+  return { passed: durationMs <= limitMs, durationMs, limitMs }
+}
+
 export function sumBuildAssets(assets: BuildAsset[]): BuildBudgetReport['totals'] {
   const totals: BuildBudgetReport['totals'] = {}
 

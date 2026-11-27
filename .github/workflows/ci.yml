@@ -52,8 +52,8 @@ jobs:
       - name: Audit Knowledge Links
         run: npm run audit:links
 
-      - name: Build
-        run: npm run build
+      - name: Build within duration budget
+        run: npm run audit:build-time -- --out .fpl/build-time-report.json
 
       - name: Audit Production Bundle
         run: npm run audit:build
@@ -73,4 +73,12 @@ jobs:
         with:
           name: fpl-audit-regression-${{ github.sha }}
           path: .fpl/audit-regression-report.json
+          if-no-files-found: warn
+
+      - name: Upload Build Time Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpl-build-time-${{ github.sha }}
+          path: .fpl/build-time-report.json
           if-no-files-found: warn

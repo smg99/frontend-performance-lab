@@ -375,6 +375,12 @@ Progress evidence (2026-11-26):
 - The focused Lighthouse audit suite passes: 6 tests, including history initialization, ordering, retry deduplication, retention bounds and malformed-input rejection. Typecheck, changed-file ESLint, Prettier and `git diff --check` pass.
 - The workflow integration has not yet run on GitHub, so no live cross-run trend artifact is claimed. S4 remains incomplete; seeded regression ownership, analyzer latency/crash-rate benchmarks and additional build-time budgets remain outstanding.
 
+Progress evidence (2026-11-27):
+
+- CI now runs the production build through a duration audit with a 120,000 ms ceiling and uploads a JSON report containing the measured duration and runtime/commit metadata. Failed builds do not produce a successful timing report.
+- The focused build-budget suite passes: 7 tests. A local production build measured 5,009 ms and passed both the duration ceiling and existing bundle-size budgets; this is local evidence, not a CI-run measurement.
+- Typecheck, changed-file ESLint, Prettier and `git diff --check` pass. S4 remains incomplete; seeded regression ownership and analyzer latency/crash-rate benchmarks remain outstanding.
+
 Goal: let FPL continuously measure its own quality.
 
 Deliverables:
